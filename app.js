@@ -9,9 +9,7 @@ const db = require('./public/javascripts/db');
 
 
 
-const server = http.createServer((request, response) => {
-  const dbs = fs.readFileSync('./public/db/db.db', 'utf8');
-  
+const server = http.createServer((request, response) => {  
   switch (request.method) {
     case 'GET':
       if (request.url === '/') {
@@ -29,6 +27,7 @@ const server = http.createServer((request, response) => {
       break;
 
     case 'POST':
+      const dbs = fs.readFileSync('./public/db/db.db', 'utf8');
       if (request.url === '/login') {
         let body = "";
 
@@ -37,10 +36,12 @@ const server = http.createServer((request, response) => {
         });
         request.on('end', () => {
           const { id, pw } = querystring.parse(body);
-          
+          const dbs = fs.readFileSync('./public/db/db.db', 'utf8')
 
-          response.writeHead(200, ContentType.html);
-          response.end(fs.readFileSync('./public/piano.html', 'utf8'));
+          if (loginValidation.check(id, pw, dbs)) {
+            response.writeHead(200, ContentType.html);
+            response.end(fs.readFileSync('./public/piano.html', 'utf8'));
+          }
         });
       }
       if (request.url === '/create') {
