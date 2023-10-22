@@ -70,4 +70,4 @@ const emailCheck = (value) => {
   return result;
 };
 
-module.exports = { idCheck, pwCheck, mailCheck };
+module.exports = { idCheck, pwCheck, emailCheck };

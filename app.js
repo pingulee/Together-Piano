@@ -3,15 +3,15 @@ const fs = require('fs');
 const querystring = require('querystring');
 const port = require('./public/javascripts/port')
 const ContentType = require('./public/javascripts/contenttype')
-const validation = require('./public/javascripts/validation');
+const loginValidation = require('./public/javascripts/loginValidation');
+const joinValidation = require('./public/javascripts/joinValidation');
 const db = require('./public/javascripts/db');
 
-const nameDB = fs.readFileSync('./public/db/name', 'utf8');
-const idDB = fs.readFileSync('./public/db/id', 'utf8');
-const pwDB = fs.readFileSync('./public/db/pw', 'utf8');
-const emailDB = fs.readFileSync('./public/db/email', 'utf8');
+
 
 const server = http.createServer((request, response) => {
+  const dbs = fs.readFileSync('./public/db/db.db', 'utf8');
+  
   switch (request.method) {
     case 'GET':
       if (request.url === '/') {
@@ -30,14 +30,31 @@ const server = http.createServer((request, response) => {
 
     case 'POST':
       if (request.url === '/login') {
+        let body = "";
+
+        request.on('data', (chunk) => {
+          body += chunk.toString();
+        });
+        request.on('end', () => {
+          const { id, pw } = querystring.parse(body);
+          if (joinValidation.idCheck(pw1, pw2) && joinValidation.emailCheck(email)) {
+
+          }
+
+          response.writeHead(200, ContentType.html);
+          response.end(fs.readFileSync('./public/piano.html', 'utf8'));
+        });
+      }
+      if (request.url === '/create') {
         response.writeHead(200, ContentType.html);
-        response.end(fs.readFileSync('./public/piano.html', 'utf8'));
+        response.end(fs.readFileSync('./public/index.html', 'utf8'));
       }
       else if (request.url === '/join') {
         response.writeHead(200, ContentType.html);
         response.end(fs.readFileSync('./public/join.html', 'utf8'));
       }
       else if (request.url === '/') {
+
         let body = "";
 
         request.on('data', (chunk) => {
@@ -46,7 +63,7 @@ const server = http.createServer((request, response) => {
         request.on('end', () => {
           const { name, id, pw1, pw2, email } = querystring.parse(body);
 
-          if (validation.pwCheck(pw1, pw2) && validation.emailCheck(email)) {
+          if (loginValidation.pwCheck(pw1, pw2) && loginValidation.emailCheck(email)) {
             fs.writeFileSync('./public/db/name', `${nameDB}|${name}`);
             fs.writeFileSync('./public/db/id', `${idDB}|${id}`);
             fs.writeFileSync('./public/db/pw', `${pwDB}|${pw1}`);
