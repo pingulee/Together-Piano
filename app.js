@@ -15,8 +15,6 @@ const db = require('./public/javascripts/db');
 //   }
 // });
 
-
-
 const server = http.createServer((request, response) => {
   switch (request.method) {
     case 'GET':
@@ -35,17 +33,30 @@ const server = http.createServer((request, response) => {
       break;
 
     case 'POST':
-      if (request.url === '/javascripts/script.js') {
-        response.writeHead(200, ContentType.js);
-        response.end(fs.readFileSync('./public/javascripts/script.js', 'utf8'));
-      }
-      else if (request.url === '/javascripts/script.js') {
-        response.writeHead(200, ContentType.js);
-        response.end(fs.readFileSync('./public/javascripts/script.js', 'utf8'));
-      }
-      else if (request.url === '/join') {
+      if (request.url === '/join') {
         response.writeHead(200, ContentType.html);
         response.end(fs.readFileSync('./public/join.html', 'utf8'));
+      }
+      else if (request.url === '/') {
+        let body = "";
+      
+        request.on('data', (chunk) => {
+          body += chunk.toString();
+        });
+        request.on('end', () => {
+          const { id, pw1, pw2, email } = querystring.parse(body);
+          const data = db.one + id + db.two;
+          fs.writeFileSync('./public/success.html', data)
+          if (validation(id, pw1, pw2, email)) {
+            signUpAsset.id = id;
+            signUpAsset.pw = pw1;
+            signUpAsset.email = email;
+            response.writeHead(200, ContentType.html);
+            response.end(fs.readFileSync('./public/success.html', 'utf8'));
+          } else {
+            response.end(fs.readFileSync('./public/index.html', 'utf8'));
+          }
+        });
       }
       break;
 
@@ -59,31 +70,3 @@ const server = http.createServer((request, response) => {
 server.listen(port, () => {
   console.log('서버 가동 중 : http://localhost:8080/');
 });
-
-
-
-
-// else if (request.method === 'POST' && request.url === '/join') {
-//   let body = "";
-
-//   request.on('data', (chunk) => {
-//     body += chunk.toString();
-//   });
-//   request.on('end', () => {
-//     const { id, pw1, pw2, email } = querystring.parse(body);
-//     const data = db.one + id + db.two;
-//     fs.writeFileSync('./public/success.html', data)
-//     if (validation(id, pw1, pw2, email)) {
-//       signUpAsset.id = id;
-//       signUpAsset.pw = pw1;
-//       signUpAsset.email = email;
-//       response.writeHead(200, ContentType.html);
-//       response.end(fs.readFileSync('./public/success.html', 'utf8'));
-//     } else {
-//       response.end(fs.readFileSync('./public/index.html', 'utf8'));
-//     }
-//   });
-// }
-
-
-
