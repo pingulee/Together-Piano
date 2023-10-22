@@ -45,20 +45,6 @@ const server = http.createServer((request, response) => {
     });
   }
 
-  else if (request.method === 'POST' && request.url === '/send') {
-    let body = "";
-    response.writeHead(200, ContentType.html);
-    request.on('data', (chunk) => {
-      body += chunk.toString();
-    });
-    request.on('end', () => {
-      const { title, text } = querystring.parse(body);
-      console.log(`제목: ${title}`);
-      console.log(`내용: ${text}`);
-    });
-    response.end(fs.readFileSync('./public/index.html', 'utf8'));
-  }
-
   else {
     response.writeHead(404, ContentType.html);
     response.end('404 ERROR');
