@@ -7,6 +7,14 @@ const signUpAsset = require('./public/javascripts/signUpAsset');
 const validation = require('./public/javascripts/validation');
 const db = require('./public/javascripts/db');
 
+// const readFileFunc = fs.readFile(mp3, (err, data) => {
+//   if(err) {
+//     console.error("error");
+//   } else {
+//     return data;
+//   }
+// });
+
 const server = http.createServer((request, response) => {
   if (request.method === 'GET' && request.url === '/') {
     response.writeHead(200, ContentType.html);
@@ -23,27 +31,32 @@ const server = http.createServer((request, response) => {
     response.end(fs.readFileSync('./public/javascripts/script.js', 'utf8'));
   }
 
-  else if (request.method === 'POST' && request.url === '/login') {
-    let body = "";
-
-    request.on('data', (chunk) => {
-      body += chunk.toString();
-    });
-    request.on('end', () => {
-      const { id, pw1, pw2, email } = querystring.parse(body);
-      const data = db.one + id + db.two;
-      fs.writeFileSync('./public/success.html', data)
-      if (validation(id, pw1, pw2, email)) {
-        signUpAsset.id = id;
-        signUpAsset.pw = pw1;
-        signUpAsset.email = email;
-        response.writeHead(200, ContentType.html);
-        response.end(fs.readFileSync('./public/success.html', 'utf8'));
-      } else {
-        response.end(fs.readFileSync('./public/index.html', 'utf8'));
-      }
-    });
+  else if (request.method === 'POST' && request.url === '/join') {
+    response.writeHead(200, ContentType.html);
+    response.end(fs.readFileSync('./public/join.html', 'utf8'));
   }
+
+  // else if (request.method === 'POST' && request.url === '/join') {
+  //   let body = "";
+
+  //   request.on('data', (chunk) => {
+  //     body += chunk.toString();
+  //   });
+  //   request.on('end', () => {
+  //     const { id, pw1, pw2, email } = querystring.parse(body);
+  //     const data = db.one + id + db.two;
+  //     fs.writeFileSync('./public/success.html', data)
+  //     if (validation(id, pw1, pw2, email)) {
+  //       signUpAsset.id = id;
+  //       signUpAsset.pw = pw1;
+  //       signUpAsset.email = email;
+  //       response.writeHead(200, ContentType.html);
+  //       response.end(fs.readFileSync('./public/success.html', 'utf8'));
+  //     } else {
+  //       response.end(fs.readFileSync('./public/index.html', 'utf8'));
+  //     }
+  //   });
+  // }
 
   else {
     response.writeHead(404, ContentType.html);
