@@ -3,7 +3,6 @@ const fs = require('fs');
 const querystring = require('querystring');
 const port = require('./public/javascripts/port')
 const ContentType = require('./public/javascripts/contenttype')
-const signUpAsset = require('./public/javascripts/signUpAsset');
 const validation = require('./public/javascripts/validation');
 const db = require('./public/javascripts/db');
 
