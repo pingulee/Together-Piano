@@ -1,2 +1,2 @@
 # Together Piano
-<img src="">
+<img src="https://github.com/PinguLee/Together-Piano/blob/main/public/images/diagram.png">
