@@ -6,13 +6,10 @@ const ContentType = require('./public/javascripts/contenttype')
 const validation = require('./public/javascripts/validation');
 const db = require('./public/javascripts/db');
 
-// const readFileFunc = fs.readFile(mp3, (err, data) => {
-//   if(err) {
-//     console.error("error");
-//   } else {
-//     return data;
-//   }
-// });
+const nameDB = fs.readFileSync('./public/db/name', 'utf8');
+const idDB = fs.readFileSync('./public/db/id', 'utf8');
+const pwDB = fs.readFileSync('./public/db/pw', 'utf8');
+const emailDB = fs.readFileSync('./public/db/email', 'utf8');
 
 const server = http.createServer((request, response) => {
   switch (request.method) {
@@ -32,28 +29,31 @@ const server = http.createServer((request, response) => {
       break;
 
     case 'POST':
-      if (request.url === '/join') {
+      if (request.url === '/login') {
+        response.writeHead(200, ContentType.html);
+        response.end(fs.readFileSync('./public/piano.html', 'utf8'));
+      }
+      else if (request.url === '/join') {
         response.writeHead(200, ContentType.html);
         response.end(fs.readFileSync('./public/join.html', 'utf8'));
       }
       else if (request.url === '/') {
         let body = "";
-      
+
         request.on('data', (chunk) => {
           body += chunk.toString();
         });
         request.on('end', () => {
-          const { id, pw1, pw2, email } = querystring.parse(body);
-          const data = db.one + id + db.two;
-          fs.writeFileSync('./public/success.html', data)
-          if (validation(id, pw1, pw2, email)) {
-            signUpAsset.id = id;
-            signUpAsset.pw = pw1;
-            signUpAsset.email = email;
+          const { name, id, pw1, pw2, email } = querystring.parse(body);
+
+          if (validation.pwCheck(pw1, pw2) && validation.emailCheck(email)) {
+            fs.writeFileSync('./public/db/name', `${nameDB}|${name}`);
+            fs.writeFileSync('./public/db/id', `${idDB}|${id}`);
+            fs.writeFileSync('./public/db/pw', `${pwDB}|${pw1}`);
+            fs.writeFileSync('./public/db/email', `${emailDB}|${email}`);
+
             response.writeHead(200, ContentType.html);
-            response.end(fs.readFileSync('./public/success.html', 'utf8'));
-          } else {
-            response.end(fs.readFileSync('./public/index.html', 'utf8'));
+            response.end(fs.readFileSync('./public/piano.html', 'utf8'));
           }
         });
       }
