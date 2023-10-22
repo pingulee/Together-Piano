@@ -7,8 +7,6 @@ const signUpAsset = require('./public/javascripts/signUpAsset');
 const validation = require('./public/javascripts/validation');
 const db = require('./public/javascripts/db');
 
-
-
 const server = http.createServer((request, response) => {
   if (request.method === 'GET' && request.url === '/') {
     response.writeHead(200, ContentType.html);
