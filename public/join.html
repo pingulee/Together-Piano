@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join</title>
+  <link rel="stylesheet" href="./stylesheets/style.css">
+  <script src="./javascripts/script.js" defer></script>
+</head>
+
+<body>
+  <div id="root">
+    <div class="container">
+      <form method="post" action="/Join">
+        <div class="box">
+          <input type="text" name="name" id="txt-Name" class="txt" placeholder="Name">
+        </div>
+        <div class="box">
+          <input type="text" name="id" id="txt-ID" class="txt" placeholder="ID">
+        </div>
+        <div class="box">
+          <input type="password" name="pw1" id="txt-PW1" class="txt" placeholder="PW">
+        </div>
+        <div class="box">
+          <input type="password" name="pw2" id="txt-PW2" class="txt" placeholder="PW Check">
+        </div>
+        <div class="box">
+          <input type="text" name="email" id="txt-Email" class="txt" placeholder="E-mail">
+        </div>
+        <div class="box">
+          <input type="submit" value="회원가입" id="btn-Join">
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
