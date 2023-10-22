@@ -1,4 +1,5 @@
 const db = {
+  name: "",
   id: "",
   pw: "",
   email: "",

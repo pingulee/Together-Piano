@@ -37,42 +37,31 @@ const server = http.createServer((request, response) => {
         });
         request.on('end', () => {
           const { id, pw } = querystring.parse(body);
-          if (joinValidation.idCheck(pw1, pw2) && joinValidation.emailCheck(email)) {
-
-          }
+          
 
           response.writeHead(200, ContentType.html);
           response.end(fs.readFileSync('./public/piano.html', 'utf8'));
         });
       }
       if (request.url === '/create') {
-        response.writeHead(200, ContentType.html);
-        response.end(fs.readFileSync('./public/index.html', 'utf8'));
-      }
-      else if (request.url === '/join') {
-        response.writeHead(200, ContentType.html);
-        response.end(fs.readFileSync('./public/join.html', 'utf8'));
-      }
-      else if (request.url === '/') {
-
         let body = "";
-
         request.on('data', (chunk) => {
           body += chunk.toString();
         });
         request.on('end', () => {
           const { name, id, pw1, pw2, email } = querystring.parse(body);
 
-          if (loginValidation.pwCheck(pw1, pw2) && loginValidation.emailCheck(email)) {
-            fs.writeFileSync('./public/db/name', `${nameDB}|${name}`);
-            fs.writeFileSync('./public/db/id', `${idDB}|${id}`);
-            fs.writeFileSync('./public/db/pw', `${pwDB}|${pw1}`);
-            fs.writeFileSync('./public/db/email', `${emailDB}|${email}`);
+          if (joinValidation.pwCheck(pw1, pw2) && joinValidation.emailCheck(email)) {
+            fs.writeFileSync('./public/db/db.db', `${dbs}|${name},${id},${pw1},${email}`);
 
             response.writeHead(200, ContentType.html);
-            response.end(fs.readFileSync('./public/piano.html', 'utf8'));
+            response.end(fs.readFileSync('./public/index.html', 'utf8'));
           }
         });
+      }
+      else if (request.url === '/join') {
+        response.writeHead(200, ContentType.html);
+        response.end(fs.readFileSync('./public/join.html', 'utf8'));
       }
       break;
 
