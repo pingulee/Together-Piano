@@ -1,39 +1,49 @@
+const port = 8080;
+
 const http = require('http');
 const fs = require('fs');
 const ContentType = require('./public/javascripts/contenttype');
 
 const server = http.createServer((req, res) => {
-  switch (req.method) {
-    case 'GET':
-      if (req.url === '/') {
-        res.writeHead(200, ContentType.html);
-        res.end(fs.readFileSync('./public/index.html', 'utf8'));
-      } else if (req.url === '/stylesheets/style.css') {
-        res.writeHead(200, ContentType.css);
-        res.end(fs.readFileSync('./public/stylesheets/style.css', 'utf8'));
-      } else if (req.url === '/stylesheets/piano.css') {
-        res.writeHead(200, ContentType.css);
-        res.end(fs.readFileSync('./public/stylesheets/piano.css', 'utf8'));
-      } else if (req.url === '/javascripts/script.js') {
-        res.writeHead(200, ContentType.js);
-        res.end(fs.readFileSync('./public/javascripts/script.js', 'utf8'));
-      } else if (req.url === '/sounds/a5.mp3') {
-        res.writeHead(200, ContentType.mpeg);
-        res.end(fs.readFileSync('./public/sounds/a5.mp3', 'utf8'));
-      } else {
-        res.writeHead(404, ContentType.plain);
-        res.end('Not Found');
-      }
-      break;
+  const routes = {
+    '/': 'index.html',
+    '/stylesheets/style.css': 'stylesheets/style.css',
+    '/stylesheets/piano.css': 'stylesheets/piano.css',
+    '/javascripts/script.js': 'javascripts/script.js',
+    '/javascripts/piano.js': 'javascripts/piano.js',
+    '/sounds/c5.mp3': 'sounds/c5.mp3',
+    '/sounds/cs5.mp3': 'sounds/cs5.mp3',
+    '/sounds/d5.mp3': 'sounds/d5.mp3',
+    '/sounds/ds5.mp3': 'sounds/ds5.mp3',
+    '/sounds/e5.mp3': 'sounds/e5.mp3',
+    '/sounds/f5.mp3': 'sounds/f5.mp3',
+    '/sounds/fs5.mp3': 'sounds/fs5.mp3',
+    '/sounds/g5.mp3': 'sounds/g5.mp3',
+    '/sounds/gs5.mp3': 'sounds/gs5.mp3',
+    '/sounds/a5.mp3': 'sounds/a5.mp3',
+    '/sounds/as5.mp3': 'sounds/as5.mp3',
+    '/sounds/b5.mp3': 'sounds/b5.mp3',
+  };
 
-    default:
-      res.writeHead(404, ContentType.plain);
-        res.end('Not Found');
-      break;
+  if (routes[req.url]) {
+    const filePath = `./public/${routes[req.url]}`;
+    const contentType = ContentType[filePath.split('.').pop()] || ContentType.plain;
+
+    fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) {
+        res.writeHead(500, ContentType.plain);
+        res.end('Internal Server Error');
+      } else {
+        res.writeHead(200, contentType);
+        res.end(data);
+      }
+    });
+  } else {
+    res.writeHead(404, ContentType.plain);
+    res.end('Not Found');
   }
 });
 
-const PORT = 8080;
-server.listen(PORT, () => {
-  console.log(`http://localhost:${PORT}`);
+server.listen(port, () => {
+  console.log(`http://localhost:${port}`);
 });

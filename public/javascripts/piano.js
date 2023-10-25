@@ -1,23 +1,24 @@
 const keys = document.querySelectorAll('.key');
-const audio = document.getElementById('audio');
+const c5 = document.getElementById('c5');
+
 const sustainPedal = document.getElementById('sustain-pedal');
 let isSustainOn = false;
 
 keys.forEach(key => {
+  const _note = key.getAttribute('data-note');
   key.addEventListener('mousedown', () => {
-    const note = key.getAttribute('data-note');
-    audio.src = `./sounds/${note}.mp3`;
-    audio.play();
+    console.log(note);
+    _note.play();
   });
 
   key.addEventListener('mouseup', () => {
-    audio.pause();
-    audio.currentTime = 0;
+    _note.pause();
+    _note.currentTime = 0;
   });
 
   key.addEventListener('mouseout', () => {
-    audio.pause();
-    audio.currentTime = 0;
+    _note.pause();
+    _note.currentTime = 0;
   });
 
   key.style.backgroundColor = 'green';
