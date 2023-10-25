@@ -1,74 +1,69 @@
-const http = require('http');
-const fs = require('fs');
-const querystring = require('querystring');
-const port = require('./public/javascripts/port')
-const ContentType = require('./public/javascripts/contenttype')
-const loginValidation = require('./public/javascripts/loginValidation');
-const joinValidation = require('./public/javascripts/joinValidation');
-const db = require('./public/javascripts/db');
+const server = http.createServer((request, response) => {
+  const dbs = fs.readFileSync('./public/db/db.db', 'utf8');
+  let body = '';
 
+  const sendResponse = (statusCode, contentType, data) => {
+    response.writeHead(statusCode, contentType);
+    response.end(data);
+  };
 
+  const readFileAndRespond = (filePath, contentType) => {
+    fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) {
+        sendResponse(500, ContentType.html, 'Internal Server Error');
+      } else {
+        sendResponse(200, contentType, data);
+      }
+    });
+  };
 
-const server = http.createServer((request, response) => {  
   switch (request.method) {
     case 'GET':
       if (request.url === '/') {
-        response.writeHead(200, ContentType.html);
-        response.end(fs.readFileSync('./public/index.html', 'utf8'));
-      }
-      else if (request.url === '/stylesheets/style.css') {
-        response.writeHead(200, ContentType.css);
-        response.end(fs.readFileSync('./public/stylesheets/style.css', 'utf8'));
-      }
-      else if (request.url === '/javascripts/script.js') {
-        response.writeHead(200, ContentType.js);
-        response.end(fs.readFileSync('./public/javascripts/script.js', 'utf8'));
+        readFileAndRespond('./public/index.html', ContentType.html);
+      } else if (request.url === '/stylesheets/style.css') {
+        readFileAndRespond('./public/stylesheets/style.css', ContentType.css);
+      } else if (request.url === '/javascripts/script.js') {
+        readFileAndRespond('./public/javascripts/script.js', ContentType.js);
       }
       break;
 
     case 'POST':
-      const dbs = fs.readFileSync('./public/db/db.db', 'utf8');
       if (request.url === '/login') {
-        let body = "";
+        let body = '';
 
         request.on('data', (chunk) => {
           body += chunk.toString();
         });
+
         request.on('end', () => {
           const { id, pw } = querystring.parse(body);
-          const dbs = fs.readFileSync('./public/db/db.db', 'utf8')
 
           if (loginValidation.check(id, pw, dbs)) {
-            response.writeHead(200, ContentType.html);
-            response.end(fs.readFileSync('./public/piano.html', 'utf8'));
+            readFileAndRespond('./public/piano.html', ContentType.html);
           }
         });
-      }
-      if (request.url === '/create') {
-        let body = "";
+      } else if (request.url === '/create') {
+        let body = '';
         request.on('data', (chunk) => {
           body += chunk.toString();
         });
+
         request.on('end', () => {
           const { name, id, pw1, pw2, email } = querystring.parse(body);
 
           if (joinValidation.pwCheck(pw1, pw2) && joinValidation.emailCheck(email)) {
             fs.writeFileSync('./public/db/db.db', `${dbs}|${name},${id},${pw1},${email}`);
-
-            response.writeHead(200, ContentType.html);
-            response.end(fs.readFileSync('./public/index.html', 'utf8'));
+            readFileAndRespond('./public/index.html', ContentType.html);
           }
         });
-      }
-      else if (request.url === '/join') {
-        response.writeHead(200, ContentType.html);
-        response.end(fs.readFileSync('./public/join.html', 'utf8'));
+      } else if (request.url === '/join') {
+        readFileAndRespond('./public/join.html', ContentType.html);
       }
       break;
 
     default:
-      response.writeHead(404, ContentType.html);
-      response.end('404 ERROR');
+      sendResponse(404, ContentType.html, '404 ERROR');
       break;
   }
 });

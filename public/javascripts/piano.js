@@ -1,48 +1,27 @@
-const root = document.getElementById('root');
-const piano = document.getElementById('piano');
-const ctx = piano.getContext('2d');
-const audio = root.querySelectorAll('audio');
+const keys = document.querySelectorAll('.key');
+const audio = document.getElementById('audio');
+const sustainPedal = document.getElementById('sustain-pedal');
+let isSustainOn = false;
 
-const arr = ["red", "orange", "yellow", "green", "blue", "navy", "violet"];
-const arr1 = ["도", "레", "미", "파", "솔", "라", "시"];
+keys.forEach(key => {
+  key.addEventListener('mousedown', () => {
+    const note = key.getAttribute('data-note');
+    audio.src = `./sounds/${note}.mp3`;
+    audio.play();
+  });
 
-const rectangle = (x, y) => {
-    ctx.fillStyle = x;
-    ctx.fillRect(y, 0, 100, 500);
-}
+  key.addEventListener('mouseup', () => {
+    audio.pause();
+    audio.currentTime = 0;
+  });
 
-const pianoBorder = () => {
-    for (let i = 0; i < 7; i++) {
-        rectangle("black", i * 100)
-        ctx.clearRect(i * 100 + 1, 1, 98, 498)
-    }
-};
+  key.addEventListener('mouseout', () => {
+    audio.pause();
+    audio.currentTime = 0;
+  });
 
-const fadeOutRectangle = (x, y, w, h, r, g, b) => {
-    const steps = 15,
-        dr = (255 - r) / steps,
-        dg = (255 - g) / steps,
-        db = (255 - b) / steps;
-    let i = 0;
-    const interval = setInterval(() => {
-        ctx.fillStyle = 'rgb(' + Math.round(r + dr * i) + ','
-            + Math.round(g + dg * i) + ','
-            + Math.round(b + db * i) + ')';
-        ctx.fillRect(x, y, w, h);
-        i++;
-        if (i === steps) {
-            clearInterval(interval);
-        }
-    }, 30);
-}
-
-piano.addEventListener('click', (e) => {
-    let clickX = e.clientX - ctx.piano.offsetLeft;
-    for (let i = 0; i < arr1.length; i++) {
-        if (i < clickX && clickX < (i + 1) * 100) {
-            audio[i].play()
-            fadeOutRectangle(i * 100 + 1, 1, 98, 498, 0, 0, 0);
-            return;
-        }
-    }
-})
+  key.style.backgroundColor = 'green';
+  setTimeout(() => {
+    key.style.backgroundColor = key.classList.contains('white') ? 'white' : 'black';
+  }, 100);
+});

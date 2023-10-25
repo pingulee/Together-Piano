@@ -5,23 +5,40 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Piano</title>
-  <link rel="stylesheet" href="./stylesheets/style.css">
+  <link rel="stylesheet" type="text/css" href="./stylesheets/piano.css">
   <script src="./javascripts/script.js" defer></script>
   <script src="./javascripts/piano.js" defer></script>
 </head>
 
 <body>
   <div id="root">
-    <canvas id="piano" width="700px" height="500px" style="border:1px solid #000000;"></canvas>
+    <div class="piano">
+      <div class="key white" data-note="c5"></div>
+      <div class="key black" data-note="cs5"></div>
+      <div class="key white" data-note="d5"></div>
+      <div class="key black" data-note="ds5"></div>
+      <div class="key white" data-note="e5"></div>
+      <div class="key white" data-note="f5"></div>
+      <div class="key black" data-note="fs5"></div>
+      <div class="key white" data-note="g5"></div>
+      <div class="key black" data-note="gs5"></div>
+      <div class="key white" data-note="a5"></div>
+      <div class="key black" data-note="as5"></div>
+      <div class="key white" data-note="b5"></div>
+    </div>
+    <audio id="audio" src="./sounds/c5.mp3"></audio>
+    <audio id="audio" src="./sounds/cs5.mp3"></audio>
+    <audio id="audio" src="./sounds/d5.mp3"></audio>
+    <audio id="audio" src="./sounds/ds5.mp3"></audio>
+    <audio id="audio" src="./sounds/e5.mp3"></audio>
+    <audio id="audio" src="./sounds/f5.mp3"></audio>
+    <audio id="audio" src="./sounds/fs5.mp3"></audio>
+    <audio id="audio" src="./sounds/g5.mp3"></audio>
+    <audio id="audio" src="./sounds/gs5.mp3"></audio>
+    <audio id="audio" src="./sounds/a5.mp3"></audio>
+    <audio id="audio" src="./sounds/as5.mp3"></audio>
+    <audio id="audio" src="./sounds/b5.mp3"></audio>
   </div>
-
-  <audio src="./sounds/C.mp3"></audio>
-  <audio src="./sounds/D.mp3"></audio>
-  <audio src="./sounds/E.mp3"></audio>
-  <audio src="./sounds/F.mp3"></audio>
-  <audio src="./sounds/G.mp3"></audio>
-  <audio src="./sounds/A.mp3"></audio>
-  <audio src="./sounds/B.mp3"></audio>
 </body>
 
 </html>
