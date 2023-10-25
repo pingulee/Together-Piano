@@ -2,7 +2,7 @@ const port = 8080;
 
 const http = require('http');
 const fs = require('fs');
-const ContentType = require('./public/javascripts/contenttype');
+const contentTypes = require('./public/javascripts/contentTypes');
 
 const server = http.createServer((req, res) => {
   const routes = {
@@ -27,11 +27,11 @@ const server = http.createServer((req, res) => {
 
   if (routes[req.url]) {
     const filePath = `./public/${routes[req.url]}`;
-    const contentType = ContentType[filePath.split('.').pop()] || ContentType.plain;
+    const contentType = contentTypes[filePath.split('.').pop()] || contentTypes.plain;
 
     fs.readFile(filePath, 'utf8', (err, data) => {
       if (err) {
-        res.writeHead(500, ContentType.plain);
+        res.writeHead(500, contentTypes.plain);
         res.end('Internal Server Error');
       } else {
         res.writeHead(200, contentType);
@@ -39,7 +39,7 @@ const server = http.createServer((req, res) => {
       }
     });
   } else {
-    res.writeHead(404, ContentType.plain);
+    res.writeHead(404, contentTypes.plain);
     res.end('Not Found');
   }
 });
