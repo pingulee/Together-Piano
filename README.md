@@ -1,6 +1,10 @@
 # Together Piano
 ## 설명
 온라인에서 피아노를 연주 하고 소통할 수 있는 웹 애플리케이션
+## 설치
+- npm install
+- npm install express
+- npm install socket.io
 
 ## 사용 기술과 그 이유
 ### Node.js
