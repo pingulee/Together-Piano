@@ -1,32 +1,26 @@
 {
-	"compilerOptions": {
-		/* basic options */
-		"target": "es6", 
-		"module": "commonjs",
-		"lib": [ 
-			// 이렇게 lib를 세팅하면 JavaScript의 기본 기능들을 사용할 수 있다. 
-			// 이 네가지 옵션이 target을 es6로 했을 때 lib의 default 옵션이다. -> 안 쓰는것과 똑같다
-			// (lib이 비활성화 되었을때 default로 설정되어 있는 것들)
-			"dom",
-			"es6",
-			"dom.iterable",
-			"scripthost"
-		],
-		// "allowJs": true, // .ts가 아니어도 타입스크립트가 자바스크립트로 컴파일 함
-		// "checkJs": true, // 컴파일 하지 않지만 syntax를 확인해서 potential error를 알려준다 -> TS 쓰기는 싫지만 TS의 기능을 사용하고 싶을 때 사용
-		// "jsx": "preserve", // ReactJS 쓸 때 사용
-		// "declaration": true, // 라이브러리 만들 때 사용 .d.ts 파일
-		// "declarationMap": true, 
-		// "sourceMap": true, // 디버깅과 개발할 때 도움을 준다. 디렉토리에 .map 파일 생성
-		// "outFile": "./",
-		// "outDir": "./",
-		// "rootDir": "./",
-		// "composite": true,
-		// "removeComments": true,
-		// "noEmit": true,
-		// "importHelpers": true,
-		// "downlevelIteration": true,
-		// "isolatedModules": true,
-		// "noEmitOnError": false,
-	}
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "src"
+  ]
 }
