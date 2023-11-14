@@ -1,0 +1,21 @@
+.piano-key {
+  display: inline-block;
+  width: 50px;
+  height: 200px;
+  border: 1px solid #000;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.white-key {
+  background-color: #fff;
+}
+
+.black-key {
+  background-color: #000;
+  color: #fff;
+}
+
+.pressed {
+  background-color: #ff0; /* 변경할 색상 */
+}
