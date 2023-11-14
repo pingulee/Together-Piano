@@ -26,7 +26,7 @@ const PianoKey: React.FC<PianoKeyProps> = ({ note, isBlack }) => {
       window.removeEventListener('keyup', handleMouseUp);
     };
   }, []);
-
+    
   return (
     <div
       className={`piano-key ${isBlack ? 'black-key' : 'white-key'} ${isPressed ? 'pressed' : ''}`}
