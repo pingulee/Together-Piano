@@ -9,27 +9,29 @@ interface PianoKeyProps {
 const PianoKey: React.FC<PianoKeyProps> = ({ note, isBlack }) => {
   const [isPressed, setIsPressed] = useState(false);
 
-  const handleKeyDown = () => {
+  const handleMouseDown = () => {
     setIsPressed(true);
   };
 
-  const handleKeyUp = () => {
+  const handleMouseUp = () => {
     setIsPressed(false);
   };
 
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
+    window.addEventListener('keydown', handleMouseDown);
+    window.addEventListener('keyup', handleMouseUp);
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
+      window.removeEventListener('keydown', handleMouseDown);
+      window.removeEventListener('keyup', handleMouseUp);
     };
   }, []);
 
   return (
     <div
       className={`piano-key ${isBlack ? 'black-key' : 'white-key'} ${isPressed ? 'pressed' : ''}`}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
     >
       {note}
     </div>
