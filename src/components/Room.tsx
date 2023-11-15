@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Room() {
+const Room = () => {
   return (
     <div>
       zz
