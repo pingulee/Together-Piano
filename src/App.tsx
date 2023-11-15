@@ -1,10 +1,13 @@
 import React from 'react';
-import './assets/styles/App.css';
+import Piano from './components/Piano';
 
 function App() {
   return (
     <div>
-      hello
+      <Piano />
+      <Piano />
+      <Piano />
+      <Piano />
     </div>
   );
 }

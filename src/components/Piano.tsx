@@ -1,5 +1,4 @@
 import React from 'react';
-import './assets/styles/Piano.css';
 
 function Piano() {
   return (
