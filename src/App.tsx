@@ -1,8 +1,13 @@
-import './styles/App.css';
+import React from 'react';
+import Piano from './components/Piano';
+
 function App() {
   return (
     <div>
-      hello
+      <Piano />
+      <Piano />
+      <Piano />
+      <Piano />
     </div>
   );
 }
