@@ -1,10 +1,12 @@
+// src/App.tsx
 import React from 'react';
-import Chat from './components/Chat/Chat';
+import io from 'socket.io-client';
 
 function App() {
+  
   return (
     <div>
-      <Chat />
+      a
     </div>
   );
 }
