@@ -1,4 +1,4 @@
-let piano = document.getElementsByClassName("piano");
+let piano = document.getElementsByClassName("piano-keyboard");
 const base = "./audio/";
 window.onload = () => {
   for (let index = 1; index <= 88; index++) {
