@@ -4,27 +4,6 @@
   color: white;
 }
 
-::-webkit-scrollbar {
-  width: 9px;
-  height: 9px;
-  transform: translateX(-10px px);
-}
-
-::-webkit-scrollbar,
-::-webkit-scrollbar-track {
-  border-radius: 10px;
-  background-color: var(--color-background);
-}
-::-webkit-scrollbar-corner {
-  width: 0;
-  height: 0;
-}
-::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  background-color: red;
-}
-
 #root {
   width: 100vw;
   height: 100vh;
@@ -82,9 +61,6 @@
   width: 100%;
 }
 
-.piano-setting {
-}
-
 .piano-setting-volume {
   background-color: red;
 }
@@ -127,15 +103,11 @@
   grid-template-rows: 10% 75% 15%;
 }
 
-.chat-output {
-}
-
-.chat-input {
-}
-
 .chat-area {
   background-color: #2a2928;
   resize: none;
   border: none;
   caret-color: red;
 }
+
+/*# sourceMappingURL=style.css.map */
