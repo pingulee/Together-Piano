@@ -17,15 +17,15 @@
   top: 10px;
   left: 10px;
   display: grid;
-  grid-template-columns: 10% 70% 20%;
-  gap: 10px;
+  grid-template-columns: 1fr 11fr 2fr;
+  grid-gap: 10px;
 }
 
 .header {
   display: grid;
   background-color: #222120;
   border-radius: 5px;
-  grid-template-rows: 10% 80% 10%;
+  grid-template-rows: 50px 1fr 50px;
 }
 
 .logo {
@@ -53,14 +53,22 @@
   display: grid;
   background-color: #222120;
   border-radius: 5px;
-  grid-template-rows: 10% 80% 10%;
+  grid-template-rows: 1fr 4fr 2fr 1fr;
+}
+
+.room {
+}
+
+.piano-test {
 }
 
 .piano-keyboard {
   display: flex;
-  width: 100%;
+  grid-template-columns: repeat(50, 1fr);
 }
 
+.white-key {
+}
 .piano-setting {
 }
 
@@ -68,42 +76,11 @@
   background-color: red;
 }
 
-.white-key {
-  width: 25%;
-  height: 100%;
-  background-color: #ffffff;
-  border: 1px solid #24272e;
-  cursor: pointer;
-  box-sizing: border-box;
-  border-radius: 0 0 5px 5px;
-}
-
-.white-key:hover {
-  background-color: #ebebeb;
-}
-
-.white-key:active {
-  background-color: #dadada;
-}
-
-.black-key {
-  height: 70%;
-  border-radius: 0 0 0.3% 0.3%;
-  box-sizing: border-box;
-  position: absolute;
-  background-color: #070a0f;
-  cursor: pointer;
-}
-
-.black-key:hover {
-  background-color: #24272e;
-}
-
 .chat {
   display: grid;
   background-color: #222120;
   border-radius: 5px;
-  grid-template-rows: 10% 75% 15%;
+  grid-template-rows: 1fr 8fr 1fr;
 }
 
 .chat-output {

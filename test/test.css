@@ -1,0 +1,19 @@
+.piano-container {
+  display: flex;
+}
+
+.white-key {
+  width: 4em;
+  height: 15em;
+  background-color: #ffffff;
+  border-radius: 0 0 0.3em 0.3em;
+  border: 1px solid black;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.white-key:hover {
+  background-color: #ebebeb;
+}
+
+/*# sourceMappingURL=test.css.map */
