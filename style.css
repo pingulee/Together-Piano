@@ -38,27 +38,45 @@
   top: 10px;
   left: 10px;
   display: grid;
-  grid-template-columns: 0.3fr 2.25fr 0.45fr;
+  grid-template-columns: 10% 70% 20%;
   gap: 10px;
 }
 
-.header {
+.header-container {
+  display: grid;
   background-color: #222120;
   text-align: center;
-  width: 100%;
-  height: 100%;
+  border-radius: 5px;
+  grid-template-rows: 10% 80% 10%;
 }
 
-.piano-container {
+.header-logo {
+  display: flex;
   background-color: #222120;
-  /* padding: 20px; */
-  border-radius: 8px;
-  width: 100%;
-  height: 100%;
+  justify-content: center;
+  align-items: center;
 }
 
-.test {
-  height: 80%;
+.header-menu {
+  display: flex;
+  flex-direction: column;
+  background-color: #222120;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.header-setting {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-container {
+  display: grid;
+  background-color: #222120;
+  border-radius: 5px;
+  width: 100%;
+  height: 100%;
 }
 
 .piano-setting {
@@ -67,62 +85,38 @@
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
-  margin-bottom: 5px;
 }
 
-.piano-setting-volumn {
+.piano-setting-volume {
   background-color: red;
 }
 
 .piano-keyboard {
   display: flex;
-  border-radius: 0.62em;
   width: 100%;
-  height: 20%;
-}
-
-.chat-container {
-  background-color: #222120;
-  border-radius: 8px;
-  width: 100%;
-  height: 100%;
-}
-
-.chat-output {
-}
-
-.chat-input {
-}
-
-.chat-input {
-  background-color: #2a2928;
-}
-
-.chat-area {
-  background-color: #2a2928;
-  resize: none;
-  border-radius: 10px 0 0 10px;
-  border: none;
-  padding: 5px 10px 0 10px;
-  caret-color: red;
 }
 
 .white-key {
   width: 25%;
   height: 100%;
   background-color: #ffffff;
-  border-radius: 0 0 0.3% 0.3%;
   border: 2px solid #24272e;
   cursor: pointer;
+  box-sizing: border-box;
+  border-radius: 0 0 5px 5px;
 }
 
 .white-key:hover {
   background-color: #ebebeb;
 }
 
+.white-key:active {
+  background-color: #dadada;
+}
+
 .black-key {
   height: 70%;
-  border-radius: 0 0 0.3% 0.3%; /* 0.3em / parent width * 100 */
+  border-radius: 0 0 0.3% 0.3%;
   box-sizing: border-box;
   position: absolute;
   background-color: #070a0f;
@@ -131,4 +125,29 @@
 
 .black-key:hover {
   background-color: #24272e;
+}
+
+.chat-container {
+  background-color: #222120;
+  border-radius: 5px;
+  width: 100%;
+  height: 100%;
+}
+
+.chat-output {
+  height: 80%;
+}
+
+.chat-input {
+  height: 10%;
+  padding: 10px;
+}
+
+.chat-area {
+  width: 100%;
+  height: 100%;
+  background-color: #2a2928;
+  resize: none;
+  border: none;
+  caret-color: red;
 }
