@@ -1,57 +1,23 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet" href="test.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Playable Piano</title>
+  <link rel="stylesheet" href="test.css" />
 </head>
 
 <body>
-  <div class="piano-container"></div>
+  <div id="root">
+    <div class="test">
+      <div class="a"></div>
+      <div class="piano-container"></div>
+      <div class="b"></div>
+    </div>
 
-  <script>
-    let pianoContainer = document.getElementsByClassName("piano-container");
-    const base = "./audio/";
-    window.onload = () => {
-      //24keys
-      for (let index = 1; index <= 88; index++) {
-        let div = document.createElement("div");
-        div.classList.add("key", index <= 36 ? "black-key" : "white-key");
-        //For playing audio on click
-        const number = index <= 9 ? "0" + index : index;
-        div.addEventListener("click", () => {
-          new Audio(`${base}key${number}.mp3`).play();
-        });
-        pianoContainer[0].appendChild(div);
-      }
-    };
 
-    // Function to dynamically create and position black keys
-    function createBlackKey(index) {
-      const blackKey = document.createElement("div");
-      blackKey.className = "black-key";
-      blackKey.style.left = index * 4 + "em"; // Adjust the multiplier based on your layout
-      return blackKey;
-    }
-
-    // Function to dynamically create white keys
-    function createWhiteKey() {
-      const whiteKey = document.createElement("div");
-      whiteKey.className = "white-key";
-      return whiteKey;
-    }
-
-    for (let i = 0; i < 36; i++) {
-      pianoContainer.appendChild(createWhiteKey());
-
-      // Add black keys, skipping some positions
-      if (i % 7 !== 2 && i % 7 !== 6) {
-        pianoContainer.appendChild(createBlackKey(i));
-      }
-    }
-  </script>
+  </div>
+  <script src="test.js"></script>
 </body>
 
 </html>

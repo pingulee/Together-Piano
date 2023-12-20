@@ -58,11 +58,36 @@
 
 .piano-keyboard {
   display: flex;
-  grid-template-columns: repeat(50, 1fr);
+  position: relative;
 }
 
-.piano-setting-volume {
-  background-color: red;
+.white-key {
+  width: calc(100% / 52);
+  height: 100%;
+  background-color: #ffffff;
+  border-radius: 0 0 0.3em 0.3em;
+  border: 1px solid #24272e;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+.white-key:hover {
+  background-color: #ebebeb;
+}
+.black-key {
+  width: calc(100% / 52 / 3 * 2);
+  height: 60%;
+  border-radius: 0 0 0.3em 0.3em;
+  box-sizing: border-box;
+  position: absolute;
+  background-color: #070a0f;
+  cursor: pointer;
+}
+.black-key:hover {
+  background-color: #24272e;
+}
+.black-key:nth-child(1) {
+}
+.black-key:nth-child(2) {
 }
 
 .chat {
@@ -78,5 +103,3 @@
   border: none;
   caret-color: red;
 }
-
-/*# sourceMappingURL=style.css.map */
