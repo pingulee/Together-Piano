@@ -1,44 +1,62 @@
 <!DOCTYPE html>
-<!-- Coding By CodingNepal - youtube.com/codingnepal -->
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Playable Piano JavaScript | CodingNepal</title>
-    <link rel="stylesheet" href="test.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="test.js" defer></script>
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h2>Playable PIANO</h2>
-        <div class="column volume-slider">
-          <span>Volume</span><input type="range" min="0" max="1" value="0.5" step="any">
-        </div>
-        <div class="column keys-checkbox">
-          <span>Show Keys</span><input type="checkbox" checked>
-        </div>
-      </header>
-      <ul class="piano-keys">
-        <li class="key white" data-key="a"><span>a</span></li>
-        <li class="key black" data-key="w"><span>w</span></li>
-        <li class="key white" data-key="s"><span>s</span></li>
-        <li class="key black" data-key="e"><span>e</span></li>
-        <li class="key white" data-key="d"><span>d</span></li>
-        <li class="key white" data-key="f"><span>f</span></li>
-        <li class="key black" data-key="t"><span>t</span></li>
-        <li class="key white" data-key="g"><span>g</span></li>
-        <li class="key black" data-key="y"><span>y</span></li>
-        <li class="key white" data-key="h"><span>h</span></li>
-        <li class="key black" data-key="u"><span>u</span></li>
-        <li class="key white" data-key="j"><span>j</span></li>
-        <li class="key white" data-key="k"><span>k</span></li>
-        <li class="key black" data-key="o"><span>o</span></li>
-        <li class="key white" data-key="l"><span>l</span></li>
-        <li class="key black" data-key="p"><span>p</span></li>
-        <li class="key white" data-key=";"><span>;</span></li>
-      </ul>
-    </div>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Piano</title>
+<style>
+  .piano {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    height: 200px;
+    width: 100%;
+    background: #eee;
+  }
+  .key {
+    border: 1px solid #000;
+    height: 100%;
+    width: 40px;
+    margin: 2px;
+    background: #fff;
+  }
+  .black {
+    background: #000;
+    height: 70%;
+    width: 30px;
+    position: relative;
+    margin-left: -15px;
+    margin-right: -15px;
+    z-index: 1;
+  }
+</style>
+</head>
+<body>
+<div class="piano">
+  <!-- White keys -->
+  <div class="key white" data-note="C"></div>
+  <div class="key white" data-note="D"></div>
+  <div class="key white" data-note="E"></div>
+  <!-- ... other white keys ... -->
+  
+  <!-- Black keys -->
+  <div class="key black" data-note="C#"></div>
+  <div class="key black" data-note="D#"></div>
+  <!-- ... other black keys ... -->
+</div>
 
-  </body>
+<script>
+// JavaScript to play notes
+document.querySelectorAll('.key').forEach(key => {
+  key.addEventListener('click', () => {
+    let note = key.getAttribute('data-note');
+    // Play note function
+    console.log(`Play note: ${note}`);
+    // You would have audio elements or use the Web Audio API to actually play the sounds here
+  });
+});
+
+// Add event listener for keyboard keys if desired
+</script>
+</body>
 </html>
