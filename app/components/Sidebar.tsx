@@ -1,8 +1,7 @@
 'use client';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useContext } from 'react';
-import { SidebarContext } from '../context/SidebarContext';
 import {
   MdKeyboardArrowLeft,
   MdKeyboardArrowRight,
@@ -36,20 +35,23 @@ const sidebarItems = [
 ];
 
 export default function Sidebar() {
-  const { isCollapsed, toggleSidebarcollapse } = useContext(SidebarContext);
+  // 사이드바 상태를 관리하는 훅
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
+  // 버튼 클릭 이벤트 핸들러
+  const toggleSidebar = () => {
+    setIsCollapsed(!isCollapsed);
+  };
   return (
-    <div className='sidebar__wrapper'>
-      <button className='btn' onClick={toggleSidebarcollapse}>
-        {isCollapsed ? <MdKeyboardArrowRight /> : <MdKeyboardArrowLeft />}
-      </button>
-      <aside className='sidebar' data-collapse={isCollapsed}>
+    <div className={`sidebar__wrapper ${isCollapsed ? 'collapsed' : ''}`}>
+      <button className='btn' onClick={toggleSidebar}></button>
+      <aside className='sidebar'>
         <div className='sidebar__top'>
           <Image
-            width={80}
-            height={80}
+            width={200}
+            height={200}
             className='sidebar__logo'
-            src='/logo.jpg'
+            src='/logo.webp'
             alt='logo'
           />
           <p className='sidebar__logo-name'>Together Piano</p>
