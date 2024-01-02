@@ -3,11 +3,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useContext } from 'react';
 import { SidebarContext } from '../context/SidebarContext';
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
+import {
+  MdKeyboardArrowLeft,
+  MdKeyboardArrowRight,
+  MdPiano,
+} from 'react-icons/md';
 import { AiOutlineHome } from 'react-icons/ai';
 import { BsPeople } from 'react-icons/bs';
 import { TiContacts } from 'react-icons/ti';
-import { FiMail } from 'react-icons/fi';
 
 const sidebarItems = [
   {
@@ -16,14 +19,14 @@ const sidebarItems = [
     icon: <AiOutlineHome />,
   },
   {
+    name: 'Piano',
+    href: '/piano',
+    icon: <MdPiano />,
+  },
+  {
     name: 'About',
     href: '/about',
     icon: <BsPeople />,
-  },
-  {
-    name: 'Mails',
-    href: '/mails',
-    icon: <FiMail />,
   },
   {
     name: 'Contact',
@@ -32,7 +35,7 @@ const sidebarItems = [
   },
 ];
 
-const Sidebar = () => {
+export default function Sidebar() {
   const { isCollapsed, toggleSidebarcollapse } = useContext(SidebarContext);
 
   return (
@@ -49,7 +52,7 @@ const Sidebar = () => {
             src='/logo.jpg'
             alt='logo'
           />
-          <p className='sidebar__logo-name'>The Brave Coders</p>
+          <p className='sidebar__logo-name'>Together Piano</p>
         </div>
         <ul className='sidebar__list'>
           {sidebarItems.map(({ name, href, icon }) => (
@@ -64,6 +67,4 @@ const Sidebar = () => {
       </aside>
     </div>
   );
-};
-
-export default Sidebar;
+}

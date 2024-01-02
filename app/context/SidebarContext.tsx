@@ -1,4 +1,5 @@
-import { createContext, useState, ReactNode } from 'react';
+import { createContext, useState, ReactNode, useContext } from 'react';
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
 interface SidebarContextProps {
   isCollapsed: boolean;
@@ -16,7 +17,7 @@ interface SidebarProviderProps {
   children: ReactNode;
 }
 
-export default function SidebarProvider({ children }: SidebarProviderProps) {
+export function SidebarProvider({ children }: SidebarProviderProps) {
   const [isCollapsed, setCollapse] = useState<boolean>(false);
 
   const toggleSidebarcollapse = () => {
@@ -27,5 +28,18 @@ export default function SidebarProvider({ children }: SidebarProviderProps) {
     <SidebarContext.Provider value={{ isCollapsed, toggleSidebarcollapse }}>
       {children}
     </SidebarContext.Provider>
+  );
+}
+
+export default function Sidebar() {
+  const { isCollapsed, toggleSidebarcollapse } = useContext(SidebarContext);
+
+  return (
+    <div className='sidebar__wrapper'>
+      <button className='btn' onClick={toggleSidebarcollapse}>
+        {isCollapsed ? <MdKeyboardArrowRight /> : <MdKeyboardArrowLeft />}
+      </button>
+      {/* 이하 생략 */}
+    </div>
   );
 }

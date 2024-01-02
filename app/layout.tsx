@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import BaseLayout from './components/BaseLayout';
+import Sidebar from './components/Sidebar';
 
 export const metadata: Metadata = {
   title: 'Together Piano',
@@ -13,8 +13,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en'>
-      <body className=''>{children}</body>
+    <html lang='ko'>
+      <body className='layout'>
+        <Sidebar />
+        {children}
+      </body>
     </html>
   );
 }
