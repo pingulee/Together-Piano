@@ -1,7 +1,6 @@
 'use client';
 
-import Sidebar from './components/Sidebar/Sidebar';
-
+import BaseLayout from './components/BaseLayout';
 export default function Home() {
-  return <Sidebar />;
+  return <BaseLayout>Test</BaseLayout>;
 }
