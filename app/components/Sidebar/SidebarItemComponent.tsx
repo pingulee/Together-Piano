@@ -1,8 +1,10 @@
 // SidebarItemComponent.tsx
 
+'use client';
+
 // 넥스트
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 
 // 인터페이스
 import { SidebarItemTitleProp } from '@/interfaces/Sidebar/SidebarItem/SidebarItemTitleProp';
@@ -21,9 +23,17 @@ export default function SidebarItemComponent({
   icon,
   open,
 }: SidebarItemProps) {
+  const pathname = usePathname();
+
+  const isActive = pathname === href;
+
   return (
     <Link href={href}>
-      <li className='text-sm flex items-center gap-x-4 p-2 hover:bg-highlight rounded-md mt-2 '>
+      <li
+        className={`text-sm flex items-center gap-x-4 p-2 hover:bg-highlight rounded-md mt-2 ${
+          isActive ? 'bg-highlight' : '' // 활성화된 메뉴 항목에 대한 스타일
+        }`}
+      >
         <span className='text-2xl block float-left'>{icon}</span>
         <span className={`text-base flex-1 font-semibold ${!open && 'hidden'}`}>
           {title}
