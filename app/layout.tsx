@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import '@/styles/globals.css';
-import Sidebar from '@/app/components/Sidebar/SidebarComponent';
+import SidebarComponent from '@/app/components/Sidebar/SidebarComponent';
 
 export const metadata: Metadata = {
   title: 'Together Piano',
@@ -14,8 +14,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang='ko'>
-      <body className='layout'>
-        <Sidebar />
+      <body>
+        <SidebarComponent />
         {children}
       </body>
     </html>
