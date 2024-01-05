@@ -33,9 +33,8 @@ export default function SidebarComponent() {
 
   return (
     <div
-      className={`bg-sub h-screen p-5 pt-8 ${
-        open ? 'w-72' : 'w-20'
-      } duration-300 relative`}
+    className={`bg-sub2 h-screen p-5 pt-8 ${open ? 'w-72' : 'w-20'}
+    duration-300 relative shadow-lg`}
     >
       <BsArrowLeftShort
         className={`bg-white text-black text-3xl rounded-full absolute -right-3 top-9 border-2 border-sub ${
