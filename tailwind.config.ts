@@ -18,6 +18,11 @@ const config: Config = {
         main: '#222020',
         sub: '#2a2828',
       },
+      border: {
+        highlight: '#d74242',
+        main: '#222020',
+        sub: '#2a2828',
+      },
     },
   },
   plugins: [],

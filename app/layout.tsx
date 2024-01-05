@@ -15,8 +15,10 @@ export default function RootLayout({
   return (
     <html lang='ko'>
       <body>
-        <SidebarComponent />
-        {children}
+        <div className='flex'>
+          <SidebarComponent />
+          {children}
+        </div>
       </body>
     </html>
   );

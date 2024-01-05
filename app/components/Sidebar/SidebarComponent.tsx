@@ -17,32 +17,30 @@ export default function SidebarComponent() {
   const [open, setOpen] = useState(true);
 
   return (
-    <div className='flex'>
-      <div
-        className={`bg-black h-screen p-5 pt-8 ${
-          open ? 'w-72' : 'w-20'
-        } duration-300 relative`}
-      >
-        <BsArrowLeftShort
-          className={`bg-white text-black text-3xl rounded-full absolute -right-3 top-9 border border-black cursor-pointer ${
-            open && 'rotate-180'
+    <div
+      className={`bg-sub h-screen p-5 pt-8 ${
+        open ? 'w-72' : 'w-20'
+      } duration-300 relative`}
+    >
+      <BsArrowLeftShort
+        className={`bg-white text-black text-3xl rounded-full absolute -right-3 top-9 border-2 border-sub cursor-pointer ${
+          open && 'rotate-180'
+        }`}
+        onClick={() => setOpen(!open)}
+      />
+      <div className='inline-flex items-center'>
+        <GiGrandPiano
+          className={`bg-white text-black text-4xl rounded cursor-pointer block float-left flex-shrink-0 mr-2 duration-500 ${
+            open && 'rotate-[360deg]'
           }`}
-          onClick={() => setOpen(!open)}
         />
-        <div className='inline-flex '>
-          <GiGrandPiano
-            className={`bg-white text-4xl rounded cursor-pointer block float-left flex-shrink-0 mr-2 duration-500 ${
-              open && 'rotate-[360deg]'
-            }`}
-          />
-          <h1
-            className={`text-white origin-left font-medium text-2xl duration-300 ${
-              !open && 'scale-0'
-            }`}
-          >
-            Together Piano
-          </h1>
-        </div>
+        <h1
+          className={`text-white origin-left font-black text-2xl duration-300  ${
+            !open && 'scale-0'
+          }`}
+        >
+          Together
+        </h1>
       </div>
     </div>
   );
