@@ -22,6 +22,7 @@
     "paths": {
       "@/*": ["./*"],
       "@/components/*": ["./app/components/*"],
+      "@/interfaces/*": ["./app/interfaces/*"],
       "@/pages/*": ["./app/pages/*"],
       "@/styles/*": ["./app/styles/*"],
       "@/utils/*": ["./app/utils/*"],
