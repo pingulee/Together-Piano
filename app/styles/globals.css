@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  cursor: url('../../public/cursor.webp'), auto;
+}
+
 body {
   background-color: #222020;
   color: white;
