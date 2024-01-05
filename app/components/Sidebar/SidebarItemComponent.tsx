@@ -1,12 +1,12 @@
-import { SidebarItemHrefProps } from '@/app/interfaces/Sidebar/SidebarItem/SidebarItemHrefProps';
-import { SidebarItemIconProps } from '@/app/interfaces/Sidebar/SidebarItem/SidebarItemIconProps';
-import { SidebarItemNameProps } from '@/app/interfaces/Sidebar/SidebarItem/SidebarItemNameProps';
+import { SidebarItemHrefProp } from '@/app/interfaces/Sidebar/SidebarItem/SidebarItemHrefProp';
+import { SidebarItemIconProp } from '@/app/interfaces/Sidebar/SidebarItem/SidebarItemIconProp';
+import { SidebarItemNameProp } from '@/app/interfaces/Sidebar/SidebarItem/SidebarItemNameProp';
 import Link from 'next/link';
 
 export interface SidebarItemProps
-  extends SidebarItemHrefProps,
-    SidebarItemIconProps,
-    SidebarItemNameProps {}
+  extends SidebarItemHrefProp,
+    SidebarItemIconProp,
+    SidebarItemNameProp {}
 
 export default function SidebarItem({ name, href, icon }: SidebarItemProps) {
   return (

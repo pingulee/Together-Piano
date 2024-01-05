@@ -1,17 +1,23 @@
 'use client';
+
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import {
-  MdKeyboardArrowLeft,
-  MdKeyboardArrowRight,
-  MdPiano,
-} from 'react-icons/md';
+import { SidebarItemHrefProp } from '@/app/interfaces/Sidebar/SidebarItem/SidebarItemHrefProp';
+import { SidebarItemIconProp } from '@/app/interfaces/Sidebar/SidebarItem/SidebarItemIconProp';
+import { SidebarItemNameProp } from '@/app/interfaces/Sidebar/SidebarItem/SidebarItemNameProp';
+
 import { AiOutlineHome } from 'react-icons/ai';
+import { MdPiano } from 'react-icons/md';
 import { BsPeople } from 'react-icons/bs';
 import { TiContacts } from 'react-icons/ti';
 
-const sidebarItems = [
+export interface SidebarItemProps
+  extends SidebarItemHrefProp,
+    SidebarItemIconProp,
+    SidebarItemNameProp {}
+
+const sidebarItems: SidebarItemProps[] = [
   {
     name: 'Home',
     href: '/',
@@ -35,13 +41,12 @@ const sidebarItems = [
 ];
 
 export default function Sidebar() {
-  // 사이드바 상태를 관리하는 훅
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  // 버튼 클릭 이벤트 핸들러
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
   };
+
   return (
     <div className={`sidebar__wrapper ${isCollapsed ? 'collapsed' : ''}`}>
       <button className='btn' onClick={toggleSidebar}></button>
