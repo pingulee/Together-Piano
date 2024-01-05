@@ -10,16 +10,19 @@ const config: Config = {
     extend: {
       backgroundColor: {
         highlight: '#d74242',
+        subHighlight: '#d16060',
         main: '#222020',
         sub: '#2a2828',
       },
       colors: {
         highlight: '#d74242',
+        subHighlight: '#d16060',
         main: '#222020',
         sub: '#2a2828',
       },
       border: {
         highlight: '#d74242',
+        subHighlight: '#d16060',
         main: '#222020',
         sub: '#2a2828',
       },
