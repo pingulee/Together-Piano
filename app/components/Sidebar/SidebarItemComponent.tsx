@@ -30,7 +30,7 @@ export default function SidebarItemComponent({
   return (
     <Link href={href}>
       <li
-        className={`text-sm flex items-center gap-x-4 p-2 hover:bg-highlight rounded-md mt-2 ${
+        className={`text-sm flex items-center gap-x-4 p-2 hover:bg-gray-700 rounded-md mt-2 ${
           isActive ? 'bg-highlight' : '' // 활성화된 메뉴 항목에 대한 스타일
         }`}
       >

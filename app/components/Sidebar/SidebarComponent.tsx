@@ -38,7 +38,7 @@ export default function SidebarComponent() {
     >
       <BsArrowLeftShort
         className={`bg-white text-black text-3xl rounded-full absolute -right-3 top-9 border-2 border-sub ${
-          open && 'rotate-180'
+          !open && 'rotate-180'
         }`}
         onClick={() => setOpen(!open)}
       />
