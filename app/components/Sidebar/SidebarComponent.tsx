@@ -14,17 +14,18 @@ import { GiGrandPiano } from 'react-icons/gi';
 import { FaHouse } from 'react-icons/fa6';
 import { FaCog } from 'react-icons/fa';
 import { MdPiano } from 'react-icons/md';
-import { TiContacts } from 'react-icons/ti';
+import { MdOutlineContactPhone } from 'react-icons/md';
 
 // 컴포넌트
-import SidebarItemComponent from './SidebarItemComponent';
+import SidebarItemComponent from '@/components/Sidebar/SidebarItemComponent';
+import SeparatorComponent from '@/components/SeparatorComponent';
 
 export default function SidebarComponent() {
   const [open, setOpen] = useState(true);
   const upMenuItems = [
     { title: 'Home', icon: <FaHouse />, href: '/' },
     { title: 'Piano', icon: <MdPiano />, href: '/piano' },
-    { title: 'Contact', icon: <TiContacts />, href: '/contact' },
+    { title: 'Contact', icon: <MdOutlineContactPhone />, href: '/contact' },
   ];
   const downMenuItems = [
     { title: 'Settings', icon: <FaCog />, href: '/setting' },
@@ -57,8 +58,8 @@ export default function SidebarComponent() {
         </h1>
       </div>
 
-      <div className='flex flex-col justify-between'>
-        <ul className='pt-2 flex-grow'>
+      <div className='flex flex-col justify-between center'>
+        <ul className='pt-2'>
           {upMenuItems.map((menu, index) => (
             <SidebarItemComponent
               title={menu.title}
@@ -69,6 +70,7 @@ export default function SidebarComponent() {
             />
           ))}
         </ul>
+        <SeparatorComponent />
         <ul className='pt-2'>
           {downMenuItems.map((menu, index) => (
             <SidebarItemComponent
