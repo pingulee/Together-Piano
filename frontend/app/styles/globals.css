@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  cursor: url('../../public/cursor.webp'), auto;
+}
+
+body {
+  background-color: #1a1919;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+}
