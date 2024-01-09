@@ -21,18 +21,19 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@/app/components/*": ["frontend/app/components/*"],
-      "@/app/hooks/*": ["frontend/app/hooks/*"],
-      "@/app/interfaces/*": ["frontend/app/interfaces/*"],
-      "@/app/styles/*": ["frontend/app/styles/*"],
-      "@/app/utils/*": ["frontend/app/utils/*"]
+      "@/app/components/*": ["app/components/*"],
+      "@/app/hooks/*": ["app/hooks/*"],
+      "@/app/interfaces/*": ["app/interfaces/*"],
+      "@/app/styles/*": ["app/styles/*"],
+      "@/app/utils/*": ["app/utils/*"]
     }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "frontend/.next/types/**/*.ts"
+    "frontend/.next/types/**/*.ts",
+    ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }
