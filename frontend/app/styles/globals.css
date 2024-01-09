@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 * {
-  cursor: url('@/public/cursor.webp'), auto;
+  cursor: url('../../public/images/cursor.webp'), auto;
 }
 
 body {
