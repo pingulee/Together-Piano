@@ -17,8 +17,8 @@ import { MdPiano } from 'react-icons/md';
 import { MdOutlineContactPhone } from 'react-icons/md';
 
 // 컴포넌트
-import SidebarItemComponent from '@/components/Sidebar/SidebarItemComponent';
-import SeparatorComponent from '@/components/SeparatorComponent';
+import SidebarItemComponent from '@/frontend/app/components/Sidebar/SidebarItemComponent';
+import SeparatorComponent from '@/frontend/app/components/SeparatorComponent';
 
 export default function SidebarComponent() {
   const [open, setOpen] = useState(true);
@@ -33,7 +33,7 @@ export default function SidebarComponent() {
 
   return (
     <div
-    className={`bg-sub2 h-screen p-5 pt-8 ${open ? 'w-72' : 'w-20'}
+      className={`bg-sub2 h-screen p-5 pt-8 ${open ? 'w-72' : 'w-20'}
     duration-300 relative shadow-lg`}
     >
       <BsArrowLeftShort
