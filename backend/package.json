@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node server.ts",
-    "start": "NODE_ENV=production ts-node server.ts"
+    "start": "nodemon server.ts"
   },
   "keywords": [],
   "author": "",
@@ -19,5 +19,8 @@
     "socket.io": "^4.7.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "nodemon": "^3.0.2"
   }
 }

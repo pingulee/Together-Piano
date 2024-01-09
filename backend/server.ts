@@ -40,5 +40,5 @@ io.on('connection', (socket) => {
 });
 
 httpServer.listen(port, () => {
-  console.log(`localhost:${port}`);
+  console.log(`http://localhost:${port}`);
 });
