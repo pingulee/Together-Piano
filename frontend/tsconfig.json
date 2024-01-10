@@ -8,10 +8,11 @@
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
     "jsx": "preserve",
     "incremental": true,
     "plugins": [
@@ -20,12 +21,7 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"],
-      "@/app/components/*": ["app/components/*"],
-      "@/app/hooks/*": ["app/hooks/*"],
-      "@/app/interfaces/*": ["app/interfaces/*"],
-      "@/app/styles/*": ["app/styles/*"],
-      "@/app/utils/*": ["app/utils/*"]
+      "@/*": ["./*"]
     }
   },
   "include": [
