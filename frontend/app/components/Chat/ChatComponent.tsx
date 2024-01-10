@@ -1,5 +1,3 @@
-'use client';
-
 export default function ChatComponent() {
-  return <p>test</p>;
+  return <div>test</div>;
 }
