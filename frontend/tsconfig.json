@@ -20,19 +20,15 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"],
-      "@/app/components/*": ["frontend/app/components/*"],
-      "@/app/hooks/*": ["frontend/app/hooks/*"],
-      "@/app/interfaces/*": ["frontend/app/interfaces/*"],
-      "@/app/styles/*": ["frontend/app/styles/*"],
-      "@/app/utils/*": ["frontend/app/utils/*"]
+      "@/*": ["./*"]
     }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "frontend/.next/types/**/*.ts"
+    "frontend/.next/types/**/*.ts",
+    ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

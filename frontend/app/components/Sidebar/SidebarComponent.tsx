@@ -17,8 +17,8 @@ import { MdPiano } from 'react-icons/md';
 import { MdOutlineContactPhone } from 'react-icons/md';
 
 // 컴포넌트
-import SidebarItemComponent from '@/frontend/app/components/Sidebar/SidebarItemComponent';
-import SeparatorComponent from '@/frontend/app/components/SeparatorComponent';
+import SidebarItemComponent from '@/app/components/Sidebar/SidebarItemComponent';
+import SeparatorComponent from '@/app/components/SeparatorComponent';
 
 export default function SidebarComponent() {
   const [open, setOpen] = useState(true);
