@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import '@/app/styles/globals.css';
 import SidebarComponent from '@/app/components/Sidebar/SidebarComponent';
-import { ChildrenProp } from '@/app/interfaces/ChildrenProp';
+import { ChildrenProp } from '@/app/types/ChildrenProp';
 
 export const metadata: Metadata = {
   title: 'Together Piano',

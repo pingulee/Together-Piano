@@ -1,7 +1,7 @@
 import React from 'react';
 import PianoKey from '@/app/components/Piano/PianoKeyComponent';
-import { PianoNoteProp } from '@/app/interfaces/Piano/PianoNoteProp';
-import { PianoSoundProp } from '@/app/interfaces/Piano/PianoSoundProp';
+import { PianoNoteProp } from '@/app/types/Piano/PianoNoteProp';
+import { PianoSoundProp } from '@/app/types/Piano/PianoSoundProp';
 
 interface PianoKeyProps extends PianoNoteProp, PianoSoundProp {}
 

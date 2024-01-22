@@ -7,10 +7,10 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 // 인터페이스
-import { SidebarItemTitleProp } from '@/app/interfaces/Sidebar/SidebarItem/SidebarItemTitleProp';
-import { SidebarItemHrefProp } from '@/app/interfaces/Sidebar/SidebarItem/SidebarItemHrefProp';
-import { SidebarItemIconProp } from '@/app/interfaces/Sidebar/SidebarItem/SidebarItemIconProp';
-import { OpenProp } from '@/app/interfaces/OpenProp';
+import { SidebarItemTitleProp } from '@/app/types/Sidebar/SidebarItem/SidebarItemTitleProp';
+import { SidebarItemHrefProp } from '@/app/types/Sidebar/SidebarItem/SidebarItemHrefProp';
+import { SidebarItemIconProp } from '@/app/types/Sidebar/SidebarItem/SidebarItemIconProp';
+import { OpenProp } from '@/app/types/OpenProp';
 interface SidebarItemProps
   extends SidebarItemTitleProp,
     SidebarItemHrefProp,
