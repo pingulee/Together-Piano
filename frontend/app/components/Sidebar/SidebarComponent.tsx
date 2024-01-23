@@ -15,10 +15,10 @@ import { FaHouse } from 'react-icons/fa6';
 import { FaCog } from 'react-icons/fa';
 import { MdPiano } from 'react-icons/md';
 import { MdOutlineContactPhone } from 'react-icons/md';
+import { IoLogInSharp } from 'react-icons/io5';
 
 // 컴포넌트
 import SidebarItemComponent from '@/app/components/Sidebar/SidebarItemComponent';
-import SeparatorComponent from '@/app/components/SeparatorComponent';
 
 export default function SidebarComponent() {
   const [open, setOpen] = useState(true);
@@ -28,12 +28,14 @@ export default function SidebarComponent() {
     { title: 'Contact', icon: <MdOutlineContactPhone />, href: '/contact' },
   ];
   const downMenuItems = [
-    { title: 'Settings', icon: <FaCog />, href: '/setting' },
+    { title: 'Login', icon: <IoLogInSharp />, href: '/login' },
   ];
 
   return (
-    <div
-      className={`bg-sub2 h-screen p-5 pt-8 ${open ? 'w-72' : 'w-20'}
+    <nav
+      className={`flex flex-col bg-sub2 h-screen p-5 pt-8 ${
+        open ? 'w-72' : 'w-20'
+      }
     duration-300 relative shadow-lg`}
     >
       <BsArrowLeftShort
@@ -57,31 +59,31 @@ export default function SidebarComponent() {
         </h1>
       </div>
 
-      <div className='flex flex-col justify-between center'>
-        <ul className='pt-2'>
+      <div className='flex flex-col flex-grow justify-between center'>
+        <div className='pt-2'>
           {upMenuItems.map((menu, index) => (
             <SidebarItemComponent
               title={menu.title}
-              href={menu.href}
               icon={menu.icon}
               open={open}
               key={index}
+              href={menu.href}
             />
           ))}
-        </ul>
-        <SeparatorComponent />
-        <ul className='pt-2'>
+        </div>
+
+        <div className='pt-2'>
           {downMenuItems.map((menu, index) => (
             <SidebarItemComponent
               title={menu.title}
-              href={menu.href}
               icon={menu.icon}
               open={open}
               key={index}
+              href={menu.href}
             />
           ))}
-        </ul>
+        </div>
       </div>
-    </div>
+    </nav>
   );
 }

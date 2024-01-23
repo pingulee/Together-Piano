@@ -1,3 +1,3 @@
 export default function SettingPage() {
-  return <p>Setting Page</p>;
+  return <p>Login Page</p>;
 }
