@@ -18,11 +18,10 @@ import { MdOutlineContactPhone } from 'react-icons/md';
 import { IoLogInSharp, IoLogOutSharp } from 'react-icons/io5';
 
 // 컴포넌트
-import UpSidebarItemComponent from '@/app/components/Sidebar/UpSidebarItemComponent';
-import DownSidebarItemComponent from '@/app/components/Sidebar/DownSidebarItemComponent';
+import SidebarItemComponent from '@/app/components/Sidebar/SidebarItemComponent';
 
 export default function SidebarComponent() {
-  const { data: session } = useSession(); //세션 정보를 가져옴
+  const { data: session } = useSession();
   const [open, setOpen] = useState(true);
   const upMenuItems = [
     { title: 'Home', icon: <FaHouse />, href: '/' },
@@ -30,8 +29,8 @@ export default function SidebarComponent() {
     { title: 'Contact', icon: <MdOutlineContactPhone />, href: '/contact' },
   ];
   let downMenuItems = session
-    ? [{ title: 'Logout', icon: <IoLogOutSharp />, href: '1' }]
-    : [{ title: 'Login', icon: <IoLogInSharp />, href: '0' }];
+    ? [{ title: 'Logout', icon: <IoLogOutSharp />, href: '/api/auth/signout' }]
+    : [{ title: 'Login', icon: <IoLogInSharp />, href: '/login' }];
 
   return (
     <nav
@@ -64,7 +63,7 @@ export default function SidebarComponent() {
       <div className='flex flex-col flex-grow justify-between center'>
         <div className='pt-2'>
           {upMenuItems.map((menu, index) => (
-            <UpSidebarItemComponent
+            <SidebarItemComponent
               title={menu.title}
               icon={menu.icon}
               open={open}
@@ -76,7 +75,7 @@ export default function SidebarComponent() {
 
         <div className='pt-2'>
           {downMenuItems.map((menu, index) => (
-            <DownSidebarItemComponent
+            <SidebarItemComponent
               title={menu.title}
               icon={menu.icon}
               open={open}
