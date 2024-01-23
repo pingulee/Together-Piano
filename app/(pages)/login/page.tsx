@@ -1,5 +1,5 @@
 'use client';
-import { useSession } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -16,9 +16,11 @@ export default function SettingPage() {
 
   return (
     <div>
-      <button>
-        
-      </button>
+      {session ? (
+        <button onClick={() => signOut()}>로그아웃</button>
+      ) : (
+        <button onClick={() => signIn()}>로그인</button>
+      )}
     </div>
   );
 }
