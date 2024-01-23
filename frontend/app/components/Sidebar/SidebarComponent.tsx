@@ -3,6 +3,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 // 넥스트
 import Image from 'next/image';
@@ -12,24 +13,25 @@ import Link from 'next/link';
 import { BsArrowLeftShort } from 'react-icons/bs';
 import { GiGrandPiano } from 'react-icons/gi';
 import { FaHouse } from 'react-icons/fa6';
-import { FaCog } from 'react-icons/fa';
 import { MdPiano } from 'react-icons/md';
 import { MdOutlineContactPhone } from 'react-icons/md';
-import { IoLogInSharp } from 'react-icons/io5';
+import { IoLogInSharp, IoLogOutSharp } from 'react-icons/io5';
 
 // 컴포넌트
-import SidebarItemComponent from '@/app/components/Sidebar/SidebarItemComponent';
+import UpSidebarItemComponent from '@/app/components/Sidebar/UpSidebarItemComponent';
+import DownSidebarItemComponent from '@/app/components/Sidebar/DownSidebarItemComponent';
 
 export default function SidebarComponent() {
+  const { data: session } = useSession(); //세션 정보를 가져옴
   const [open, setOpen] = useState(true);
   const upMenuItems = [
     { title: 'Home', icon: <FaHouse />, href: '/' },
     { title: 'Piano', icon: <MdPiano />, href: '/piano' },
     { title: 'Contact', icon: <MdOutlineContactPhone />, href: '/contact' },
   ];
-  const downMenuItems = [
-    { title: 'Login', icon: <IoLogInSharp />, href: '/login' },
-  ];
+  let downMenuItems = session
+    ? [{ title: 'Logout', icon: <IoLogOutSharp />, href: '1' }]
+    : [{ title: 'Login', icon: <IoLogInSharp />, href: '0' }];
 
   return (
     <nav
@@ -62,7 +64,7 @@ export default function SidebarComponent() {
       <div className='flex flex-col flex-grow justify-between center'>
         <div className='pt-2'>
           {upMenuItems.map((menu, index) => (
-            <SidebarItemComponent
+            <UpSidebarItemComponent
               title={menu.title}
               icon={menu.icon}
               open={open}
@@ -74,7 +76,7 @@ export default function SidebarComponent() {
 
         <div className='pt-2'>
           {downMenuItems.map((menu, index) => (
-            <SidebarItemComponent
+            <DownSidebarItemComponent
               title={menu.title}
               icon={menu.icon}
               open={open}
