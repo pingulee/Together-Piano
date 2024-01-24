@@ -15,7 +15,7 @@ import { GiGrandPiano } from 'react-icons/gi';
 import { FaHouse } from 'react-icons/fa6';
 import { MdPiano } from 'react-icons/md';
 import { MdOutlineContactPhone } from 'react-icons/md';
-import { IoLogInSharp, IoLogOutSharp } from 'react-icons/io5';
+import { RiLoginBoxFill, RiLogoutBoxFill } from 'react-icons/ri';
 
 // 컴포넌트
 import SidebarItemComponent from '@/app/components/Sidebar/SidebarItemComponent';
@@ -29,8 +29,14 @@ export default function SidebarComponent() {
     { title: 'Contact', icon: <MdOutlineContactPhone />, href: '/contact' },
   ];
   let downMenuItems = session
-    ? [{ title: 'Logout', icon: <IoLogOutSharp />, href: '/api/auth/signout' }]
-    : [{ title: 'Login', icon: <IoLogInSharp />, href: '/login' }];
+    ? [
+        {
+          title: 'Logout',
+          icon: <RiLogoutBoxFill />,
+          href: '/api/auth/signout',
+        },
+      ]
+    : [{ title: 'Login', icon: <RiLoginBoxFill />, href: '/login' }];
 
   return (
     <nav
