@@ -40,7 +40,7 @@ export default function SidebarComponent() {
 
   return (
     <nav
-      className={`flex flex-col bg-sub2 h-screen p-5 pt-8 ${
+      className={`flex flex-col bg-sub2 h-screen p-5 pt-8 shadow-highlight shadow-rightShadow ${
         open ? 'w-72' : 'w-20'
       }
     duration-300 relative shadow-lg`}
