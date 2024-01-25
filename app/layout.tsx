@@ -8,9 +8,6 @@ import AuthContext from '@/app/contexts/AuthContext';
 export const metadata: Metadata = {
   title: 'Together Piano',
   description: 'Together Piano',
-  icons: {
-    icon: '/favicon.ico',
-  },
 };
 
 export default function RootLayout({ children }: ChildrenProp) {
