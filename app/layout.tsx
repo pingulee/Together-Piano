@@ -17,14 +17,14 @@ export default function RootLayout({ children }: ChildrenProp) {
   return (
     <html lang='ko'>
       <body>
-        {/* <AuthContext> */}
-        <div className='flex'>
-          <SidebarComponent />
-          <div className='flex justify-center items-center h-screen w-screen'>
-            {children}
+        <AuthContext>
+          <div className='flex'>
+            <SidebarComponent />
+            <div className='flex justify-center items-center h-screen w-screen'>
+              {children}
+            </div>
           </div>
-        </div>
-        {/* </AuthContext> */}
+        </AuthContext>
       </body>
     </html>
   );
