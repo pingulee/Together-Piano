@@ -2,16 +2,22 @@
 import React, { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 
+const socket = io('http://localhost:3288');
+
 export default function Home() {
-  const onSocket = () => {
-    const socket = io('http://localhost:3288');
+  useEffect(() => {
+    socket.on('connect', () => {
+      console.log('connected to server');
+    });
 
-    setInterval(() => {
-      socket.emit('good', '클라이언트 -> 서버');
-    }, 1000);
+    socket.on('message', (data) => {
+      console.log('Message from server:', data);
+    });
 
-    socket.on('hi', (data) => console.log(data)); // 서버 -> 클라이언트
-  };
-
-  return <button onClick={onSocket}>socket 통신 시작</button>;
+    return () => {
+      socket.off('connect');
+      socket.off('message');
+      socket.disconnect();
+    };
+  }, []);
 }
