@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import '@/app/styles/globals.css';
-import SidebarComponent from '@/app/components/Sidebar/sidebar.component';
-import { ChildrenProp } from '@/app/interfaces/children.interface';
+import SidebarComponent from '@/app/components/sidebar/sidebar.component';
+import { SocketProvider } from '@/app/components/socket/socket-provider.component';
+import { Children } from '@/app/interfaces/children.interface';
 
 import AuthContext from '@/app/contexts/AuthContext';
 
@@ -10,17 +11,19 @@ export const metadata: Metadata = {
   description: 'Together Piano',
 };
 
-export default function RootLayout({ children }: ChildrenProp) {
+export default function RootLayout({ children }: Children) {
   return (
     <html lang='ko'>
       <body>
         <AuthContext>
-          <div className='flex'>
-            <SidebarComponent />
-            <div className='flex justify-center items-center h-screen w-screen'>
-              {children}
+          <SocketProvider>
+            <div className='flex'>
+              <SidebarComponent />
+              <div className='flex justify-center items-center h-screen w-screen'>
+                {children}
+              </div>
             </div>
-          </div>
+          </SocketProvider>
         </AuthContext>
       </body>
     </html>
