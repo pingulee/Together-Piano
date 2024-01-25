@@ -1,26 +1,17 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import { io } from 'socket.io-client';
 
 export default function Home() {
-  const [dateTime, setDateTime] = useState('');
+  const onSocket = () => {
+    const socket = io('http://localhost:3288');
 
-  useEffect(() => {
-    const fetchDateTime = async () => {
-      try {
-        const response = await fetch('/api/datetime');
-        const data = await response.json();
-        setDateTime(data.datetime);
-      } catch (error) {
-        console.error('API 호출 중 오류 발생:', error);
-      }
-    };
+    setInterval(() => {
+      socket.emit('good', '클라이언트 -> 서버');
+    }, 1000);
 
-    fetchDateTime();
-  }, []);
+    socket.on('hi', (data) => console.log(data)); // 서버 -> 클라이언트
+  };
 
-  return (
-    <div>
-      <p>서버의 현재 날짜와 시간: {dateTime ? dateTime : '로딩 중...'}</p>
-    </div>
-  );
+  return <button onClick={onSocket}>socket 통신 시작</button>;
 }

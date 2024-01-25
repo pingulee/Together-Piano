@@ -18,7 +18,7 @@ import { MdOutlineContactPhone } from 'react-icons/md';
 import { RiLoginBoxFill, RiLogoutBoxFill } from 'react-icons/ri';
 
 // 컴포넌트
-import SidebarItemComponent from '@/app/components/sidebar/sidebar-item.component';
+import SidebarItemComponent from '@/app/components/Sidebar/sidebar-item.component';
 
 export default function SidebarComponent() {
   const { data: session } = useSession();
