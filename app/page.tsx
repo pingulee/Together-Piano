@@ -1,26 +1,18 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function Home() {
-  const [time, setTime] = useState('');
-
-  const fetchTime = async () => {
-    const response = await fetch('/api/korea_date_time');
-    const data = await response.json();
-    setTime(new Date(data.time).toLocaleString('ko-KR'));
-  };
+  const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetchTime();
-    const timer = setInterval(() => {
-      fetchTime();
-    }, 1000);
-    return () => clearInterval(timer);
+    const fetchData = async () => {
+      const response = await fetch('/api/time');
+      const result = await response.json();
+      setData(result);
+    };
+
+    fetchData();
   }, []);
 
-  return (
-    <div className='korea-time-container'>
-      <p className='korea-time'>{time}</p>
-    </div>
-  );
+  return <div>{data ? <p>{data.test}</p> : <p>Loading...</p>}</div>;
 }
