@@ -7,15 +7,15 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 // 인터페이스
-import { SidebarItemTitleProp } from '@/app/types/Sidebar/SidebarItem/SidebarItemTitleProp';
-import { SidebarItemHrefProp } from '@/app/types/Sidebar/SidebarItem/SidebarItemHrefProp';
-import { SidebarItemIconProp } from '@/app/types/Sidebar/SidebarItem/SidebarItemIconProp';
-import { OpenProp } from '@/app/types/OpenProp';
+import { SidebarItemTitle } from '@/app/interfaces/sidebar/sidebar-item/sidebar-item-title.interface';
+import { SidebarItemHref } from '@/app/interfaces/sidebar/sidebar-item/sidebar-Item-href.interface';
+import { SidebarItemIcon } from '@/app/interfaces/sidebar/sidebar-item/sidebar-item-icon.interface';
+import { Open } from '@/app/interfaces/open.interface';
 interface SidebarItemProps
-  extends SidebarItemTitleProp,
-    SidebarItemHrefProp,
-    SidebarItemIconProp,
-    OpenProp {}
+  extends SidebarItemTitle,
+    SidebarItemHref,
+    SidebarItemIcon,
+    Open {}
 
 export default function SidebarItemComponent({
   title,

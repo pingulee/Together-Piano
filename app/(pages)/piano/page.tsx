@@ -1,7 +1,7 @@
 'use client';
 
-import PianoComponent from '@/app/components/Piano/PianoComponent';
-import ChatComponent from '@/app/components/Chat/ChatComponent';
+import PianoComponent from '@/app/components/piano/piano.component';
+import ChatComponent from '@/app/components/chat/chat.component';
 
 export default function PianoPage() {
   return (

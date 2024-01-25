@@ -1,9 +1,9 @@
 import React from 'react';
-import PianoKey from '@/app/components/Piano/PianoKeyComponent';
-import { PianoNoteProp } from '@/app/types/Piano/PianoNoteProp';
-import { PianoSoundProp } from '@/app/types/Piano/PianoSoundProp';
+import PianoKey from '@/app/components/piano/piano-key.component';
+import { PianoNote } from '@/app/interfaces/piano/piano-note.interface';
+import { PianoSound } from '@/app/interfaces/piano/piano-sound.interface';
 
-interface PianoKeyProps extends PianoNoteProp, PianoSoundProp {}
+interface PianoKeyProps extends PianoNote, PianoSound {}
 
 export default function PianoComponent() {
   const pianoNotes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];

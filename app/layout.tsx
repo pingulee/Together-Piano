@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import '@/app/styles/globals.css';
-import SidebarComponent from '@/app/components/Sidebar/SidebarComponent';
-import { ChildrenProp } from '@/app/types/ChildrenProp';
+import SidebarComponent from '@/app/components/Sidebar/sidebar.component';
+import { ChildrenProp } from '@/app/interfaces/children.interface';
 
 import AuthContext from '@/app/contexts/AuthContext';
 
