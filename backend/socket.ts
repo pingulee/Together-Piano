@@ -14,7 +14,8 @@ const socket = (server: http.Server) => {
     socket.on('disconnect', () => console.log('사용자 연결 끊김', socket.id));
 
     socket.on('message', (data: any) => {
-      console.log(data); // 클라이언트 -> 서버
+      console.log(data);
+      io.emit('message', data);
     });
   });
 };
