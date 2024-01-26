@@ -44,7 +44,7 @@ export default function Chat() {
           className='bg-sub1 rounded-lg p-2 w-full resize-none outline-none'
           placeholder='Type message...'
           rows={2}
-        ></textarea>
+        />
         <div
           onClick={handleSendMessage}
           className='ml-2 bg-sub1 text-highlight hover:text-white font-bold py-2 px-4 rounded flex items-center justify-center'

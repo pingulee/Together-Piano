@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+$main: '#1a1919';
+$sub1: '#2a2828';
+$sub2: '#222020';
+$highlight: '#d74242';
+$subHighlight: '#ffa5a5';
+
+* {
+  cursor: url('/images/cursor/cursor.webp'), auto;
+}
+
+body {
+  background-color: #1a1919;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.custom-scrollbar {
+  overflow-y: auto;
+
+  // 스크롤바 전체 스타일
+  ::-webkit-scrollbar {
+    width: 8px; // 스크롤바 너비
+  }
+
+  // 스크롤바 트랙 (바탕) 스타일
+  ::-webkit-scrollbar-track {
+    background: none; // 스크롤바 트랙 색상
+  }
+
+  // 스크롤바 핸들 (움직이는 부분) 스타일
+  ::-webkit-scrollbar-thumb {
+    background: $highlight; // 스크롤바 핸들 기본 색상
+
+    // 스크롤바 핸들 호버 시 스타일
+    &:hover {
+      background: #555; // 스크롤바 핸들 호버 색상
+    }
+  }
+}
