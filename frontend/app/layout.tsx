@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import '@/app/styles/globals.css';
-import SidebarComponent from '@/app/components/Sidebar/sidebar.component';
+import Sidebar from '@/app/components/sidebar/sidebar.component';
 import { Children } from '@/app/interfaces/children.interface';
 import AuthContext from '@/app/contexts/AuthContext';
 
@@ -15,7 +15,7 @@ export default function RootLayout({ children }: Children) {
       <body>
         <AuthContext>
           <div className='flex'>
-            <SidebarComponent />
+            <Sidebar />
             <div className='flex justify-center items-center h-screen w-screen'>
               {children}
             </div>

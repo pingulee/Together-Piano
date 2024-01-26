@@ -18,9 +18,9 @@ import { MdOutlineContactPhone } from 'react-icons/md';
 import { RiLoginBoxFill, RiLogoutBoxFill } from 'react-icons/ri';
 
 // 컴포넌트
-import SidebarItemComponent from '@/app/components/Sidebar/sidebar-item.component';
+import SidebarItem from '@/app/components/sidebar/sidebar-item.component';
 
-export default function SidebarComponent() {
+export default function Sidebar() {
   const { data: session } = useSession();
   const [open, setOpen] = useState(true);
   const upMenuItems = [
@@ -69,7 +69,7 @@ export default function SidebarComponent() {
       <div className='flex flex-col flex-grow justify-between center'>
         <div className='pt-2'>
           {upMenuItems.map((menu, index) => (
-            <SidebarItemComponent
+            <SidebarItem
               title={menu.title}
               icon={menu.icon}
               open={open}
@@ -81,7 +81,7 @@ export default function SidebarComponent() {
 
         <div className='pt-2'>
           {downMenuItems.map((menu, index) => (
-            <SidebarItemComponent
+            <SidebarItem
               title={menu.title}
               icon={menu.icon}
               open={open}

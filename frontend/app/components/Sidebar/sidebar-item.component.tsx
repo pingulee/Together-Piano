@@ -17,7 +17,7 @@ interface SidebarItemProps
     SidebarItemIcon,
     Open {}
 
-export default function SidebarItemComponent({
+export default function SidebarItem({
   title,
   href,
   icon,
