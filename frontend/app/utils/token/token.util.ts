@@ -1,4 +1,4 @@
-import tokenGenerate from '@/utils/token/token-generate.util';
+import tokenGenerate from '@/app/utils/token/token-generate.util';
 
 function issueToken() {
   const token = tokenGenerate(); // 토큰 생성

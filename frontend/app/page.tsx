@@ -1,11 +1,22 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import getDateTime from '@/app/utils/datetime/datetime.util'; // datetime 함수 제거
+import getDateTime from '@/app/utils/datetime/datetime.util';
+import { getUserToken, issueToken } from '@/app/utils/token/token.util';
 
-export default function Home() {
+export default function HomePage() {
   const [dateTime, setDateTime] = useState<string>();
 
   useEffect(() => {
+    let token = getUserToken();
+    if (!token) {
+      // 사용자 고유번호(토큰)가 로컬 스토리지에 없으면 새로 발급하여 저장
+      token = issueToken();
+      console.log('새 토큰 발급:', token);
+    } else {
+      // 이미 발급된 토큰이 있으면 사용
+      console.log('기존 토큰 사용:', token);
+    }
+
     // 컴포넌트 마운트 시 현재 시간 설정 및 1초마다 시간 업데이트
     const updateDateTime = () => {
       const newDateTime = getDateTime(); // 현재 UTC 시간을 가져옴
