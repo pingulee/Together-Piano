@@ -1,17 +1,20 @@
-import { useEffect, useState, KeyboardEvent } from 'react'; // KeyboardEvent 타입을 추가로 임포트합니다.
+import { useEffect, useState, KeyboardEvent, useRef } from 'react'; // KeyboardEvent 타입을 추가로 임포트합니다.
 import io from 'socket.io-client';
 import { IoMdSend } from 'react-icons/io';
 import { Sender } from '@/app/interfaces/message/sender.interface';
 import { Text } from '@/app/interfaces/message/text.interface';
+import React from 'react';
 
 interface MessageProps extends Sender, Text {}
 
-const socket = io('http://localhost:3288');
+const socket = io('http://192.168.30.158:3288');
 
 export default function Chat() {
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [currentMessage, setCurrentMessage] = useState('');
   const [isFocused, setIsFocused] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [userCount, setUserCount] = useState(0); // 현재 접속 중인 사용자 수 상태
 
   // 메시지 전송
   const handleSendMessage = () => {
@@ -30,10 +33,14 @@ export default function Chat() {
   useEffect(() => {
     socket.on('message', (data: MessageProps) => {
       console.log('수신된 메시지:', data);
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { ...data, sender: 'them' },
-      ]);
+      // 메시지의 sender가 'me'이면 목록에 추가하지 않음
+      if (data.sender !== 'me') {
+        setMessages((prevMessages) => [...prevMessages, data]);
+      }
+    });
+
+    socket.on('userCount', (count: number) => {
+      setUserCount(count); // 서버로부터 받은 현재 사용자 수를 상태에 저장
     });
   }, []);
 
@@ -45,21 +52,28 @@ export default function Chat() {
     // 쉬프트 키와 함께 엔터 키가 눌리면 기본적인 텍스트 에어리어의 동작(줄바꿈)을 수행합니다.
   };
 
+  useEffect(() => {
+    // 메시지 목록이 업데이트될 때마다 스크롤을 아래로 이동
+    messagesEndRef.current?.scrollIntoView({});
+  }, [messages]);
+
   return (
-    <div className='max-w-md flex flex-col bg-sub2 h-screen p-2 w-72 duration-300 relative justify-between rounded'>
-      <div className='overflow-y-auto w-full flex flex-col gap-2'>
+    <div className='flex flex-col min-w-72 max-w-72 bg-sub2 h-screen p-2 duration-300 relative justify-between rounded'>
+      <div className='mb-4 flex bg-sub1 border-2 rounded border-sub1 justify-center items-center'>
+        현재 접속 중인 사용자: {userCount}명
+      </div>
+      <div className='flex-grow overflow-y-scroll flex gap-2 flex-col'>
         {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`p-2 rounded max-w-3/4 ${
-              msg.sender === 'me'
-                ? 'bg-blue-500 ml-auto'
-                : 'bg-gray-300 mr-auto'
-            }`}
-          >
-            {msg.text}
+          <div key={index} className={`p-2 rounded w-full break-words bg-sub1`}>
+            {msg.text.split('\n').map((line, i, arr) => (
+              <React.Fragment key={i}>
+                {line}
+                {i < arr.length - 1 && <br />}
+              </React.Fragment>
+            ))}
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
       <div
         className={`mt-4 flex bg-sub1 border-2 rounded ${

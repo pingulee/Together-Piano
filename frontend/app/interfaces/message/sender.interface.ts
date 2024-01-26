@@ -1,3 +1,3 @@
 export interface Sender {
-  sender: 'me' | 'them';
+  sender: string;
 }
