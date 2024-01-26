@@ -33,16 +33,23 @@ export default function Chat() {
 
   return (
     <div className='max-w-md flex flex-col bg-sub2 h-screen p-2 w-72 duration-300 relative justify-between rounded'>
-      <div className='overflow-y-auto'>
+      <div className='overflow-y-auto w-full flex flex-col gap-2'>
         {messages.map((msg, index) => (
-          <div key={index} className='text-sm text-gray-700'>
-            {msg}
+          <div
+            key={index}
+            className={`p-2 rounded max-w-3/4 ${
+              msg.sender === 'me'
+                ? 'bg-blue-500 ml-auto'
+                : 'bg-gray-300 mr-auto'
+            }`}
+          >
+            {msg.text}
           </div>
         ))}
       </div>
       <div
         className={`mt-4 flex bg-sub1 border-2 rounded ${
-          isFocused ? ' border-highlight' : 'border-sub1'
+          isFocused ? 'border-highlight' : 'border-sub1'
         }`}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
