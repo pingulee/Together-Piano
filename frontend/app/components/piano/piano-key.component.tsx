@@ -4,9 +4,6 @@ import { PianoSound } from '@/app/interfaces/piano/piano-sound.interface';
 
 interface PianoKeyProps extends PianoNote, PianoSound {}
 
-export default function PianoKeyComponent({
-  pianoNote,
-  pianoSound,
-}: PianoKeyProps) {
+export default function PianoKey({ pianoNote, pianoSound }: PianoKeyProps) {
   return <div onClick={pianoSound}>{pianoNote}</div>;
 }

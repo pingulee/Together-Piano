@@ -5,7 +5,7 @@ import { PianoSound } from '@/app/interfaces/piano/piano-sound.interface';
 
 interface PianoKeyProps extends PianoNote, PianoSound {}
 
-export default function PianoComponent() {
+export default function PianoContainer() {
   const pianoNotes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 
   const pianoSounds = (note: string) => {

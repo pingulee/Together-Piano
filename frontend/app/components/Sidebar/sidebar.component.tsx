@@ -22,7 +22,7 @@ import SidebarItem from '@/app/components/sidebar/sidebar-item.component';
 
 export default function Sidebar() {
   const { data: session } = useSession();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const upMenuItems = [
     { title: 'Home', icon: <FaHouse />, href: '/' },
     { title: 'Piano', icon: <MdPiano />, href: '/piano' },
@@ -40,10 +40,10 @@ export default function Sidebar() {
 
   return (
     <nav
-      className={`flex flex-col bg-sub2 h-screen p-5 pt-8 shadow-highlight shadow-rightShadow ${
+      className={`flex flex-col bg-sub2 h-screen p-5 pt-8 duration-300 relative rounded ${
         open ? 'w-72' : 'w-20'
       }
-    duration-300 relative shadow-lg`}
+    `}
     >
       <BsArrowLeftShort
         className={`bg-white text-black text-3xl rounded-full absolute -right-3 top-9 border-2 border-sub ${

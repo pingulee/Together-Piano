@@ -16,9 +16,7 @@ export default function RootLayout({ children }: Children) {
         <AuthContext>
           <div className='flex'>
             <Sidebar />
-            <div className='flex justify-center items-center h-screen w-screen'>
-              {children}
-            </div>
+            <>{children}</>
           </div>
         </AuthContext>
       </body>

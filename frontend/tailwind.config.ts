@@ -29,9 +29,6 @@ const config: Config = {
         sub1: '#2a2828',
         sub2: '#222020',
       },
-      boxShadow: {
-        rightShadow: '1px 0 7px 0',
-      },
     },
   },
   plugins: [],

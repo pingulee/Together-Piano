@@ -1,8 +1,6 @@
 import http from 'http';
 import { Server } from 'socket.io';
 
-let interval: number = 1000;
-
 const socket = (server: http.Server) => {
   const io = new Server(server, {
     cors: {
