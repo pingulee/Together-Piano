@@ -33,13 +33,13 @@ export default function Chat() {
 
   return (
     <div className='max-w-md flex flex-col bg-sub2 h-screen p-2 w-72 duration-300 relative justify-between rounded'>
-      <ul className='overflow-y-auto'>
+      <div className='overflow-y-auto'>
         {messages.map((msg, index) => (
-          <li key={index} className='text-sm text-gray-700'>
+          <div key={index} className='text-sm text-gray-700'>
             {msg}
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
       <div
         className={`mt-4 flex bg-sub1 border-2 rounded ${
           isFocused ? ' border-highlight' : 'border-sub1'
