@@ -40,7 +40,7 @@ export default function Sidebar() {
 
   return (
     <nav
-      className={`flex flex-col bg-sub2 h-screen p-5 pt-8 duration-300 relative rounded ${
+      className={`flex flex-col bg-sub2 h-screen p-5 pt-8 duration-300 relative ${
         open ? 'w-72' : 'w-20'
       }
     `}

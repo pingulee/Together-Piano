@@ -3,6 +3,7 @@ import io from 'socket.io-client';
 import { IoMdSend } from 'react-icons/io';
 import { Sender } from '@/app/interfaces/message/sender.interface';
 import { Text } from '@/app/interfaces/message/text.interface';
+import { FaUser } from 'react-icons/fa';
 import React from 'react';
 
 interface MessageProps extends Sender, Text {}
@@ -58,9 +59,10 @@ export default function Chat() {
   }, [messages]);
 
   return (
-    <div className='flex flex-col min-w-72 max-w-72 bg-sub2 h-screen p-2 duration-300 relative justify-between rounded'>
+    <div className='flex flex-col min-w-72 max-w-72 bg-sub2 h-screen p-2 duration-300 relative justify-between'>
       <div className='mb-4 flex bg-sub1 border-2 rounded border-sub1 justify-center items-center'>
-        현재 접속 중인 사용자: {userCount}명
+        <FaUser />
+        {userCount}
       </div>
       <div className='flex-grow overflow-y-scroll flex gap-2 flex-col'>
         {messages.map((msg, index) => (
