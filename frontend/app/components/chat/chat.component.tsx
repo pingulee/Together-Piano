@@ -1,27 +1,41 @@
 import { useEffect, useState, KeyboardEvent } from 'react'; // KeyboardEvent 타입을 추가로 임포트합니다.
 import io from 'socket.io-client';
 import { IoMdSend } from 'react-icons/io';
+import { Sender } from '@/app/interfaces/message/sender.interface';
+import { Text } from '@/app/interfaces/message/text.interface';
+
+interface MessageProps extends Sender, Text {}
 
 const socket = io('http://localhost:3288');
 
 export default function Chat() {
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<MessageProps[]>([]);
   const [currentMessage, setCurrentMessage] = useState('');
   const [isFocused, setIsFocused] = useState(false);
 
-  useEffect(() => {
-    socket.on('message', (data: string) => {
-      console.log('수신된 메시지:', data);
-      setMessages((prevMessages) => [...prevMessages, data]);
-    });
-  }, []);
-
+  // 메시지 전송
   const handleSendMessage = () => {
     if (currentMessage.trim()) {
-      socket.emit('message', currentMessage);
+      const messageData: MessageProps = {
+        text: currentMessage,
+        sender: 'me',
+      };
+      socket.emit('message', messageData);
+      setMessages((prevMessages) => [...prevMessages, messageData]);
       setCurrentMessage('');
     }
   };
+
+  // 메시지 수신
+  useEffect(() => {
+    socket.on('message', (data: MessageProps) => {
+      console.log('수신된 메시지:', data);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { ...data, sender: 'them' },
+      ]);
+    });
+  }, []);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
