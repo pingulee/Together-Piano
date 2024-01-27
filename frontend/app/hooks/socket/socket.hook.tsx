@@ -9,7 +9,6 @@ interface MessageProps extends Sender, Content {}
 export const useSocket = () => {
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [currentMessage, setCurrentMessage] = useState('');
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const [userCount, setUserCount] = useState(0);
   const [open, setOpen] = useState(false);
   const token = useToken();
@@ -50,7 +49,6 @@ export const useSocket = () => {
     setMessages,
     currentMessage,
     setCurrentMessage,
-    messagesEndRef,
     userCount,
     setUserCount,
     open,

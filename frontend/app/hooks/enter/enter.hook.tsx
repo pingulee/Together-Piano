@@ -12,4 +12,4 @@ export const useKeyDown = (handleSendMessage: IHandleSendMessage) => {
   };
 
   return handleKeyDown;
-};
+}

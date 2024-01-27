@@ -7,18 +7,19 @@ import { useSocket } from '@/app/hooks/socket/socket.hook';
 import { useKeyDown } from '@/app/hooks/enter/enter.hook';
 import { useFocus } from '@/app/hooks/textarea/textarea-focus.hooks';
 import { useOpen } from '@/app/hooks/side-open/side-open.hook';
+import { useAutoScrollToBottom } from '@/app/hooks/scroll/scroll-bottom';
 
 export default function Chat() {
   const {
     messages,
     currentMessage,
     setCurrentMessage,
-    messagesEndRef,
     userCount,
     handleSendMessage,
   } = useSocket();
   const { isFocused, setIsFocused } = useFocus();
   const { open, setOpen } = useOpen();
+  const messagesEndRef = useAutoScrollToBottom([messages]);
   const handleKeyDown = useKeyDown(handleSendMessage);
 
   return (
@@ -75,7 +76,7 @@ export default function Chat() {
             />
             <div
               onClick={handleSendMessage}
-              className='ml-2 bg-sub1 text-highlight hover:text-white font-bold p-2 rounded flex items-center justify-center'
+              className='ml-2 bg-sub1 text-highlight hover:text-subHighlight font-bold p-2 rounded flex items-center justify-center'
             >
               <IoMdSend size='20px' />
             </div>
