@@ -18,7 +18,8 @@ const socket = (server: http.Server) => {
 
     socket.on('message', (data) => {
       console.log(data);
-      io.emit('message', data);
+      // 메시지를 보낸 클라이언트를 제외한 나머지 클라이언트에게만 메시지를 브로드캐스트
+      socket.broadcast.emit('message', data);
     });
   });
 };
