@@ -41,13 +41,13 @@ export default function Sidebar() {
   return (
     <nav
       className={`flex flex-col bg-sub2 h-screen p-5 pt-8 duration-300 relative ${
-        open ? 'w-72' : 'w-20'
+        open ? 'w-20' : 'w-72'
       }
     `}
     >
       <BsArrowLeftShort
         className={`bg-white text-black text-3xl rounded-full absolute -right-3 top-9 border-2 border-sub ${
-          !open && 'rotate-180'
+          open && 'rotate-180'
         }`}
         onClick={() => setOpen(!open)}
       />
@@ -59,7 +59,7 @@ export default function Sidebar() {
         />
         <h1
           className={`text-white origin-left font-black text-xl duration-300 ${
-            !open && 'hidden'
+            open && 'hidden'
           }`}
         >
           Together
@@ -72,7 +72,7 @@ export default function Sidebar() {
             <SidebarItem
               title={menu.title}
               icon={menu.icon}
-              open={open}
+              open={!open}
               key={index}
               href={menu.href}
             />
@@ -84,7 +84,7 @@ export default function Sidebar() {
             <SidebarItem
               title={menu.title}
               icon={menu.icon}
-              open={open}
+              open={!open}
               key={index}
               href={menu.href}
             />

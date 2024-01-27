@@ -3,6 +3,7 @@ import '@/app/styles/globals.scss';
 import Sidebar from '@/app/components/sidebar/sidebar.component';
 import { Children } from '@/app/interfaces/children.interface';
 import AuthContext from '@/app/contexts/AuthContext';
+import { TokenProvider } from '@/app/contexts/TokenContext';
 
 export const metadata: Metadata = {
   title: 'Together Piano',
@@ -11,15 +12,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Children) {
   return (
-    <html lang='ko'>
-      <body>
-        <AuthContext>
-          <div className='flex'>
-            <Sidebar />
-            <main className='flex w-full'>{children}</main>
-          </div>
-        </AuthContext>
-      </body>
-    </html>
+    <TokenProvider>
+      <html lang='ko'>
+        <body>
+          <AuthContext>
+            <div className='flex'>
+              <Sidebar />
+              <main className='flex w-full'>{children}</main>
+            </div>
+          </AuthContext>
+        </body>
+      </html>
+    </TokenProvider>
   );
 }
