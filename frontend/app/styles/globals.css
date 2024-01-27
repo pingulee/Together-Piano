@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --main: #1a1919;
+  --sub1: #2a2828;
+  --sub2: #222020;
+  --highlight: #d74242;
+  --subHighlight: #ffa5a5;
+}
+
+* {
+  cursor: url('/images/cursor/cursor.webp'), auto;
+}
+
+body {
+  background-color: var(--main);
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+-webkit-scrollbar {
+  width: 8px;
+}
+
+-webkit-scrollbar-track {
+  background: none;
+}
+
+-webkit-scrollbar-thumb {
+  background: var(--highlight);
+}
+
+-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

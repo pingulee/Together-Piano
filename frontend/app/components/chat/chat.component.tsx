@@ -67,6 +67,8 @@ export default function Chat() {
               value={currentMessage}
               onChange={(e) => setCurrentMessage(e.target.value)}
               onKeyDown={handleKeyDown}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
               className='bg-sub1 text-xl rounded-lg p-2 w-full resize-none outline-none'
               placeholder='Type message...'
               rows={2}
