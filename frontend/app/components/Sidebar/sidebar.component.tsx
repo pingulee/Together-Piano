@@ -5,11 +5,9 @@
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
 
-// 넥스트
 import Image from 'next/image';
 import Link from 'next/link';
 
-// 아이콘
 import { BsArrowLeftShort } from 'react-icons/bs';
 import { GiGrandPiano } from 'react-icons/gi';
 import { FaHouse } from 'react-icons/fa6';
@@ -17,12 +15,12 @@ import { MdPiano } from 'react-icons/md';
 import { MdOutlineContactPhone } from 'react-icons/md';
 import { RiLoginBoxFill, RiLogoutBoxFill } from 'react-icons/ri';
 
-// 컴포넌트
 import SidebarItem from '@/app/components/sidebar/sidebar-item.component';
+import { useOpen } from '@/app/hooks/side-open/side-open.hook';
 
 export default function Sidebar() {
   const { data: session } = useSession();
-  const [open, setOpen] = useState(false);
+  const { open, setOpen } = useOpen();
   const upMenuItems = [
     { title: 'Home', icon: <FaHouse />, href: '/' },
     { title: 'Piano', icon: <MdPiano />, href: '/piano' },

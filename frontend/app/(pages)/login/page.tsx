@@ -3,7 +3,7 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-export default function Setting() {
+export default function SettingPage() {
   const { data: session } = useSession();
   const router = useRouter();
 

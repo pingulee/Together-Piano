@@ -3,23 +3,22 @@ import React from 'react'; // KeyboardEvent 타입을 추가로 임포트합니�
 import { FaUser } from 'react-icons/fa';
 import { BsArrowLeftShort } from 'react-icons/bs';
 import { IoMdSend } from 'react-icons/io';
-import { useChat } from '@/app/hooks/chat/chat.hook';
+import { useSocket } from '@/app/hooks/socket/socket.hook';
 import { useKeyDown } from '@/app/hooks/enter/enter.hook';
+import { useFocus } from '@/app/hooks/textarea/textarea-focus.hooks';
+import { useOpen } from '@/app/hooks/side-open/side-open.hook';
 
 export default function Chat() {
   const {
     messages,
     currentMessage,
     setCurrentMessage,
-    isFocused,
-    setIsFocused,
     messagesEndRef,
     userCount,
-    open,
-    setOpen,
     handleSendMessage,
-  } = useChat();
-
+  } = useSocket();
+  const { isFocused, setIsFocused } = useFocus();
+  const { open, setOpen } = useOpen();
   const handleKeyDown = useKeyDown(handleSendMessage);
 
   return (

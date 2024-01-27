@@ -1,15 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
-import { useToken } from '@/app/contexts/TokenContext';
+import { useToken } from '@/app/contexts/token.context';
 import { Sender } from '@/app/interfaces/message/sender.interface';
 import { Content } from '@/app/interfaces/message/content.interface';
 
 interface MessageProps extends Sender, Content {}
 
-export const useChat = () => {
+export const useSocket = () => {
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [currentMessage, setCurrentMessage] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [userCount, setUserCount] = useState(0);
   const [open, setOpen] = useState(false);
@@ -51,8 +50,6 @@ export const useChat = () => {
     setMessages,
     currentMessage,
     setCurrentMessage,
-    isFocused,
-    setIsFocused,
     messagesEndRef,
     userCount,
     setUserCount,
