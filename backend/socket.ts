@@ -9,16 +9,20 @@ const socket = (server: http.Server) => {
   });
 
   io.on('connect', (socket) => {
-    console.log('사용자 연결', socket.id);
+    const token = socket.handshake.query.token;
     io.emit('userCount', io.engine.clientsCount);
+    io.emit('system', {
+      content: `${token}님이 입장 하셨습니다.`,
+    });
 
     socket.on('disconnect', () => {
       io.emit('userCount', io.engine.clientsCount);
+      io.emit('system', {
+        content: `${token}님이 퇴장 하셨습니다.`,
+      });
     });
 
     socket.on('message', (data) => {
-      console.log(data);
-      // 메시지를 보낸 클라이언트를 제외한 나머지 클라이언트에게만 메시지를 브로드캐스트
       socket.broadcast.emit('message', data);
     });
   });

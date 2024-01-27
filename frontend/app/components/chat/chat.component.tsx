@@ -1,13 +1,32 @@
-import React from 'react'; // KeyboardEvent 타입을 추가로 임포트합니다.
+import React, { useState } from 'react'; // KeyboardEvent 타입을 추가로 임포트합니다.
 
 import { FaUser } from 'react-icons/fa';
 import { BsArrowLeftShort } from 'react-icons/bs';
-import { IoMdSend } from 'react-icons/io';
+import { IoMdSend, IoMdClose } from 'react-icons/io';
 import { useSocket } from '@/app/hooks/socket/socket.hook';
 import { useKeyDown } from '@/app/hooks/enter/enter.hook';
 import { useFocus } from '@/app/hooks/textarea/textarea-focus.hooks';
 import { useOpen } from '@/app/hooks/side-open/side-open.hook';
 import { useAutoScrollToBottom } from '@/app/hooks/scroll/scroll-bottom';
+
+//
+const UserCountModal = ({ userCount, closeModal }) => {
+  return (
+    <div className='fixed top-0 left-0 w-full h-full flex items-center justify-center'>
+      <div className='flex flex-col p-4 rounded items-center'>
+        <div className='text-xl font-semibold'>현재 접속한 사용자 수</div>
+        <div className='text-2xl mt-2'>{userCount}명</div>
+        <div
+          className='mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600'
+          onClick={closeModal}
+        >
+          <IoMdClose size='24px' /> {/* IoMdClose 아이콘 추가 */}
+        </div>
+      </div>
+    </div>
+  );
+};
+//
 
 export default function Chat() {
   const {
@@ -22,6 +41,21 @@ export default function Chat() {
   const messagesEndRef = useAutoScrollToBottom([messages]);
   const handleKeyDown = useKeyDown(handleSendMessage);
 
+  //
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // 모달 창 열기 함수
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  // 모달 창 닫기 함수
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  //
+
   return (
     <div
       className={`flex flex-col min-w-0 max-w-72 bg-sub2 h-screen p-2 duration-300 relative justify-between ${
@@ -35,10 +69,19 @@ export default function Chat() {
         onClick={() => setOpen(!open)}
       />
 
-      <div className='mb-4 flex bg-sub1 border-2 rounded border-sub1 justify-center items-center'>
+      {/* 현재 접속한 사용자 수를 표시하는 모달 열기 버튼 */}
+      <div
+        className='mb-4 flex bg-sub1 border-2 rounded border-sub1 justify-center items-center cursor-pointer'
+        onClick={openModal}
+      >
         <FaUser />
         <span>{userCount}</span>
       </div>
+
+      {/* 모달 창 */}
+      {isModalOpen && (
+        <UserCountModal userCount={userCount} closeModal={closeModal} />
+      )}
 
       {/* open 상태가 false일 때만 채팅 목록과 입력 필드를 렌더링 */}
       {!open && (
