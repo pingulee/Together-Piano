@@ -4,7 +4,7 @@ import { FaUser } from 'react-icons/fa';
 import { BsArrowLeftShort } from 'react-icons/bs';
 import { IoMdSend, IoMdClose } from 'react-icons/io';
 import { useSocket } from '@/app/hooks/socket/socket.hook';
-import { useKeyDown } from '@/app/hooks/enter/enter.hook';
+import { useKeyDown } from '@/app/utils/enter/enter.util';
 import { useFocus } from '@/app/hooks/textarea/textarea-focus.hooks';
 import { useOpen } from '@/app/hooks/side-open/side-open.hook';
 import { useAutoScrollToBottom } from '@/app/hooks/scroll/scroll-bottom';
