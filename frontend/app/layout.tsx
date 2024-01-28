@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import '@/app/styles/globals.css';
-import Sidebar from '@/app/components/sidebar/sidebar.component';
+import Sidebar from '@/app/components/sidebar/ssidebar.component';
 import { Children } from '@/app/interfaces/children.interface';
 import AuthContext from '@/app/contexts/auth.context';
 import { TokenProvider } from '@/app/contexts/token.context';
