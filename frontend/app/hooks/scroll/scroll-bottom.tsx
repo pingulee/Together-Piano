@@ -5,7 +5,7 @@ export const useAutoScrollToBottom = (dependency: any[]) => {
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView();
-  }, [...dependency]);
+  }, [...dependency]); // 뭘까?
 
   return bottomRef;
 };
