@@ -33,7 +33,7 @@ export default function ContactPage() {
             href='https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=escapeweedy@gmail.com'
             target='_blank'
             rel='noopener noreferrer'
-            className='flex items-center justify-center space-x-2 border-2 min-w-[300px] p-2 rounded'
+            className='flex items-center space-x-2 border-2 min-w-[320px] px-4 py-2 rounded gap-2 hover:bg-gray-200 hover:text-black tra'
           >
             <SiGmail className='text-red-500' />
             <span>escapeweedy@gmail.com</span>
@@ -43,7 +43,7 @@ export default function ContactPage() {
             href='https://github.com/PinguLee'
             target='_blank'
             rel='noopener noreferrer'
-            className='flex items-center justify-center space-x-2 border-2 min-w-[300px] p-2 rounded'
+            className='flex items-center space-x-2 border-2 min-w-[320px] px-4 py-2 rounded gap-2 hover:bg-gray-200 hover:text-black'
           >
             <FaGithub className='text-xl' />
             <span>https://github.com/PinguLee</span>
