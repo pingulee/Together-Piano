@@ -10,7 +10,12 @@ import { useOpen } from '@/app/hooks/side-open/side-open.hook';
 import { useAutoScrollToBottom } from '@/app/hooks/scroll/scroll-bottom';
 
 //
-const UserCountModal = ({ userCount, closeModal }) => {
+interface UserCountModalProps {
+  userCount: number;
+  closeModal: () => void;
+}
+
+const UserCountModal = ({ userCount, closeModal }: UserCountModalProps) => {
   return (
     <div className='fixed top-0 left-0 w-full h-full flex items-center justify-center'>
       <div className='flex flex-col p-4 rounded items-center'>
