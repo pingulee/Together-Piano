@@ -1,37 +1,53 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { FaGithub } from 'react-icons/fa';
 import { SiGmail } from 'react-icons/si';
 
 export default function ContactPage() {
   return (
     <div className='flex items-center justify-center w-full'>
-      <div className='p-8 rounded-lg shadow-md border-2 mx-4'>
-        <h1 className='text-4xl font-bold mb-4 text-center'>Pingu Lee</h1>
+      <div className='max-w-lg p-8 bg-sub1 rounded-lg shadow-lg mx-4'>
+        <div className='flex justify-center'>
+          <Image
+            src='/images/profile/pingulee.png'
+            alt='Pingu Lee'
+            width={100}
+            height={100}
+            className='rounded-full'
+          />
+        </div>
+        <p className='text-4xl font-bold mb-4 text-center'>Pingu Lee</p>
         <p className='text-xl mb-4 text-center'>
-          저는 [직업 또는 역할]로 일하고 있으며, 주로 [기술 스택]을 사용합니다.
+          I am a developer who plays the piano as a hobby.
         </p>
         <p className='text-xl mb-4 text-center'>
-          자세한 정보를 제공하기 위해 이 페이지를 만들었습니다.
+          I made this page to play the piano with people from all over the
+          world.
         </p>
         <p className='text-xl mb-4 text-center'>
-          더 많은 정보나 연락하고 싶다면 아래의 연락처로 연락주세요.
+          If you want to know more or contact us, please contact us at the
+          contact information below.
         </p>
         <div className='text-xl flex flex-col items-center space-y-2'>
-          <div className='flex items-center space-x-2'>
-            <SiGmail className='text-xl' />
-            <span>escapeweedy@gmail.com</span> {/* Gmail 주소로 변경 */}
-          </div>
-          <div className='flex items-center'>
-            <Link
-              href='https://github.com/PinguLee'
-              target='_blank'
-              rel='noopener noreferrer'
-              className='flex space-x-2'
-            >
-              <FaGithub className='text-xl' />
-              <span>GitHub</span>
-            </Link>
-          </div>
+          <Link
+            href='https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=escapeweedy@gmail.com'
+            target='_blank'
+            rel='noopener noreferrer'
+            className='flex items-center justify-center space-x-2 border-2 min-w-[300px] p-2 rounded'
+          >
+            <SiGmail className='text-red-500' />
+            <span>escapeweedy@gmail.com</span>
+          </Link>
+
+          <Link
+            href='https://github.com/PinguLee'
+            target='_blank'
+            rel='noopener noreferrer'
+            className='flex items-center justify-center space-x-2 border-2 min-w-[300px] p-2 rounded'
+          >
+            <FaGithub className='text-xl' />
+            <span>https://github.com/PinguLee</span>
+          </Link>
         </div>
       </div>
     </div>
