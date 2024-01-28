@@ -3,40 +3,37 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "dev:server": "nodemon",
+    "dev": "nodemon",
     "build": "next build",
-    "start": "next start",
-    "start:server": "node dist/server/index.js",
-    "lint": "next lint"
+    "start": "NODE_ENV=production ts-node server/index.ts"
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^6.1.2",
-    "@types/express": "^4.17.21",
-    "@types/next-auth": "^3.15.0",
-    "@types/socket.io": "^3.0.2",
-    "@types/socket.io-client": "^3.0.0",
     "aws-amplify": "^6.0.13",
     "express": "^4.18.2",
     "next": "^14.1.0",
     "next-auth": "^4.24.5",
-    "nodemon": "^3.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
     "socket.io": "^4.7.4",
-    "socket.io-client": "^4.7.4",
-    "ts-node": "^10.9.2"
+    "socket.io-client": "^4.7.4"
   },
   "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/next-auth": "^3.15.0",
+    "@types/socket.io": "^3.0.2",
+    "@types/socket.io-client": "^3.0.0",
     "@types/node": "^20.11.8",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "autoprefixer": "^10.4.17",
     "eslint": "^8.56.0",
     "eslint-config-next": "^14.1.0",
+    "nodemon": "^3.0.3",
     "postcss": "^8.4.33",
     "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }
 }
