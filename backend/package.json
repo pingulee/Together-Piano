@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app.ts",
-    "start": "NODE_ENV=production ts-node app.ts"
+    "start": "ts-node app.ts"
   },
   "keywords": [],
   "author": "",
