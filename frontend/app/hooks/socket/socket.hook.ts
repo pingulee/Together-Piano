@@ -28,7 +28,7 @@ export const useSocket = () => {
     });
 
     return () => {
-      socketRef.current.disconnect();
+      socketRef?.current?.disconnect();
     };
   }, [token]);
 
@@ -38,7 +38,7 @@ export const useSocket = () => {
         content: currentMessage,
         sender: token,
       };
-      socketRef.current.emit('message', messageData);
+      socketRef?.current?.emit('message', messageData);
       setMessages((prevMessages) => [...prevMessages, messageData]);
       setCurrentMessage('');
     }

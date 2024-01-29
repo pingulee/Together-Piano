@@ -6,7 +6,7 @@ export function getUserIp() {
   useEffect(() => {
     const fetchIp = async () => {
       try {
-        const response = await fetch('/api/userIp');
+        const response = await fetch('/api/ip');
         const data = await response.json();
         setIp(data.ip);
       } catch (error) {
