@@ -36,14 +36,14 @@ export default function Sidebar() {
 
   return (
     <nav
-      className={`flex flex-col bg-sub2 h-screen p-5 pt-8 duration-300 relative ${
+      className={`flex flex-col bg-sub2 h-screen p-5 pt-8 duration-300 relative select-none ${
         open ? 'w-72' : 'w-20'
       }
     `}
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      <div className='inline-flex items-center'>
+      <div className='inline-flex items-center '>
         <GiGrandPiano
           className={`bg-white text-black text-4xl rounded block float-left flex-shrink-0 mr-2 duration-500 ${
             !open && 'rotate-[360deg]'
