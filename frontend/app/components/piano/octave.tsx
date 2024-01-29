@@ -1,4 +1,3 @@
-
 import React from 'react';
 import PianoKey from './piano-key.component';
 
@@ -29,8 +28,8 @@ export default function Octave({ pitch, windowWidth }: OctaveProps) {
       note={n + pitch}
       className={`flex justify-center items-end select-none list-none active:bg-highlight hover:bg-subHighlight ${
         n.length === 1
-          ? 'bg-white w-[25px] h-[125px]'
-          : 'bg-black w-[18px] h-[80px] mx-[-9px] my-0 z-20'
+          ? 'bg-white w-[25px] h-[180px]'
+          : 'bg-black w-[18px] h-[100px] mx-[-9px] my-0 z-20'
       }`}
     />
   );

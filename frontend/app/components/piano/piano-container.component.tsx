@@ -67,7 +67,7 @@ export default function PianoContainer() {
 
   const pitchNum = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   return (
-    <div className='flex justify-center overflow-auto w-full'>
+    <div className='flex justify-center overflow-auto w-full piano-cursor'>
       {pitchNum.map((n) => (
         <Octave key={n} pitch={n} windowWidth={windowWidth} />
       ))}

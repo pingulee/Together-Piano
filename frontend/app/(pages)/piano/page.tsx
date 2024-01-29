@@ -5,6 +5,7 @@ import io, { Socket } from 'socket.io-client';
 import PianoContainer from '@/app/components/piano/piano-container.component';
 import { getUserIp } from '@/app/hooks/ip/ip.hook';
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 
 export default function PianoPage() {
   const parentRef = useRef<HTMLDivElement>(null); // 부모 요소를 위한 ref
@@ -44,9 +45,9 @@ export default function PianoPage() {
       // 마우스가 부모 요소 내에 있는지 확인
       if (
         event.clientX >= left &&
-        event.clientX <= right &&
+        event.clientX <= right - 288 &&
         event.clientY >= top &&
-        event.clientY <= bottom
+        event.clientY <= bottom - 43
       ) {
         // 마우스 위치를 Socket.IO 서버로 전송
         socketRef.current?.emit('mouseMove', { x, y });
@@ -64,20 +65,25 @@ export default function PianoPage() {
   return (
     <div
       ref={parentRef}
-      className='flex flex-grow-7 w-full piano-cursor items-center justify-center'
+      className='flex flex-grow-7 w-full items-center justify-center'
     >
       {Object.entries(mousePositions).map(([id, pos]) => (
         <div
           key={id}
-          className='absolute bg-blue-500 rounded-full'
+          className='absolute rounded-full'
           style={{
-            width: '10px',
-            height: '10px',
             left: `${pos.x}px`,
             top: `${pos.y}px`,
             zIndex: '30',
           }}
-        />
+        >
+          <Image
+            src={'/images/cursor/cursor.webp'}
+            alt={''}
+            width={32}
+            height={43}
+          />
+        </div>
       ))}
       <PianoContainer />
       <Chat />
