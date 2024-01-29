@@ -17,7 +17,7 @@ import { sideOpen } from '@/app/hooks/side-open/side-open.hook';
 
 export default function Sidebar() {
   const { data: session } = useSession();
-  const { open, setOpen } = sideOpen();
+  const { open, useOpen } = sideOpen();
 
   const upMenuItems = [
     { title: 'Home', icon: <FaHouse />, href: '/' },
@@ -40,8 +40,8 @@ export default function Sidebar() {
         open ? 'w-72' : 'w-20'
       }
     `}
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      onMouseEnter={() => useOpen(true)}
+      onMouseLeave={() => useOpen(false)}
     >
       <div className='inline-flex items-center '>
         <GiGrandPiano

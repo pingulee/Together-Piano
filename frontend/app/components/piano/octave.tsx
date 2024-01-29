@@ -1,11 +1,13 @@
+
 import React from 'react';
 import PianoKey from './piano-key.component';
 
 interface OctaveProps {
   pitch: number;
+  windowWidth: number; // 창 너비 prop 추가
 }
 
-export default function Octave({ pitch }: OctaveProps) {
+export default function Octave({ pitch, windowWidth }: OctaveProps) {
   const notes = [
     'C',
     'C#',
@@ -39,5 +41,5 @@ export default function Octave({ pitch }: OctaveProps) {
     return notes.map((n) => createKey(n));
   };
 
-  return <ul className='flex m-0 p-0'>{createOctave(pitch)}</ul>;
+  return <div className='flex m-0 p-0'>{createOctave(pitch)}</div>;
 }

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import io from 'socket.io-client';
+import io, { Socket } from 'socket.io-client';
 import { useToken } from '@/app/contexts/token.context';
 import { Sender } from '@/app/interfaces/message/sender.interface';
 import { Content } from '@/app/interfaces/message/content.interface';
@@ -12,7 +12,7 @@ export const useSocket = () => {
   const [userCount, setUserCount] = useState(0);
   const [open, setOpen] = useState(false);
   const token = useToken();
-  const socketRef = useRef<any>(null);
+  const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
     socketRef.current = io('http://192.168.100.83:3288', {

@@ -4,6 +4,24 @@ import React, { useEffect, useState } from 'react';
 import Octave from './octave';
 
 export default function PianoContainer() {
+  const [windowWidth, setWindowWidth] = useState<number>(0);
+
+  useEffect(() => {
+    // 창 너비 업데이트 함수
+    const updateWindowDimensions = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    // 컴포넌트 마운트 시 창 너비 설정
+    updateWindowDimensions();
+
+    // 창 크기 변경 시 너비 업데이트
+    window.addEventListener('resize', updateWindowDimensions);
+
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => window.removeEventListener('resize', updateWindowDimensions);
+  }, []);
+
   useEffect(() => {
     async function setupMidiInput() {
       if (!navigator.requestMIDIAccess) {
@@ -49,9 +67,9 @@ export default function PianoContainer() {
 
   const pitchNum = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   return (
-    <div className='flex justify-center overflow-auto'>
+    <div className='flex justify-center overflow-auto w-full'>
       {pitchNum.map((n) => (
-        <Octave key={n} pitch={n} />
+        <Octave key={n} pitch={n} windowWidth={windowWidth} />
       ))}
     </div>
   );

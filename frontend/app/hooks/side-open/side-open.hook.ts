@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 export const sideOpen = () => {
-  const [open, setOpen] = useState(false);
+  const [open, useOpen] = useState(false);
 
-  return { open, setOpen };
+  return { open, useOpen };
 };

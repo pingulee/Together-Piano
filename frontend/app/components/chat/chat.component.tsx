@@ -42,7 +42,7 @@ export default function Chat() {
     handleSendMessage,
   } = useSocket();
   const { isFocused, setIsFocused } = useFocus();
-  const { open, setOpen } = sideOpen();
+  const { open, useOpen } = sideOpen();
   const messagesEndRef = useAutoScrollToBottom([messages]);
   const handleKeyDown = useKeyDown(handleSendMessage);
 
@@ -71,7 +71,7 @@ export default function Chat() {
         className={`bg-white text-black text-3xl rounded-full absolute -left-3 top-9 border-2 border-sub1 hover:bg-highlight hover:text-white duration-300 ${
           open && 'rotate-180'
         }`}
-        onClick={() => setOpen(!open)}
+        onClick={() => useOpen(!open)}
       />
 
       {/* 현재 접속한 사용자 수를 표시하는 모달 열기 버튼 */}

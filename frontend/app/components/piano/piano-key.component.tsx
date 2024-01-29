@@ -6,5 +6,6 @@ interface PianoKeyProps {
 }
 
 export default function PianoKey(props: PianoKeyProps) {
-  return <li className={props.className} />;
+  return <div className={props.className} />;
 }
+
