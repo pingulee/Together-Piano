@@ -57,8 +57,12 @@ body {
   }
 }
 
+.white {
+  width: 1.92308%;
+  height: 100%;
+}
+
 .black {
-  background: #363636;
-  color: #f4f4f4;
-  margin: 0 -15px;
+  width: 0.96154%;
+  height: 64%;
 }

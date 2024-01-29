@@ -6,7 +6,7 @@ export default function HomePage() {
   const dateTime = useDateTime();
 
   return (
-    <div className='flex flex-col items-center justify-center w-full h-screen space-y-5'>
+    <div className='flex flex-col min-h-screen max-h-screen w-full items-center justify-center space-y-5'>
       <span className='text-4xl'>Current time in Korea</span>
       <span className='text-6xl bg-sub1 p-5 rounded-full'>
         {dateTime ? dateTime : 'loading...'}

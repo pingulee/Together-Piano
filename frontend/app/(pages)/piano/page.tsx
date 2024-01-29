@@ -7,9 +7,9 @@ import { getUserIp } from '@/app/hooks/ip/ip.hook';
 
 export default function PianoPage() {
   return (
-    <div className='flex flex-grow-1 w-full items-center justify-center'>
+    <>
       <PianoContainer />
       <Chat />
-    </div>
+    </>
   );
 }

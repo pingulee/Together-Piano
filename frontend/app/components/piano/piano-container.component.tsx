@@ -71,7 +71,7 @@ export default function PianoContainer() {
   return (
     <div
       ref={containerRef} // 참조를 div 요소에 연결
-      className='piano flex justify-center overflow-auto w-full piano-cursor'
+      className='flex w-full justify-center overflow-auto piano-cursor'
     >
       {pitchNum.map((n) => (
         <PianoOctave key={n} pitch={n} windowWidth={windowWidth} />

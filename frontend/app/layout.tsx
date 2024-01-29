@@ -18,7 +18,9 @@ export default function RootLayout({ children }: Children) {
           <AuthContext>
             <div className='flex w-screen h-screen'>
               <Sidebar />
-              <main className='flex w-full'>{children}</main>
+              <main className='flex min-h-screen max-h-screen w-full'>
+                {children}
+              </main>
             </div>
           </AuthContext>
         </body>
