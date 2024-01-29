@@ -1,28 +1,9 @@
 'use client';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect } from 'react';
 import io, { Socket } from 'socket.io-client';
 import PianoOctave from './piano-octave.component';
 
 export default function PianoContainer() {
-  const [windowWidth, setWindowWidth] = useState<number>(0);
-  const containerRef = useRef<HTMLDivElement>(null); // 요소에 대한 참조 생성
-
-  useEffect(() => {
-    function updateWidth() {
-      // containerRef.current가 존재하면 너비를 업데이트
-      if (containerRef.current) {
-        setWindowWidth(containerRef.current.offsetWidth);
-      }
-    }
-
-    window.addEventListener('resize', updateWidth); // 화면 크기 변경 시 너비 업데이트
-    updateWidth(); // 컴포넌트 마운트 시 초기 너비 설정
-
-    // 컴포넌트 언마운트 시 이벤트 리스너 제거
-    return () => {
-      window.removeEventListener('resize', updateWidth);
-    };
-  }, []); // 의존성 배열을 빈 배열로 설정하여 컴포넌트 마운트 시에만 실행
 
   useEffect(() => {
     async function setupMidiInput() {
@@ -69,13 +50,14 @@ export default function PianoContainer() {
 
   const pitchNum = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   return (
-    <div
-      ref={containerRef} // 참조를 div 요소에 연결
-      className='flex w-full justify-center overflow-auto piano-cursor'
-    >
-      {pitchNum.map((n) => (
-        <PianoOctave key={n} pitch={n} windowWidth={windowWidth} />
-      ))}
+    <div className='flex flex-col w-full justify-center'>
+      <div
+        className='flex w-full h-1/5 piano-cursor '
+      >
+        {pitchNum.map((n) => (
+          <PianoOctave key={n} pitch={n} />
+        ))}
+      </div>
     </div>
   );
 }

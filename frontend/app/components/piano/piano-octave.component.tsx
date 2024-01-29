@@ -6,7 +6,7 @@ interface OctaveProps {
   windowWidth: number;
 }
 
-export default function PianoOctave({ pitch, windowWidth }: OctaveProps) {
+export default function PianoOctave({ pitch   }: OctaveProps) {
   const notes = [
     'C',
     'C#',
@@ -26,10 +26,8 @@ export default function PianoOctave({ pitch, windowWidth }: OctaveProps) {
     <PianoKey
       key={n + pitch}
       note={n + pitch}
-      className={`flex justify-center items-end select-none list-none active:bg-highlight hover:bg-subHighlight ${
-        n.length === 1
-          ? 'bg-white w-[25px] h-[180px]'
-          : 'bg-black w-[18px] h-[100px] mx-[-9px] my-0 z-20'
+      className={`active:bg-highlight hover:bg-subHighlight piano ${
+        n.length === 1 ? 'white-key' : 'black-key'
       }`}
     />
   );
@@ -40,5 +38,5 @@ export default function PianoOctave({ pitch, windowWidth }: OctaveProps) {
     return notes.map((n) => createKey(n));
   };
 
-  return <div className='flex m-0 p-0'>{createOctave(pitch)}</div>;
+  return <>{createOctave(pitch)}</>;
 }

@@ -20,6 +20,24 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.piano {
+  border: 2px solid black;
+}
+
+.white-key {
+  background-color: white;
+  width: 1.92308%;
+  height: 100%;
+}
+
+.black-key {
+  background-color: black;
+  width: 0.96154%;
+  height: 60%;
+  margin: 0 calc(-0.48077%);
+  z-index: 2;
+}
+
 .piano-cursor {
   cursor: url('/images/cursor/cursor.webp') 0 0, auto;
 }
@@ -39,30 +57,4 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--subHighlight);
-}
-
-.octave {
-  display: flex;
-  margin: 0;
-  padding: 0;
-}
-
-.piano-key:active {
-  background: var(--highlight);
-}
-
-@media only screen and (max-width: 1024px) {
-  .controls {
-    display: block;
-  }
-}
-
-.white {
-  width: 1.92308%;
-  height: 100%;
-}
-
-.black {
-  width: 0.96154%;
-  height: 64%;
 }
