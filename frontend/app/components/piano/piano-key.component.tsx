@@ -1,5 +1,10 @@
 import React from 'react';
 
-export default function PianoKey(props) {
+interface PianoKeyProps {
+  className: string;
+  note: string;
+}
+
+export default function PianoKey(props: PianoKeyProps) {
   return <li className={props.className} />;
 }

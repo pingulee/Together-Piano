@@ -68,7 +68,7 @@ export default function Chat() {
       }`}
     >
       <BsArrowLeftShort
-        className={`bg-white text-black text-3xl rounded-full absolute -left-3 top-9 border-2 border-sub1 ${
+        className={`bg-white text-black text-3xl rounded-full absolute -left-3 top-9 border-2 border-sub1 hover:bg-highlight hover:text-white duration-300 ${
           open && 'rotate-180'
         }`}
         onClick={() => setOpen(!open)}
@@ -76,7 +76,7 @@ export default function Chat() {
 
       {/* 현재 접속한 사용자 수를 표시하는 모달 열기 버튼 */}
       <div
-        className='mb-4 flex bg-sub1 border-2 rounded border-sub1 justify-center items-center cursor-pointer'
+        className='mb-4 flex bg-sub1 border-2 rounded border-sub1 justify-center items-center cursor-pointer hover:bg-white hover:text-black duration-300'
         onClick={openModal}
       >
         <FaUser />
@@ -124,7 +124,7 @@ export default function Chat() {
             />
             <div
               onClick={handleSendMessage}
-              className='ml-2 bg-sub1 text-highlight hover:text-subHighlight font-bold p-2 rounded flex items-center justify-center'
+              className='ml-2 bg-sub1 hover:text-highlight font-bold p-2 rounded flex items-center justify-center duration-300'
             >
               <IoMdSend size='20px' />
             </div>
