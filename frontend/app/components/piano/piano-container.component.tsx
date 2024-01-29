@@ -1,7 +1,7 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-
-import Octave from './octave';
+import React, { useEffect, useState, useRef } from 'react';
+import io, { Socket } from 'socket.io-client';
+import PianoOctave from './piano-octave.component';
 
 export default function PianoContainer() {
   const [windowWidth, setWindowWidth] = useState<number>(0);
@@ -69,7 +69,7 @@ export default function PianoContainer() {
   return (
     <div className='flex justify-center overflow-auto w-full piano-cursor'>
       {pitchNum.map((n) => (
-        <Octave key={n} pitch={n} windowWidth={windowWidth} />
+        <PianoOctave key={n} pitch={n} windowWidth={windowWidth} />
       ))}
     </div>
   );
