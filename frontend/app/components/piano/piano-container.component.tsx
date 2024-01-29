@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
-import Keyboard from './keyboard';
+import Octave from './octave';
 
 export default function PianoContainer() {
   useEffect(() => {
@@ -47,9 +47,12 @@ export default function PianoContainer() {
     setupMidiInput();
   }, []);
 
+  const pitchNum = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   return (
-    <>
-      <Keyboard />
-    </>
+    <div className='flex justify-center overflow-auto'>
+      {pitchNum.map((n) => (
+        <Octave key={n} pitch={n} />
+      ))}
+    </div>
   );
 }

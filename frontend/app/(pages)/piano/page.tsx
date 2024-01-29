@@ -6,7 +6,7 @@ import PianoContainer from '@/app/components/piano/piano-container.component';
 export default function PianoPage() {
   return (
     <>
-      <div className='flex flex-grow-7 w-full piano-cursor items-center'>
+      <div className='flex flex-grow-7 w-full piano-cursor items-center justify-center'>
         <PianoContainer />
       </div>
       <>

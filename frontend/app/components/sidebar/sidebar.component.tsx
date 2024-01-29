@@ -5,9 +5,6 @@
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
 
-import Image from 'next/image';
-import Link from 'next/link';
-
 import { BsArrowLeftShort } from 'react-icons/bs';
 import { GiGrandPiano } from 'react-icons/gi';
 import { FaHouse } from 'react-icons/fa6';
@@ -16,11 +13,12 @@ import { MdOutlineContactPhone } from 'react-icons/md';
 import { RiLoginBoxFill, RiLogoutBoxFill } from 'react-icons/ri';
 
 import SidebarItem from '@/app/components/sidebar/sidebar-item.component';
-import { useOpen } from '@/app/hooks/side-open/side-open.hook';
+import { sideOpen } from '@/app/hooks/side-open/side-open.hook';
 
 export default function Sidebar() {
   const { data: session } = useSession();
-  const { open, setOpen } = useOpen();
+  const { open, setOpen } = sideOpen();
+
   const upMenuItems = [
     { title: 'Home', icon: <FaHouse />, href: '/' },
     { title: 'Piano', icon: <MdPiano />, href: '/piano' },
@@ -39,25 +37,21 @@ export default function Sidebar() {
   return (
     <nav
       className={`flex flex-col bg-sub2 h-screen p-5 pt-8 duration-300 relative ${
-        open ? 'w-20' : 'w-72'
+        open ? 'w-72' : 'w-20'
       }
     `}
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
     >
-      <BsArrowLeftShort
-        className={`bg-white text-black text-3xl rounded-full absolute -right-3 top-9 border-2 border-sub ${
-          open && 'rotate-180'
-        }`}
-        onClick={() => setOpen(!open)}
-      />
       <div className='inline-flex items-center'>
         <GiGrandPiano
           className={`bg-white text-black text-4xl rounded block float-left flex-shrink-0 mr-2 duration-500 ${
-            open && 'rotate-[360deg]'
+            !open && 'rotate-[360deg]'
           }`}
         />
         <h1
           className={`text-white origin-left font-black text-xl duration-300 ${
-            open && 'hidden'
+            !open && 'hidden'
           }`}
         >
           Together
@@ -70,7 +64,7 @@ export default function Sidebar() {
             <SidebarItem
               title={menu.title}
               icon={menu.icon}
-              open={!open}
+              open={open}
               key={index}
               href={menu.href}
             />
@@ -82,7 +76,7 @@ export default function Sidebar() {
             <SidebarItem
               title={menu.title}
               icon={menu.icon}
-              open={!open}
+              open={open}
               key={index}
               href={menu.href}
             />

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export const useOpen = () => {
+export const sideOpen = () => {
   const [open, setOpen] = useState(false);
 
   return { open, setOpen };

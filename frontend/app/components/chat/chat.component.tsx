@@ -6,7 +6,7 @@ import { IoMdSend, IoMdClose } from 'react-icons/io';
 import { useSocket } from '@/app/hooks/socket/socket.hook';
 import { useKeyDown } from '@/app/utils/enter/enter.util';
 import { useFocus } from '@/app/hooks/textarea/textarea-focus.hooks';
-import { useOpen } from '@/app/hooks/side-open/side-open.hook';
+import { sideOpen } from '@/app/hooks/side-open/side-open.hook';
 import { useAutoScrollToBottom } from '@/app/hooks/scroll/scroll-bottom';
 
 //
@@ -42,7 +42,7 @@ export default function Chat() {
     handleSendMessage,
   } = useSocket();
   const { isFocused, setIsFocused } = useFocus();
-  const { open, setOpen } = useOpen();
+  const { open, setOpen } = sideOpen();
   const messagesEndRef = useAutoScrollToBottom([messages]);
   const handleKeyDown = useKeyDown(handleSendMessage);
 
