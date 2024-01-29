@@ -28,6 +28,7 @@ body {
   background-color: white;
   width: 1.92308%;
   height: 100%;
+  border-radius: 0 0 3px 3px;
 }
 
 .black-key {
@@ -36,6 +37,7 @@ body {
   height: 60%;
   margin: 0 calc(-0.48077%);
   z-index: 2;
+  border-radius: 0 0 3px 3px;
 }
 
 .piano-cursor {

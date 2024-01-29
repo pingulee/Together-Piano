@@ -8,4 +8,3 @@ interface PianoKeyProps {
 export default function PianoKey(props: PianoKeyProps) {
   return <div className={props.className} />;
 }
-
