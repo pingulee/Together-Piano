@@ -21,10 +21,10 @@ export default function Octave({ pitch, sustain }) {
     <PianoKey
       key={n + pitch}
       note={n + pitch}
-      className={`flex justify-center items-end select-none list-none bg-gray-100 text-gray-800 border border-gray-400 border-r-0 rounded-b-md ${
+      className={`flex justify-center items-end select-none list-none active:bg-highlight ${
         n.length === 1
-          ? 'bg-white w-[36px] h-[125px]'
-          : 'bg-black w-[28px] h-[80px] mx-0 my-[-15px] z-20'
+          ? 'bg-white w-[25px] h-[125px]'
+          : 'bg-black w-[18px] h-[80px] mx-[-9px] my-0 z-20'
       }`}
       sustain={sustain}
     />
