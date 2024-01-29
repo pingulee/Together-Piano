@@ -3,10 +3,9 @@ import PianoKey from './piano-key.component';
 
 interface OctaveProps {
   pitch: number;
-  windowWidth: number;
 }
 
-export default function PianoOctave({ pitch   }: OctaveProps) {
+export default function PianoOctave({ pitch }: OctaveProps) {
   const notes = [
     'C',
     'C#',
