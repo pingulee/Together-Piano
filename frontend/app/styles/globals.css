@@ -21,7 +21,7 @@ body {
 }
 
 .piano-cursor {
-  cursor: url('/images/cursor/cursor.webp'), auto;
+  cursor: url('/images/cursor/cursor.webp') 0 0, auto;
 }
 
 ::-webkit-scrollbar {
@@ -57,17 +57,8 @@ body {
   }
 }
 
-
-
-
-
-
-
-
-
 .black {
   background: #363636;
   color: #f4f4f4;
   margin: 0 -15px;
-
 }

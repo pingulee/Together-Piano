@@ -17,7 +17,7 @@ interface UserCountModalProps {
 
 const UserCountModal = ({ userCount, closeModal }: UserCountModalProps) => {
   return (
-    <div className='fixed top-0 left-0 w-full h-full flex items-center justify-center'>
+    <div className='fixed top-0 left-0 w-full h-full flex items-center justify-center '>
       <div className='flex flex-col p-4 rounded items-center'>
         <div className='text-xl font-semibold'>현재 접속한 사용자 수</div>
         <div className='text-2xl mt-2'>{userCount}명</div>
@@ -63,13 +63,13 @@ export default function Chat() {
 
   return (
     <div
-      className={`flex flex-col min-w-0 max-w-72 bg-sub2 h-screen p-2 duration-300 relative justify-between ${
+      className={`flex flex-col min-w-0 max-w-72 bg-sub2 h-screen p-2 duration-300 relative justify-between z-50 ${
         open ? 'w-20' : 'w-72'
       }`}
     >
       <BsArrowLeftShort
         className={`bg-white text-black text-3xl rounded-full absolute -left-3 top-9 border-2 border-sub1 hover:bg-highlight hover:text-white duration-300 ${
-          open && 'rotate-180'
+          !open && 'rotate-180'
         }`}
         onClick={() => useOpen(!open)}
       />

@@ -28,6 +28,7 @@ const socket = (server: http.Server) => {
 
     socket.on('mouseMove', (data) => {
       socket.broadcast.emit('mouseMove', data);
+      console.log(data);
     });
   });
 };
