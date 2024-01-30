@@ -5,7 +5,6 @@
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
 
-import { BsArrowLeftShort } from 'react-icons/bs';
 import { GiGrandPiano } from 'react-icons/gi';
 import { FaHouse } from 'react-icons/fa6';
 import { MdPiano } from 'react-icons/md';

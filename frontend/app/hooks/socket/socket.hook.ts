@@ -3,15 +3,19 @@ import io, { Socket } from 'socket.io-client';
 import { useToken } from '@/app/contexts/token.context';
 import { Sender } from '@/app/interfaces/message/sender.interface';
 import { Content } from '@/app/interfaces/message/content.interface';
+import { Country } from '@/app/interfaces/country/country.interface';
+import { useUserCountry } from '@/app/hooks/user-country/user-country.hook';
 
-interface MessageProps extends Sender, Content {}
+interface MessageProps extends Sender, Content, Country {
+  userCountry: any;
+}
 
 export const useSocket = () => {
+  const token = useToken();
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [currentMessage, setCurrentMessage] = useState('');
   const [userCount, setUserCount] = useState(0);
-  const [open, setOpen] = useState(false);
-  const token = useToken();
+  const userCountry = useUserCountry();
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
@@ -37,6 +41,7 @@ export const useSocket = () => {
       const messageData: MessageProps = {
         content: currentMessage,
         sender: token,
+        country: userCountry,
       };
       socketRef?.current?.emit('message', messageData);
       setMessages((prevMessages) => [...prevMessages, messageData]);
@@ -51,8 +56,6 @@ export const useSocket = () => {
     setCurrentMessage,
     userCount,
     setUserCount,
-    open,
-    setOpen,
     handleSendMessage,
   };
 };
