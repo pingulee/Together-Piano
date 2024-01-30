@@ -17,7 +17,7 @@ export const useSocket = () => {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    socketRef.current = io('192.168.100.83:3288', {
+    socketRef.current = io('https://togetherpiano.com', {
       query: { token },
     });
 
