@@ -5,57 +5,114 @@ interface PianoKeyProps {
   note: string;
 }
 
-/**
- * 피아노 키 컴포넌트를 웹 오디오 API를 사용하여 구현합니다.
- * @param {PianoKeyProps} props - 피아노 키 속성
- */
 const PianoKey: React.FC<PianoKeyProps> = ({ className, note }) => {
-  const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
-  const [buffer, setBuffer] = useState<AudioBuffer | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const bufferRef = useRef<AudioBuffer | null>(null);
+  const sourceRef = useRef<AudioBufferSourceNode | null>(null);
+  const gainNodeRef = useRef<GainNode | null>(null);
+  const isPlayingRef = useRef(false);
+
+  const [isUserInteracted, setUserInteracted] = useState(false);
 
   useEffect(() => {
-    // 오디오 컨텍스트와 버퍼 초기화
-    const context = new AudioContext();
-    setAudioContext(context);
-    loadAudio(context, `/sounds/${note}.mp3`);
-
+    initAudioContext();
+    loadAudio(`/sounds/${note}.mp3`);
     return () => {
-      context.close(); // 컴포넌트 언마운트 시 오디오 컨텍스트 닫기
+      audioContextRef.current?.close();
     };
   }, [note]);
 
-  /**
-   * 오디오 파일을 불러오고 버퍼에 저장합니다.
-   * @param {AudioContext} context - 오디오 컨텍스트
-   * @param {string} url - 오디오 파일 URL
-   */
-  const loadAudio = async (context: AudioContext, url: string) => {
-    const response = await fetch(url);
-    const arrayBuffer = await response.arrayBuffer();
-    const audioBuffer = await context.decodeAudioData(arrayBuffer);
-    setBuffer(audioBuffer);
+  const initAudioContext = () => {
+    const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+    if (!audioContextRef.current) {
+      audioContextRef.current = new AudioCtx();
+      gainNodeRef.current = audioContextRef.current.createGain();
+    }
   };
 
-  /**
-   * 오디오를 재생합니다.
-   */
+  const loadAudio = async (url: string) => {
+    if (!audioContextRef.current) return;
+
+    const response = await fetch(url);
+    const arrayBuffer = await response.arrayBuffer();
+    const audioBuffer = await audioContextRef.current.decodeAudioData(
+      arrayBuffer,
+    );
+    bufferRef.current = audioBuffer;
+  };
+
   const playSound = () => {
-    if (audioContext && buffer) {
-      const source = audioContext.createBufferSource();
-      source.buffer = buffer;
-      source.connect(audioContext.destination);
-      if (audioContext.state === 'suspended') {
-        audioContext.resume(); // 오디오 컨텍스트가 중단된 상태인 경우 재개
-      }
+    if (!audioContextRef.current || !bufferRef.current || isPlayingRef.current)
+      return;
+
+    if (audioContextRef.current.state === 'suspended' && isUserInteracted) {
+      audioContextRef.current.resume();
+    }
+
+    const source = audioContextRef.current.createBufferSource();
+    source.buffer = bufferRef.current;
+
+    // GainNode가 null이 아닌 경우에만 연결
+    if (gainNodeRef.current) {
+      source.connect(gainNodeRef.current);
+      gainNodeRef.current.connect(audioContextRef.current.destination);
+    }
+
+    // 같은 음을 재생할 때만 fadeOut 적용하지 않음
+    if (sourceRef.current && sourceRef.current.buffer === source.buffer) {
       source.start(0);
+    } else {
+      gainNodeRef.current?.gain.setValueAtTime(
+        1,
+        audioContextRef.current.currentTime,
+      );
+      source.start(0);
+      sourceRef.current = source;
+    }
+
+    isPlayingRef.current = true;
+  };
+
+  const fadeOutAudio = () => {
+    if (!audioContextRef.current || !gainNodeRef.current || !sourceRef.current)
+      return;
+
+    const fadeDuration = 0.25;
+    const currentTime = audioContextRef.current.currentTime;
+
+    gainNodeRef.current.gain.setValueAtTime(
+      gainNodeRef.current.gain.value,
+      currentTime,
+    );
+    gainNodeRef.current.gain.linearRampToValueAtTime(
+      0,
+      currentTime + fadeDuration,
+    );
+
+    sourceRef.current.stop(currentTime + fadeDuration);
+    sourceRef.current = null;
+    isPlayingRef.current = false; // 소리가 종료됨을 표시
+  };
+
+  const handleUserInteraction = () => {
+    setUserInteracted(true);
+    if (
+      audioContextRef.current &&
+      audioContextRef.current.state === 'suspended'
+    ) {
+      audioContextRef.current.resume();
     }
   };
 
   return (
     <div
       className={className}
-      onMouseDown={playSound}
-      // fadeOutAudio 기능은 복잡성을 고려하여 생략하거나, 필요에 따라 별도로 구현해야 합니다.
+      onMouseDown={() => {
+        handleUserInteraction();
+        playSound();
+      }}
+      onMouseUp={fadeOutAudio}
+      onTouchEnd={fadeOutAudio}
     />
   );
 };
