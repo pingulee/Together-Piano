@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon --watch '*.tsx' --exec ts-node --project tsconfig.server.json server/server.ts",
-    "build": "next build",
-    "start": "next start",
+    "dev": "next dev",
+    "dev:server": "nodemon --watch '*.tsx' --exec ts-node --project tsconfig.server.json server/server.ts",
+    "build:server": "tsc --project tsconfig.server.json",
+    "build:next": "next build",
+    "build": "npm run build:next && npm run build:server",
+    "start": "node dist/server.js",
     "lint": "next lint"
   },
   "dependencies": {

@@ -1,21 +1,18 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { Server } from 'socket.io';
 import { createServer } from 'http';
 import next from 'next';
 
-const hostname = '192.168.100.83';
+const hostname = 'localhost';
 const port = 3288;
 const dev = process.env.NODE_ENV !== 'production';
 const nextApp = next({ dev, hostname, port });
 const nextHandler = nextApp.getRequestHandler();
 
-console.log('hi');
-
 nextApp.prepare().then(() => {
-  const app = express();
-  const server = createServer(app);
+  const server = express();
 
-  const io = new Server(server, {
+  const io = new Server(createServer(server), {
     cors: {
       origin: '*',
       methods: ['GET', 'POST'],
@@ -44,13 +41,13 @@ nextApp.prepare().then(() => {
       socket.broadcast.emit('mouseMove', data);
       console.log(data);
     });
+  });
 
-    app.all('*', (req, res) => {
-      return nextHandler(req, res);
-    });
+  server.all('*', (req: Request, res: Response) => {
+    return nextHandler(req, res);
+  });
 
-    server.listen(port, () => {
-      console.log(`${hostname}:${port}`);
-    });
+  server.listen(port, (err?: any) => {
+    console.log(`http://${hostname}:${port}`);
   });
 });
