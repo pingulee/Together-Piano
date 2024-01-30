@@ -13,11 +13,11 @@ import { MdOutlineContactPhone } from 'react-icons/md';
 import { RiLoginBoxFill, RiLogoutBoxFill } from 'react-icons/ri';
 
 import SidebarItem from '@/app/components/sidebar/sidebar-item.component';
-import { sideOpen } from '@/app/hooks/side-open/side-open.hook';
+import { useSideOpen } from '@/app/hooks/side-open/side-open.hook';
 
 export default function Sidebar() {
   const { data: session } = useSession();
-  const { open, useOpen } = sideOpen();
+  const { open, setOpen } = useSideOpen();
 
   const upMenuItems = [
     { title: 'Home', icon: <FaHouse />, href: '/' },
@@ -40,8 +40,8 @@ export default function Sidebar() {
         open ? 'w-72' : 'w-20'
       }
     `}
-      onMouseEnter={() => useOpen(true)}
-      onMouseLeave={() => useOpen(false)}
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
     >
       <div className='inline-flex items-center '>
         <GiGrandPiano

@@ -6,7 +6,7 @@ import { IoMdSend, IoMdClose } from 'react-icons/io';
 import { useSocket } from '@/app/hooks/socket/socket.hook';
 import { useKeyDown } from '@/app/utils/enter/enter.util';
 import { useFocus } from '@/app/hooks/textarea/textarea-focus.hooks';
-import { sideOpen } from '@/app/hooks/side-open/side-open.hook';
+import { useSideOpen } from '@/app/hooks/side-open/side-open.hook';
 import { useAutoScrollToBottom } from '@/app/hooks/scroll/scroll-bottom';
 
 //
@@ -42,7 +42,7 @@ export default function Chat() {
     handleSendMessage,
   } = useSocket();
   const { isFocused, setIsFocused } = useFocus();
-  const { open, useOpen } = sideOpen();
+  const { open, setOpen } = useSideOpen();
   const messagesEndRef = useAutoScrollToBottom([messages]);
   const handleKeyDown = useKeyDown(handleSendMessage);
 
@@ -71,7 +71,7 @@ export default function Chat() {
         className={`bg-white text-black text-3xl rounded-full absolute -left-3 top-9 border-2 border-sub1 hover:bg-highlight hover:text-white duration-300 ${
           !open && 'rotate-180'
         }`}
-        onClick={() => useOpen(!open)}
+        onClick={() => setOpen(!open)}
       />
 
       {/* 현재 접속한 사용자 수를 표시하는 모달 열기 버튼 */}
