@@ -10,14 +10,17 @@ const nextApp = next({ dev, hostname, port });
 const nextHandler = nextApp.getRequestHandler();
 
 nextApp.prepare().then(() => {
-  const server = express();
+  const app = express();
+  const httpServer = createServer(app);
 
-  const io = new Server(createServer(server), {
+  const io = new Server(httpServer, {
     cors: {
       origin: '*',
       methods: ['GET', 'POST'],
     },
   });
+
+  app.set('socketio', io);
 
   io.on('connect', (socket) => {
     const token = socket.handshake.query.token;
@@ -43,11 +46,11 @@ nextApp.prepare().then(() => {
     });
   });
 
-  server.all('*', (req: Request, res: Response) => {
+  app.all('*', (req: Request, res: Response) => {
     return nextHandler(req, res);
   });
 
-  server.listen(port, (err?: any) => {
+  httpServer.listen(port, (err?: any) => {
     console.log(`http://${hostname}:${port}`);
   });
 });
