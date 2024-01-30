@@ -7,18 +7,18 @@ interface OctaveProps {
 
 export default function PianoOctave({ pitch }: OctaveProps) {
   const notes = [
-    'C',
-    'C#',
-    'D',
-    'D#',
-    'E',
-    'F',
-    'F#',
-    'G',
-    'G#',
-    'A',
-    'A#',
-    'B',
+    'c',
+    'cs',
+    'd',
+    'ds',
+    'e',
+    'f',
+    'fs',
+    'g',
+    'gs',
+    'a',
+    'as',
+    'b',
   ];
 
   const createKey = (n: string) => (
@@ -28,7 +28,6 @@ export default function PianoOctave({ pitch }: OctaveProps) {
       className={`active:bg-highlight hover:bg-subHighlight piano ${
         n.length === 1 ? 'white-key' : 'black-key'
       }`}
-
     />
   );
 

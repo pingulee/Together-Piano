@@ -1,42 +1,24 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 
 interface PianoKeyProps {
   className: string;
   note: string;
 }
 
-async function playNote(note: string, duration: string | null) {
-  const audio = new Audio(`/sounds/${note}.mp3`);
+export default function PianoKey({ className, note }: PianoKeyProps) {
+  // 마우스를 누를 때마다 새로운 Audio 객체를 생성하고 재생
+  const handleMouseDown = () => {
+    const audio = new Audio(`/sounds/${note}.mp3`);
+    audio.play().catch((error) => console.error('음악 재생 중 오류 발생:', error));
+  };
 
-  try {
-    await audio.play();
-  } catch (error) {
-    console.error('음악 재생 중 오류 발생:', error);
-  }
-}
-
-export default function PianoKey(props: PianoKeyProps) {
-  const noteRef = useRef<HTMLLIElement>(null);
-
-  useEffect(() => {
-    const play = () => playNote(props.note, '3n');
-
-    const element = noteRef.current;
-    if (element) {
-      element.addEventListener('mousedown', play);
-    }
-
-    return () => {
-      if (element) {
-        element.removeEventListener('mousedown', play);
-      }
-    };
-  }, [props.note]);
+  // 마우스를 뗄 때 특별한 처리가 필요 없음
+  // 각각의 Audio 객체는 독립적으로 재생되며, 사용자가 마우스를 떼면 재생이 자연스럽게 끝남
 
   return (
     <div
-      className={props.className}
-      onMouseDown={() => playNote(props.note, '3n')}
+      className={className}
+      onMouseDown={handleMouseDown}
     />
   );
 }
