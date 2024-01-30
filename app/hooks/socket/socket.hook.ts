@@ -17,7 +17,7 @@ export const useSocket = () => {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    socketRef.current = io('http://192.168.100.83:3288', {
+    socketRef.current = io('http://localhost:3288', {
       query: { token },
     });
 

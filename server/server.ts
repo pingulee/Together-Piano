@@ -1,12 +1,15 @@
 import express from 'express';
 import { Server } from 'socket.io';
-import http, { createServer } from 'http';
+import { createServer } from 'http';
 import next from 'next';
 
+const hostname = 'localhost';
 const port = 3288;
 const dev = process.env.NODE_ENV !== 'production';
-const nextApp = next({ dev, port });
+const nextApp = next({ dev, hostname, port });
 const nextHandler = nextApp.getRequestHandler();
+
+console.log('hi');
 
 nextApp.prepare().then(() => {
   const app = express();
@@ -47,7 +50,7 @@ nextApp.prepare().then(() => {
     });
 
     server.listen(port, () => {
-      console.log(`port : ${port}`);
+      console.log(`${hostname}:${port}`);
     });
   });
 });
