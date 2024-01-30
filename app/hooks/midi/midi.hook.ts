@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
-import handleMidiInput from '@/app/utils/midi/midi-input.util';
+// src/hooks/useMIDI.ts
 
-export function useMidiInput() {
-  const [midiMessages, setMidiMessages] = useState<Uint8Array[]>([]);
+import { useEffect } from 'react';
+import {
+  onMIDIFailure,
+  onMIDISuccess,
+} from '@/app/utils/midi-to-note/midi-to-note.util';
 
+/**
+ * MIDI 디바이스 접근 및 메시지 처리를 위한 훅
+ */
+export const useMIDI = () => {
   useEffect(() => {
-    // MIDI 입력 처리 함수를 호출하여 MIDI 메시지를 받습니다.
-    handleMidiInput((midiData) => {
-      // 받은 MIDI 메시지를 상태에 추가합니다.
-      setMidiMessages((prevMessages) => [...prevMessages, midiData]);
-    });
+    navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
   }, []);
-
-  return midiMessages;
-}
+};
