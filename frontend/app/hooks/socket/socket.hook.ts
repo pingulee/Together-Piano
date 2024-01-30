@@ -6,9 +6,7 @@ import { Content } from '@/app/interfaces/message/content.interface';
 import { Country } from '@/app/interfaces/country/country.interface';
 import { useUserCountry } from '@/app/hooks/user-country/user-country.hook';
 
-interface MessageProps extends Sender, Content, Country {
-  userCountry: any;
-}
+interface MessageProps extends Sender, Content, Country {}
 
 export const useSocket = () => {
   const token = useToken();

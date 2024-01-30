@@ -34,7 +34,7 @@ export default function Chat() {
       }`}
     >
       <BsArrowLeftShort
-        className={`bg-white text-black text-3xl rounded-full absolute -left-3 top-9 border-2 border-sub1 hover:bg-highlight hover:text-white duration-300 cursor-pointer ${
+        className={`bg-white text-black text-3xl rounded-full absolute -left-3 top-9 border-2 border-sub1 hover:bg-highlight hover:text-white duration-300  ${
           !open && 'rotate-180'
         }`}
         onClick={() => setOpen(!open)}
@@ -55,7 +55,7 @@ export default function Chat() {
                 <div className='flex text-xs font-bold mb-1 gap-2 items-center'>
                   <Image
                     src={`${flagImagePath}`}
-                    alt={msg.userCountry}
+                    alt={msg.country}
                     width={30}
                     height={30}
                   />
