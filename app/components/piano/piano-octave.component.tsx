@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PianoKey from './piano-key.component';
 
 interface OctaveProps {
@@ -28,6 +28,7 @@ export default function PianoOctave({ pitch }: OctaveProps) {
       className={`active:bg-highlight hover:bg-subHighlight piano ${
         n.length === 1 ? 'white-key' : 'black-key'
       }`}
+
     />
   );
 

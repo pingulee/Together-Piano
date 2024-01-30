@@ -20,7 +20,6 @@ nextApp.prepare().then(() => {
     },
   });
 
-  app.set('socketio', io);
 
   io.on('connect', (socket) => {
     const token = socket.handshake.query.token;
