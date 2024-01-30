@@ -4,7 +4,7 @@ import { createServer } from 'http';
 import next from 'next';
 
 const hostname = 'localhost';
-const port = 3288;
+const port = Number(process.env.PORT || 8081);
 const dev = process.env.NODE_ENV !== 'production';
 const nextApp = next({ dev, hostname, port });
 const nextHandler = nextApp.getRequestHandler();
