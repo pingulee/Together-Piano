@@ -9,6 +9,7 @@ import { GiGrandPiano } from 'react-icons/gi';
 import { FaHouse } from 'react-icons/fa6';
 import { MdPiano } from 'react-icons/md';
 import { MdOutlineContactPhone } from 'react-icons/md';
+import { PiHandsPraying } from 'react-icons/pi';
 import { RiLoginBoxFill, RiLogoutBoxFill } from 'react-icons/ri';
 
 import SidebarItem from '@/app/components/sidebar/sidebar-item.component';
@@ -21,6 +22,7 @@ export default function Sidebar() {
   const upMenuItems = [
     { title: 'Home', icon: <FaHouse />, href: '/' },
     { title: 'Piano', icon: <MdPiano />, href: '/piano' },
+    { title: 'Feedback', icon: <PiHandsPraying />, href: '/feedback' },
     { title: 'Contact', icon: <MdOutlineContactPhone />, href: '/contact' },
   ];
   let downMenuItems = session
