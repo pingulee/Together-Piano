@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import io, { Socket } from 'socket.io-client';
+import { User } from '@/models/user.model'; // User 모델 import 추가
+import { connectToDatabase } from '@/databases/database'; // 데이터베이스 연결
+
 import { useToken } from '@/app/contexts/token.context';
 import { Sender } from '@/app/interfaces/message/sender.interface';
 import { Content } from '@/app/interfaces/message/content.interface';
@@ -19,8 +22,28 @@ export const useSocket = () => {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
+    connectToDatabase()
+      .then(() => {
+        console.log('Database connected successfully');
+      })
+      .catch((error) => {
+        console.error('Database connection failed:', error);
+      });
+
     socketRef.current = io('192.168.100.83:3000', {
       query: { token },
+    });
+
+    socketRef.current.on('connection', async () => {
+      try {
+        const newUser = new User({
+          nickname token, 
+        });
+        await newUser.save();
+        console.log('New user saved to database');
+      } catch (error) {
+        console.error('Error saving new user to database:', error);
+      }
     });
 
     socketRef.current.on('message', (data: MessageProps) => {
