@@ -34,7 +34,7 @@ export default function Chat() {
       }`}
     >
       <BsArrowLeftShort
-        className={`bg-white text-black text-3xl rounded-full absolute -left-3 top-9 border-2 border-sub1 hover:bg-highlight hover:text-white duration-300  ${
+        className={`bg-white text-black text-3xl rounded-full absolute -left-3 top-9 border-2 border-sub1 hover:bg-highlight hover:text-white duration-300 cursor-pointer ${
           !open && 'rotate-180'
         }`}
         onClick={() => setOpen(!open)}

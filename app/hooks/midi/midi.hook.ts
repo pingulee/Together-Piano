@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import {
   onMIDIFailure,
   onMIDISuccess,
-} from '@/app/utils/midi-to-note/midi-to-note.util';
+} from '@/app/utils/midi/midi-to-note.util';
 
 /**
  * MIDI 디바이스 접근 및 메시지 처리를 위한 훅
