@@ -22,7 +22,7 @@ export function initSocketServer(httpServer: any) {
     io.emit('userCount', connectedUsers.size);
 
     io.emit('system', {
-      content: `${token} has entered.`,
+      content: `${token} has join`,
     });
 
     socket.on('disconnect', () => {

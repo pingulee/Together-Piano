@@ -1,8 +1,10 @@
-export default function tokenGenerate(tokenLength = 6) {
-  const characters = '0123456789ABCDEF';
+export default function tokenGenerate(tokenLength = 15) {
+  const characters =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let token = '';
   for (let i = 0; i < tokenLength; i++) {
-    token += characters[Math.floor(Math.random() * 16)];
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    token += characters.charAt(randomIndex);
   }
   return token;
 }

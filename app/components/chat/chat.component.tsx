@@ -52,13 +52,13 @@ export default function Chat() {
             {messages.map((msg, index) =>
               msg.type === 'system' ? (
                 <div key={index} className='p-2'>
-                  <div className='bg-sub1 rounded w-full break-words p-1 text-subHighlight'>
+                  <div className='bg-white rounded w-full break-words p-1 text-black '>
                     {msg.content}
                   </div>
                 </div>
               ) : (
                 <div key={index} className='p-2'>
-                  <div className='flex text-xs font-bold mb-1 gap-2 items-center'>
+                  <div className='flex text-x font-bold mb-1 gap-2 items-center'>
                     <Image
                       src={flagImagePath}
                       alt={msg.country}
