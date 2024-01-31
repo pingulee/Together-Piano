@@ -5,12 +5,14 @@ import { Sender } from '@/app/interfaces/message/sender.interface';
 import { Content } from '@/app/interfaces/message/content.interface';
 import { Country } from '@/app/interfaces/country/country.interface';
 import { useUserCountry } from '@/app/hooks/user-country/user-country.hook';
+import { Type } from '@/app/interfaces/message/type.interface';
 
-interface MessageProps extends Sender, Content, Country {}
+interface MessageProps extends Sender, Content, Country, Type {}
 
 export const useSocket = () => {
   const token = useToken();
   const [messages, setMessages] = useState<MessageProps[]>([]);
+  const [systemMessages, setSystemMessages] = useState<MessageProps[]>([]);
   const [currentMessage, setCurrentMessage] = useState('');
   const [userCount, setUserCount] = useState(0);
   const userCountry = useUserCountry();
@@ -22,7 +24,10 @@ export const useSocket = () => {
     });
 
     socketRef.current.on('message', (data: MessageProps) => {
-      setMessages((prevMessages) => [...prevMessages, data]);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { ...data, type: 'user' },
+      ]);
     });
 
     socketRef.current.on('userCount', (count: number) => {
@@ -30,7 +35,10 @@ export const useSocket = () => {
     });
 
     socketRef.current.on('system', (data: MessageProps) => {
-      setMessages((prevMessages) => [...prevMessages, data]);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { ...data, type: 'system' },
+      ]);
     });
 
     return () => {
@@ -44,6 +52,7 @@ export const useSocket = () => {
         content: currentMessage,
         sender: token,
         country: userCountry,
+        type: 'user',
       };
       socketRef?.current?.emit('message', messageData);
       setMessages((prevMessages) => [...prevMessages, messageData]);
@@ -54,6 +63,8 @@ export const useSocket = () => {
   return {
     messages,
     setMessages,
+    systemMessages,
+    setSystemMessages,
     currentMessage,
     setCurrentMessage,
     userCount,

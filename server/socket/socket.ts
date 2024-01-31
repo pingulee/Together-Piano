@@ -22,7 +22,7 @@ export function initSocketServer(httpServer: any) {
     io.emit('userCount', connectedUsers.size);
 
     io.emit('system', {
-      content: `${token}님이 입장 하셨습니다.`,
+      content: `${token} has entered.`,
     });
 
     socket.on('disconnect', () => {
@@ -31,7 +31,7 @@ export function initSocketServer(httpServer: any) {
       io.emit('userCount', connectedUsers.size);
 
       io.emit('system', {
-        content: `${token}님이 퇴장 하셨습니다.`,
+        content: `${token} has left`,
       });
     });
 

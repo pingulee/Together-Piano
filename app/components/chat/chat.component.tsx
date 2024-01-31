@@ -9,11 +9,12 @@ import { useFocus } from '@/app/hooks/textarea-focus/textarea-focus.hooks';
 import { useSideOpen } from '@/app/hooks/side-open/side-open.hook';
 import { useAutoScrollToBottom } from '@/app/hooks/scroll/scroll-bottom.hook';
 import { useUserCountry } from '@/app/hooks/user-country/user-country.hook';
-
 export default function Chat() {
   const {
     messages,
     setMessages,
+    systemMessages,
+    setSystemMessages,
     currentMessage,
     setCurrentMessage,
     userCount,
@@ -40,37 +41,45 @@ export default function Chat() {
         onClick={() => setOpen(!open)}
       />
 
-      {/* 현재 접속한 사용자 수를 표시하는 모달 열기 버튼 */}
       <div className='mb-4 flex bg-sub1 border-2 rounded border-sub1 justify-center items-center cursor-pointer hover:bg-white hover:text-black duration-300'>
         <FaUser />
         <span>{userCount}</span>
       </div>
 
-      {/* open 상태가 false일 때만 채팅 목록과 입력 필드를 렌더링 */}
       {!open && (
         <>
           <div className='flex-grow overflow-y-scroll'>
-            {messages.map((msg, index) => (
-              <div key={index} className='p-2'>
-                <div className='flex text-xs font-bold mb-1 gap-2 items-center'>
-                  <Image
-                    src={`${flagImagePath}`}
-                    alt={msg.country}
-                    width={30}
-                    height={20}
-                  />
-                  {msg.sender}{' '}
+            {messages.map((msg, index) =>
+              msg.type === 'system' ? (
+                <div key={index} className='p-2'>
+                  <div className='bg-sub1 rounded w-full break-words p-1 text-subHighlight'>
+                    {msg.content}
+                  </div>
                 </div>
-                <div className='bg-sub1 rounded w-full break-words p-1'>
-                  {msg.content.split('\n').map((line, lineIndex) => (
-                    <React.Fragment key={lineIndex}>
-                      {line}
-                      {lineIndex < msg.content.split('\n').length - 1 && <br />}
-                    </React.Fragment>
-                  ))}
+              ) : (
+                <div key={index} className='p-2'>
+                  <div className='flex text-xs font-bold mb-1 gap-2 items-center'>
+                    <Image
+                      src={flagImagePath}
+                      alt={msg.country}
+                      width={30}
+                      height={20}
+                    />
+                    {msg.sender}
+                  </div>
+                  <div className='bg-sub1 rounded w-full break-words p-1'>
+                    {msg.content.split('\n').map((line, lineIndex) => (
+                      <React.Fragment key={lineIndex}>
+                        {line}
+                        {lineIndex < msg.content.split('\n').length - 1 && (
+                          <br />
+                        )}
+                      </React.Fragment>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ),
+            )}
             <div ref={messagesEndRef} />
           </div>
           <div
@@ -82,8 +91,6 @@ export default function Chat() {
               value={currentMessage}
               onChange={(e) => setCurrentMessage(e.target.value)}
               onKeyDown={handleKeyDown}
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
               className='bg-sub1 text-xl rounded-lg p-2 w-full resize-none outline-none'
               placeholder='Type message...'
               rows={2}
