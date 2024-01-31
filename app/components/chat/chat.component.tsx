@@ -57,7 +57,7 @@ export default function Chat() {
                     src={`${flagImagePath}`}
                     alt={msg.country}
                     width={30}
-                    height={30}
+                    height={20}
                   />
                   {msg.sender}{' '}
                 </div>

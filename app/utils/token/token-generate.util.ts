@@ -1,4 +1,4 @@
-export default function tokenGenerate(tokenLength = 15) {
+export default function tokenGenerate(tokenLength = 6) {
   const characters = '0123456789ABCDEF';
   let token = '';
   for (let i = 0; i < tokenLength; i++) {

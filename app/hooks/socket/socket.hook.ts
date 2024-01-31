@@ -17,7 +17,7 @@ export const useSocket = () => {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    socketRef.current = io('https://togetherpiano.com', {
+    socketRef.current = io('192.168.100.83:3000', {
       query: { token },
     });
 
@@ -27,6 +27,10 @@ export const useSocket = () => {
 
     socketRef.current.on('userCount', (count: number) => {
       setUserCount(count);
+    });
+
+    socketRef.current.on('system', (data: MessageProps) => {
+      setMessages((prevMessages) => [...prevMessages, data]);
     });
 
     return () => {
