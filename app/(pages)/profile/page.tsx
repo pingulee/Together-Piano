@@ -9,8 +9,8 @@ export default function ProfilePage() {
 
   if (!session) {
     return (
-      <div className='flex items-center justify-center w-full'>
-        <div className='flex flex-col p-8 bg-sub1 rounded-lg shadow-lg mx-4 items-center justify-center select-none'>
+      <div className='flex items-center justify-center w-full select-none'>
+        <div className='flex flex-col p-8 bg-sub1 rounded-lg shadow-lg mx-4 items-center justify-center '>
           <div className='text-xl'>Please Login</div>
           <Link
             href='/login'
@@ -26,7 +26,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className='flex items-center justify-center w-full'>
+    <div className='flex items-center justify-center w-full select-none'>
       <div className='flex flex-col p-8 bg-sub1 rounded-lg shadow-lg mx-4'>
         <div className='flex flex-col gap-4 justify-between items-center'>
           <Image

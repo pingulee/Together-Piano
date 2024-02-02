@@ -5,7 +5,7 @@ import { SiGmail } from 'react-icons/si';
 
 export default function ContactPage() {
   return (
-    <div className='flex items-center justify-center w-full'>
+    <div className='flex items-center justify-center w-full select-none'>
       <div className='max-w-lg p-8 bg-sub1 rounded-lg shadow-lg mx-4'>
         <div className='flex justify-center mb-2'>
           <Image
