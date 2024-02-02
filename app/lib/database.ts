@@ -11,7 +11,7 @@ if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
 
-async function dbConnect() {
+export async function connectDatabase() {
   if (cached.conn) {
     return cached.conn;
   }
@@ -28,13 +28,3 @@ async function dbConnect() {
   cached.conn = await cached.promise;
   return cached.conn;
 }
-
-export const connectDatabase = async () => {
-  try {
-    await mongoose.connect(uri);
-    console.log('데이터베이스 연결 성공');
-  } catch (error) {
-    console.error('데이터베이스 연결 실패:', error);
-    process.exit(1);
-  }
-};

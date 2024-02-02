@@ -14,7 +14,7 @@
     "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "preserve",
-    "typeRoots": ["./types"],
+    "typeRoots": ["./types", "./node_modules/@types"],
     "incremental": true,
     "plugins": [
       {
@@ -26,8 +26,9 @@
     }
   },
   "include": [
-    "next-env.d.ts",
-    "global.d.ts",
+    "types/next-env.d.ts",
+    "types/next-auth.d.ts",
+    "types/global.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
