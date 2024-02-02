@@ -53,7 +53,7 @@ export default function ProfilePage() {
           </div> */}
 
           <div
-            className='mt-4 px-4 py-2 text-black text-lg rounded bg-white hover:bg-opacity-80 duration-200 cursor-pointer text-center cursor-pointer'
+            className='mt-4 px-4 py-2 text-black text-lg rounded bg-white hover:bg-opacity-80 duration-200 text-center cursor-pointer'
             onClick={() => signOut({ callbackUrl: '/' })}
           >
             {' '}

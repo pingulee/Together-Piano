@@ -2,8 +2,7 @@ import express, { Request, Response } from 'express';
 import { createServer } from 'http';
 import next from 'next';
 import { initSocketServer } from './socket/socket';
-import { connectDatabase } from '../app/lib/database';
-import Feedback from '../app/models/feedback.model';
+import { connectDatabase } from '../shared/lib/database';
 
 const hostname = 'localhost';
 const port = Number(process.env.PORT || 3000);
