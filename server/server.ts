@@ -3,7 +3,7 @@ import { createServer } from 'http';
 import next from 'next';
 import { initSocketServer } from './socket/socket';
 import { connectDatabase } from '../app/lib/database';
-import Feedback from './models/feedback.model';
+import Feedback from '../app/models/feedback.model';
 
 const hostname = 'localhost';
 const port = Number(process.env.PORT || 3000);

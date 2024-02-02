@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 
 // MongoDB 연결 URI
-const uri = 'mongodb+srv://admin:admin@together-piano.gi6goiw.mongodb.net/';
+const uri =
+  'mongodb+srv://admin:admin@together-piano.gi6goiw.mongodb.net/togetherpiano';
 
 export const connectDatabase = async () => {
   try {
