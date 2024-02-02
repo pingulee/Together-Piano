@@ -1,10 +1,9 @@
 import express, { Request, Response } from 'express';
 import { createServer } from 'http';
 import next from 'next';
-import { initSocketServer } from '@/server/socket/socket';
-import postsRouter from '@/server/routes/post';
-import { connectDatabase } from '@/server/database';
-import Feedback from '@/server/models/feedback.model';
+import { initSocketServer } from './socket/socket';
+import { connectDatabase } from '../app/lib/database';
+import Feedback from './models/feedback.model';
 
 const hostname = 'localhost';
 const port = Number(process.env.PORT || 3000);
@@ -15,6 +14,7 @@ const nextHandler = nextApp.getRequestHandler();
 (async () => {
   try {
     await nextApp.prepare();
+    await connectDatabase();
 
     const app = express();
     const httpServer = createServer(app);
