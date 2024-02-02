@@ -1,13 +1,7 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import DiscordProvider from 'next-auth/providers/discord';
-import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
-import { MongoClient } from 'mongodb';
-
-const client = MongoClient.connect(
-  process.env.MONGODB_URI ??
-    'mongodb+srv://admin:admin@together-piano.gi6goiw.mongodb.net/togetherpiano',
-);
+import { connectDatabase } from '@/app/lib/database';
 
 const handler = NextAuth({
   providers: [
@@ -21,7 +15,12 @@ const handler = NextAuth({
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
-  adapter: MongoDBAdapter(client),
+  callbacks: {
+    async session({ session, token }) {
+      session.user.id = token.sub;
+      return session;
+    },
+  },
 });
 
 export { handler as GET, handler as POST };

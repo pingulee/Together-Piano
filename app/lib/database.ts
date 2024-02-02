@@ -5,10 +5,10 @@ const uri =
   process.env.MONGODB_URI ||
   'mongodb+srv://admin:admin@together-piano.gi6goiw.mongodb.net/togetherpiano';
 
-let cached = global.mongoose;
+let cached = (global as any).mongoose;
 
 if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+  cached = (global as any).mongoose = { conn: null, promise: null };
 }
 
 export async function connectDatabase() {

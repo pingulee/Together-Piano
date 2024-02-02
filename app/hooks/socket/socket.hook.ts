@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import io, { Socket } from 'socket.io-client';
-import { User } from '@/app/models/user.model'; // User 모델 import 추가
 
 import { useToken } from '@/app/contexts/token.context';
 import { Sender } from '@/app/interfaces/message/sender.interface';

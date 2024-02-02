@@ -40,7 +40,7 @@ export default function ProfilePage() {
           <div className='text-4xl font-bold text-center'>
             <div>{session.user?.name}</div>
           </div>
-          <div className='text-xl text-center'>
+          {/* <div className='text-xl text-center'>
             <div>Like</div>
             <div>{session.user?.createdAt}</div>
           </div>
@@ -51,7 +51,7 @@ export default function ProfilePage() {
           <div className='text-xl text-center'>
             <div>Last Login</div>
             <div>{session.user?.lastLogin}</div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
