@@ -17,28 +17,26 @@ export default function ContactPage() {
           />
         </div>
         <div className='text-4xl font-bold text-center mb-7'>Pingu Lee</div>
-        <div>
-          <div className='text-lg flex flex-col items-center space-y-2'>
-            <Link
-              href='https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=escapeweedy@gmail.com'
-              target='_blank'
-              rel='noopener noreferrer'
-              className='flex items-center space-x-2 min-w-[290px] px-4 py-2 rounded-md gap-2 hover:bg-white hover:text-black transition-colors duration-200 ease-in-out shadow-md bg-red-500 text-white hover:shadow-lg'
-            >
-              <SiGmail />
-              <span>escapeweedy@gmail.com</span>
-            </Link>
+        <div className='text-lg flex flex-col items-center space-y-2'>
+          <Link
+            href='https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=escapeweedy@gmail.com'
+            target='_blank'
+            rel='noopener noreferrer'
+            className='flex items-center space-x-2 min-w-[290px] px-4 py-2 rounded-md gap-2 duration-200 bg-red-500 text-white hover:bg-opacity-80'
+          >
+            <SiGmail />
+            <span>escapeweedy@gmail.com</span>
+          </Link>
 
-            <Link
-              href='https://github.com/PinguLee'
-              target='_blank'
-              rel='noopener noreferrer'
-              className='flex items-center space-x-2 min-w-[290px] px-4 py-2 rounded-md gap-2 hover:bg-white hover:text-black transition-colors duration-200 ease-in-out shadow-md bg-black text-white hover:shadow-lg'
-            >
-              <FaGithub />
-              <span>https://github.com/PinguLee</span>
-            </Link>
-          </div>
+          <Link
+            href='https://github.com/PinguLee'
+            target='_blank'
+            rel='noopener noreferrer'
+            className='flex items-center space-x-2 min-w-[290px]  px-4 py-2 rounded-md gap-2 duration-200 bg-[#0d1117] text-white hover:bg-opacity-80'
+          >
+            <FaGithub />
+            <span>https://github.com/PinguLee</span>
+          </Link>
         </div>
       </div>
     </div>

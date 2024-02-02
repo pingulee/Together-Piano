@@ -1,7 +1,6 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import DiscordProvider from 'next-auth/providers/discord';
-import { connectDatabase } from '@/app/lib/database';
 
 const handler = NextAuth({
   providers: [

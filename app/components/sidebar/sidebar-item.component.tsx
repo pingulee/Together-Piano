@@ -19,16 +19,16 @@ interface SidebarItemProps
 
 export default function SidebarItem({
   title,
-  href,
   icon,
   open,
+  href,
 }: SidebarItemProps) {
   const pathname = usePathname();
 
   const isActive = pathname === href;
 
   return (
-    <Link href={href}>
+    <Link className='duration-300' href={href}>
       <li
         className={`text-sm flex items-center gap-x-4 p-2 my-4 hover:bg-white hover:text-black rounded-md transition duration-300 ease-in-out ${
           isActive ? 'bg-sub1 border-l-4 border-primary border-highlight' : ''

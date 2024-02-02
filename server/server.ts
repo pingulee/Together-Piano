@@ -21,19 +21,6 @@ const nextHandler = nextApp.getRequestHandler();
 
     initSocketServer(httpServer);
 
-    app.get('/api/feedback', async (req: Request, res: Response) => {
-      try {
-        const feedbacks = await Feedback.find();
-        console.log(feedbacks);
-        res.json(feedbacks);
-      } catch (error) {
-        res.status(500).json({
-          message: '서버에서 데이터를 조회하는 중 오류가 발생했습니다.',
-          error,
-        });
-      }
-    });
-
     app.all('*', (req: Request, res: Response) => {
       return nextHandler(req, res);
     });

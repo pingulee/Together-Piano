@@ -1,26 +1,25 @@
 'use client';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 export default function ProfilePage() {
-  const { data: session, status } = useSession();
-
-  if (status === 'loading') {
-    return <p>Loading...</p>;
-  }
+  const { data: session } = useSession();
 
   if (!session) {
     return (
       <div className='flex items-center justify-center w-full'>
-        <div className='text-center'>
-          <p className='text-xl'>Please Login.</p>
-          <div
-            className='mt-4 px-4 py-2 bg-white text-white rounded hover:bg-highlight'
-            onClick={() => signIn()}
+        <div className='flex flex-col p-8 bg-sub1 rounded-lg shadow-lg mx-4 items-center justify-center select-none'>
+          <div className='text-xl'>Please Login</div>
+          <Link
+            href='/login'
+            target='_blank'
+            rel='noopener noreferrer'
+            className='flex items-center space-x-2 min-w-[290px] px-4 py-2 rounded-md gap-2 duration-200 bg-white text-black hover:bg-opacity-80'
           >
-            로그인하기
-          </div>
+            <span>escapeweedy@gmail.com</span>
+          </Link>
         </div>
       </div>
     );
@@ -52,6 +51,14 @@ export default function ProfilePage() {
             <div>Last Login</div>
             <div>{session.user?.lastLogin}</div>
           </div> */}
+
+          <div
+            className='mt-4 px-4 py-2 text-black text-lg rounded bg-white hover:bg-opacity-80 duration-200 cursor-pointer text-center cursor-pointer'
+            onClick={() => signOut({ callbackUrl: '/' })}
+          >
+            {' '}
+            Logout
+          </div>
         </div>
       </div>
     </div>

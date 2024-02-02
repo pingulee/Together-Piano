@@ -2,9 +2,8 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useSession } from 'next-auth/react';
-import Image from 'next/image';
 
 import { GiGrandPiano } from 'react-icons/gi';
 import { FaHouse } from 'react-icons/fa6';
@@ -35,11 +34,6 @@ export default function Sidebar() {
           title: 'Profile',
           icon: <RiAccountBoxFill />,
           href: '/profile',
-        },
-        {
-          title: 'Logout',
-          icon: <RiLogoutBoxFill />,
-          href: '/api/auth/signout',
         },
       ]
     : [{ title: 'Login', icon: <RiLoginBoxFill />, href: '/login' }];
