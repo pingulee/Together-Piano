@@ -5,7 +5,7 @@ import io, { Socket } from 'socket.io-client';
 export default function Room() {
   return (
     <div className='flex flex-row w-full justify-center items-center h-20'>
-      방제목
+      
     </div>
   );
 }

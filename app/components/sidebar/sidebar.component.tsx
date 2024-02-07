@@ -25,7 +25,7 @@ export default function Sidebar() {
   const upMenuItems = [
     { title: 'Home', icon: <FaHouse />, href: '/' },
     { title: 'Piano', icon: <BiSolidPiano />, href: '/piano' },
-    { title: 'Feedback', icon: <MdFeedback />, href: '/feedback' },
+    // { title: 'Feedback', icon: <MdFeedback />, href: '/feedback' },
     { title: 'Contact', icon: <MdContactEmergency />, href: '/contact' },
   ];
   let downMenuItems = session

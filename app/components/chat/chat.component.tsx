@@ -28,8 +28,6 @@ export default function Chat() {
   const userCountry = useUserCountry();
   const flagImagePath = `/images/flags/${userCountry?.toLowerCase()}.png`;
 
-  console.log(userCountry);
-
   return (
     <div
       className={`flex min-h-screen max-h-screen flex-col min-w-20 duration-300 max-w-72 bg-sub2 h-screen p-2 relative justify-between z-50 ${
