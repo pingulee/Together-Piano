@@ -11,14 +11,13 @@ export default function ProfilePage() {
     return (
       <div className='flex items-center justify-center w-full select-none'>
         <div className='flex flex-col p-8 bg-sub1 rounded-lg shadow-lg mx-4 items-center justify-center '>
-          <div className='text-xl'>Please Login</div>
           <Link
             href='/login'
             target='_blank'
             rel='noopener noreferrer'
-            className='flex items-center space-x-2 min-w-[290px] px-4 py-2 rounded-md gap-2 duration-200 bg-white text-black hover:bg-opacity-80'
+            className='flex items-center space-x-2 min-w-[290px] px-4 py-2 rounded-md gap-2 duration-200 bg-white text-black hover:bg-opacity-80 text-xl justify-center'
           >
-            <span>escapeweedy@gmail.com</span>
+            Please Login
           </Link>
         </div>
       </div>

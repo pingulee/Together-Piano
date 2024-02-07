@@ -1,9 +1,19 @@
-import NextAuth from 'next-auth';
+import NextAuth, { User } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import DiscordProvider from 'next-auth/providers/discord';
-import mongoose from 'mongoose';
-import User from '@/shared/models/user.model';
-import { connectDatabase } from '@/shared/lib/database';
+import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
+import { MongoClient } from 'mongodb';
+
+// 사용자 정의 타입을 확장하여 새로운 'test' 속성을 추가
+interface ExtendedUser extends User {
+  signUpDate?: string; // 사이트 최초 접속일
+  color?: string; // 색상
+}
+
+const clientPromise = MongoClient.connect(
+  process.env.MONGODB_URI ??
+    'mongodb+srv://admin:admin@together-piano.gi6goiw.mongodb.net/togetherpiano',
+);
 
 const handler = NextAuth({
   providers: [
@@ -17,34 +27,13 @@ const handler = NextAuth({
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
+  adapter: MongoDBAdapter(clientPromise),
   callbacks: {
-    async signIn({ user, account, profile }) {
-      await connectDatabase();
-
-      // 사용자가 데이터베이스에 있는지 확인
-      const existingUser = await User.findOne({ email: user.email });
-
-      if (existingUser) {
-        // 기존 사용자: lastLogin 업데이트
-        existingUser.lastLogin = new Date();
-        await existingUser.save();
-      } else {
-        // 새 사용자: 유저 생성
-        const newUser = new User({
-          email: user.email,
-          username: user.name,
-          bio: '',
-          signUpDate: new Date(),
-          color: `#${Math.floor(Math.random() * 16777215).toString(16)}`, // 랜덤 컬러 생성
-        });
-        await newUser.save();
-      }
-
-      return true; // 로그인 성공
-    },
-    async session({ session, token }) {
-      session.user.id = token.sub;
-      return session;
+    async signIn({ user }) {
+      const extendedUser = user as ExtendedUser;
+      extendedUser.signUpDate = 'a';
+      extendedUser.color = '#a';
+      return true;
     },
   },
 });
