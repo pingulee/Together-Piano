@@ -1,32 +1,92 @@
-import React, { useState } from 'react'; // KeyboardEvent 타입을 추가로 임포트합니다.
+import React, { useEffect, useRef, useState } from 'react';
+import { useSession, signIn, signOut } from 'next-auth/react';
 import Image from 'next/image';
+
 import { FaUser } from 'react-icons/fa';
 import { BsArrowLeftShort } from 'react-icons/bs';
 import { IoMdSend, IoMdClose } from 'react-icons/io';
-import { useSocket } from '@/app/hooks/socket/socket.hook';
-import { useKeyDown } from '@/app/utils/enter/enter.util';
-import { useFocus } from '@/app/hooks/textarea-focus/textarea-focus.hooks';
+
+import { useFocus } from '@/app/hooks/textarea-focus/textarea-focus.hook';
 import { useSideOpen } from '@/app/hooks/side-open/side-open.hook';
 import { useAutoScrollToBottom } from '@/app/hooks/scroll/scroll-bottom.hook';
 import { useUserCountry } from '@/app/hooks/user-country/user-country.hook';
+
+import { Sender } from '@/app/interfaces/message/sender.interface';
+import { Content } from '@/app/interfaces/message/content.interface';
+import { Country } from '@/app/interfaces/country/country.interface';
+import { Type } from '@/app/interfaces/message/type.interface';
+
+import { useKeyDown } from '@/app/utils/enter/enter.util';
+
+import io, { Socket } from 'socket.io-client';
+
+import { useToken } from '@/app/contexts/token.context';
+
+interface MessageProps extends Sender, Content, Country, Type {}
+
 export default function Chat() {
-  const {
-    messages,
-    setMessages,
-    systemMessages,
-    setSystemMessages,
-    currentMessage,
-    setCurrentMessage,
-    userCount,
-    setUserCount,
-    handleSendMessage,
-  } = useSocket();
+  const { data: session } = useSession();
+  const name = session?.user?.name ?? 'Anonymous';
+  const token = useToken();
+  const userCountry = useUserCountry();
+  const [messages, setMessages] = useState<MessageProps[]>([]);
+  const [currentMessage, setCurrentMessage] = useState('');
+  const [userCount, setUserCount] = useState(0);
+  const socketRef = useRef<Socket | null>(null);
+
+  useEffect(() => {
+    socketRef.current = io('192.168.100.83:3000', {
+      query: { token, name },
+    });
+
+    socketRef.current.on('message', (data: MessageProps) => {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { ...data, type: 'user' },
+      ]);
+    });
+
+    socketRef.current.on('userCount', (count: number) => {
+      setUserCount(count);
+    });
+
+    socketRef.current.on('system', (data: MessageProps) => {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { ...data, type: 'system' },
+      ]);
+    });
+
+    return () => {
+      socketRef.current?.disconnect();
+    };
+  }, [token, name, userCountry]);
+
+  const handleSendMessage = () => {
+    if (currentMessage.trim()) {
+      const messageData: MessageProps = {
+        content: currentMessage,
+        sender: name,
+        country: userCountry,
+        type: 'user',
+      };
+      socketRef.current?.emit('message', messageData);
+      setMessages((prevMessages) => [...prevMessages, messageData]);
+      setCurrentMessage('');
+    }
+  };
+
   const { isFocused, setIsFocused } = useFocus();
   const { open, setOpen } = useSideOpen();
   const messagesEndRef = useAutoScrollToBottom([messages]);
-  const handleKeyDown = useKeyDown(handleSendMessage);
-  const userCountry = useUserCountry();
   const flagImagePath = `/images/flags/${userCountry?.toLowerCase()}.png`;
+
+  const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      handleSendMessage();
+    }
+  };
 
   return (
     <div
@@ -49,37 +109,34 @@ export default function Chat() {
       {!open && (
         <>
           <div className='flex-grow overflow-y-scroll'>
-            {messages.map((msg, index) =>
-              msg.type === 'system' ? (
-                <div key={index} className='p-2'>
-                  <div className='bg-white rounded w-full break-words p-1 text-black '>
-                    {msg.content}
-                  </div>
-                </div>
-              ) : (
-                <div key={index} className='p-2'>
-                  <div className='flex text-x font-bold mb-1 gap-2 items-center'>
+            {messages.map((msg, index) => (
+              <div key={index} className='p-2'>
+                <div
+                  className={`flex text-x font-bold mb-1 gap-2 items-center ${
+                    msg.type === 'system' ? '' : 'justify-start'
+                  }`}
+                >
+                  {msg.type !== 'system' && (
                     <Image
                       src={flagImagePath}
                       alt={msg.country}
                       width={30}
                       height={20}
                     />
-                    {msg.sender}
-                  </div>
-                  <div className='bg-sub1 rounded w-full break-words p-1'>
-                    {msg.content.split('\n').map((line, lineIndex) => (
-                      <React.Fragment key={lineIndex}>
-                        {line}
-                        {lineIndex < msg.content.split('\n').length - 1 && (
-                          <br />
-                        )}
-                      </React.Fragment>
-                    ))}
-                  </div>
+                  )}
+                  {msg.sender}
                 </div>
-              ),
-            )}
+                <div
+                  className={`bg-${
+                    msg.type === 'system' ? 'white' : 'sub1'
+                  } rounded w-full break-words p-1 ${
+                    msg.type === 'system' ? 'text-black' : ''
+                  }`}
+                >
+                  {msg.content}
+                </div>
+              </div>
+            ))}
             <div ref={messagesEndRef} />
           </div>
           <div
@@ -90,7 +147,9 @@ export default function Chat() {
             <textarea
               value={currentMessage}
               onChange={(e) => setCurrentMessage(e.target.value)}
-              onKeyDown={handleKeyDown}
+              onKeyDown={onKeyDown}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
               className='bg-sub1 text-xl rounded-lg p-2 w-full resize-none outline-none'
               placeholder='Type message...'
               rows={2}

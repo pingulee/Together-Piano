@@ -1,18 +1,9 @@
 import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
-  nickname: {
-    type: String,
-    required: true,
-  },
-
   signUpDate: {
     type: Date,
-    default: Date.now,
-  },
-  lastLogin: {
-    type: Date,
-    default: Date.now,
+    required: true,
   },
   color: {
     type: String,

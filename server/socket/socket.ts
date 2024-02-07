@@ -15,6 +15,8 @@ export function initSocketServer(httpServer: any) {
 
   io.on('connect', (socket) => {
     const token = socket.handshake.query.token;
+    const name = socket.handshake.query.name;
+
     // 사용자 토큰을 Set에 추가
     connectedUsers.add(token);
 
@@ -22,7 +24,7 @@ export function initSocketServer(httpServer: any) {
     io.emit('userCount', connectedUsers.size);
 
     io.emit('system', {
-      content: `${token} has join`,
+      content: `${name} has join`,
     });
 
     socket.on('disconnect', () => {
@@ -31,7 +33,7 @@ export function initSocketServer(httpServer: any) {
       io.emit('userCount', connectedUsers.size);
 
       io.emit('system', {
-        content: `${token} has left`,
+        content: `${name} has left`,
       });
     });
 
