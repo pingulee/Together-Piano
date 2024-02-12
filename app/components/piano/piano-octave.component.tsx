@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PianoKey from './piano-key.component';
+import PianoKey from '@/app/components/piano/piano-key.component';
 
 interface OctaveProps {
   pitch: number;

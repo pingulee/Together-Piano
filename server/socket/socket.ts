@@ -37,11 +37,6 @@ export function initSocketServer(httpServer: any) {
       });
     });
 
-    socket.on('playNote', (data) => {
-      // 연주자를 제외한 모든 클라이언트에게 연주된 음 정보 전송
-      socket.broadcast.emit('notePlayed', data);
-    });
-
     socket.on('message', (data) => {
       socket.broadcast.emit('message', data);
     });
