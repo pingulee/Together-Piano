@@ -37,6 +37,11 @@ export function initSocketServer(httpServer: any) {
       });
     });
 
+    socket.on('playNote', (data) => {
+      // 'playNote' 이벤트와 데이터를 다른 모든 클라이언트에게 방송
+      socket.broadcast.emit('playNote', data);
+    });
+
     socket.on('message', (data) => {
       socket.broadcast.emit('message', data);
     });

@@ -1,40 +1,16 @@
-// src/contexts/SocketContext.tsx
+import React, { ReactNode, createContext } from 'react';
+import io, { Socket } from 'socket.io-client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { io, Socket } from 'socket.io-client';
+export const SocketContext = createContext<Socket | null>(null);
 
-interface ISocketContext {
-  socket: Socket | null;
+interface SocketProviderProps {
+  children: ReactNode; // ReactNode 유형을 사용하여 모든 자식 요소를 허용합니다.
 }
 
-const SocketContext = createContext<ISocketContext | undefined>(undefined);
-
-export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const [socket, setSocket] = useState<Socket | null>(null);
-
-  useEffect(() => {
-    // Socket.IO 서버 주소를 여기에 넣으세요. 예: http://localhost:3000
-    const socketIo = io('192.168.0.106:3000');
-    setSocket(socketIo);
-
-    return () => {
-      socketIo.disconnect();
-    };
-  }, []);
+export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
+  const socket: Socket = io('192.168.100.83:3000');
 
   return (
-    <SocketContext.Provider value={{ socket }}>
-      {children}
-    </SocketContext.Provider>
+    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );
-};
-
-export const useSocket = () => {
-  const context = useContext(SocketContext);
-  if (context === undefined) {
-    throw new Error('useSocket must be used within a SocketProvider');
-  }
-  return context;
 };

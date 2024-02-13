@@ -4,6 +4,7 @@ import Chat from '@/app/components/chat/chat.component';
 import PianoContainer from '@/app/components/piano/piano-container.component';
 import Room from '@/app/components/room/room.component';
 import Setting from '@/app/components/setting/setting.component';
+import { SocketProvider } from '@/app/contexts/socket.context';
 import { useEffect } from 'react';
 
 export default function PianoPage() {
@@ -17,20 +18,22 @@ export default function PianoPage() {
         },
         () => {
           console.error('Could not access MIDI devices.');
-        }
+        },
       );
     }
   }, []);
   return (
     <>
-      <div className='flex flex-col w-full justify-between'>
-        <Room />
-        <PianoContainer />
-        <Setting />
-      </div>
-      <>
-        <Chat />
-      </>
+      <SocketProvider>
+        <div className='flex flex-col w-full justify-between'>
+          <Room />
+          <PianoContainer />
+          <Setting />
+        </div>
+        <>
+          <Chat />
+        </>
+      </SocketProvider>
     </>
   );
 }

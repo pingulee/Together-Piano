@@ -16,8 +16,6 @@ import { Content } from '@/app/interfaces/message/content.interface';
 import { Country } from '@/app/interfaces/country/country.interface';
 import { Type } from '@/app/interfaces/message/type.interface';
 
-import { useKeyDown } from '@/app/utils/enter/enter.util';
-
 import io, { Socket } from 'socket.io-client';
 
 import { useToken } from '@/app/contexts/token.context';
@@ -35,7 +33,7 @@ export default function Chat() {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    socketRef.current = io('192.168.0.106:3000', {
+    socketRef.current = io('192.168.100.83:3000', {
       query: { token, name },
     });
 
@@ -60,7 +58,7 @@ export default function Chat() {
     return () => {
       socketRef.current?.disconnect();
     };
-  }, [token, name, userCountry]);
+  }, []);
 
   const handleSendMessage = () => {
     if (currentMessage.trim()) {
