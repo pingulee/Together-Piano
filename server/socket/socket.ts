@@ -33,7 +33,6 @@ export function initSocketServer(httpServer: any): void {
     socket.on('requestUserList', () => {
       socket.emit('userList', Array.from(connectedUsers.values())); // 요청한 클라이언트에게만 명단 전송
     });
-  
 
     socket.on('playNote', (data) => {
       socket.broadcast.emit('playNote', data);

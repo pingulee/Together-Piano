@@ -1,9 +1,11 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import { SocketContext } from '@/app/contexts/socket.context';
+import React, { useContext, useEffect, useState } from 'react';
 
 import PianoOctave from '@/app/components/piano/piano-octave.component';
 
 export default function PianoContainer() {
+  const socket = useContext(SocketContext);
   const pitchNum = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   const noteMap = new Map<number, string>([
     [21, 'A0'],
@@ -101,6 +103,13 @@ export default function PianoContainer() {
     audio.play();
   };
 
+  const playSoundWithEmit = (noteName: string) => {
+    playSound(noteName); // 로컬에서 소리 재생
+    if (socket) {
+      socket.emit('playNote', noteName); // 서버로 음표 정보 전송
+    }
+  };
+
   useEffect(() => {
     const onMIDISuccess = (midiAccess: WebMidi.MIDIAccess) => {
       for (const input of midiAccess.inputs.values()) {
@@ -114,10 +123,9 @@ export default function PianoContainer() {
       const velocity = midiMessage.data.length > 2 ? midiMessage.data[2] : 0;
 
       if (command === 144 && velocity > 0) {
-        // MIDI 노트 번호를 실제 음표 이름으로 변환 (노트 맵 필요)
         const noteName = noteMap.get(midiNote);
         if (noteName) {
-          playSound(noteName);
+          playSoundWithEmit(noteName);
         }
       }
     };
@@ -126,18 +134,22 @@ export default function PianoContainer() {
       navigator.requestMIDIAccess().then(onMIDISuccess);
     }
 
-    return () => {
-      // MIDI 입력 처리 중단
-    };
-  }, []);
+    if (socket) {
+      socket.on('playNote', (noteName: string) => {
+        playSound(noteName); // 다른 사용자가 연주한 음표 소리 재생
+      });
+
+      return () => {
+        socket.off('playNote'); // 컴포넌트 언마운트 시 이벤트 리스너 제거
+      };
+    }
+  }, [socket]); // socket을 의존성 배열에 추가하여 socket 인스턴스가 변경될 때마다 useEffect를 다시 실행합니다.
 
   return (
-    <>
     <div className='flex w-full h-1/5 piano-cursor'>
       {pitchNum.map((n) => (
-        <PianoOctave key={n} pitch={n} playNote={playSound} />
+        <PianoOctave key={n} pitch={n} playNote={playSoundWithEmit} /> // playSound 대신 playSoundWithEmit 사용
       ))}
     </div>
-    </>
   );
 }
