@@ -97,64 +97,44 @@ const PianoKey: React.FC<PianoKeyProps> = ({ className, note }) => {
     [108, 'C8'],
   ]);
 
-  const playSound = () => {
-    const audio = new Audio(`/sounds/${note}.mp3`); // 오디오 파일 경로 설정
+  const playSound = (noteName: string) => {
+    const audio = new Audio(`/sounds/${noteName}.mp3`); // 오디오 파일 경로 설정
     audio.play(); // 오디오 재생
+    console.log(noteNam);
   };
 
-  // useEffect(() => {
-  //   const onMIDISuccess = (midiAccess: WebMidi.MIDIAccess) => {
-  //     for (const input of midiAccess.inputs.values()) {
-  //       input.onmidimessage = getMIDIMessage;
-  //     }
-  //   };
+  useEffect(() => {
+    const onMIDISuccess = (midiAccess: WebMidi.MIDIAccess) => {
+      for (const input of midiAccess.inputs.values()) {
+        input.onmidimessage = getMIDIMessage;
+      }
+    };
 
-  //   const onMIDIFailure = () => {
-  //     console.warn('MIDI devices not accessible or not available.');
-  //     // MIDI 기능이 없어도 나머지 기능은 정상적으로 동작해야 합니다.
-  //     // 필요한 경우 사용자 인터페이스에 메시지를 표시하여 MIDI 기능이 사용 불가능함을 알릴 수 있습니다.
-  //   };
+    const onMIDIFailure = () => {
+      console.warn('MIDI devices not accessible or not available.');
+    };
 
-  //   const getMIDIMessage = (midiMessage: WebMidi.MIDIMessageEvent) => {
-  //     const command = midiMessage.data[0];
-  //     const note = midiMessage.data[1];
-  //     const velocity = midiMessage.data.length > 2 ? midiMessage.data[2] : 0;
+    const getMIDIMessage = (midiMessage: WebMidi.MIDIMessageEvent) => {
+      const command = midiMessage.data[0];
+      const midiNote = midiMessage.data[1];
+      const velocity = midiMessage.data.length > 2 ? midiMessage.data[2] : 0;
 
-  //     if (command === 144 && velocity > 0) {
-  //       playNote(note);
-  //     } else if (command === 128 || velocity === 0) {
-  //       stopNote(note);
-  //     }
-  //   };
+      if (command === 144 && velocity > 0) {
+        const noteName = noteMap.get(midiNote);
+        if (noteName) {
+          playSound(noteName);
+        }
+      }
+    };
 
-  //   const playNote = (note: number) => {
-  //     const noteName = noteMap.get(note);
-  //     if (noteName) {
-  //       const audio = new Audio(`/sounds/${noteName}.mp3`);
-  //       audio.play();
-  //     } else {
-  //       console.log(`No sound mapped for note: ${note}`);
-  //     }
-  //   };
+    if ('requestMIDIAccess' in navigator) {
+      navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
+    } else {
+      console.warn('This browser does not support Web MIDI API.');
+    }
+  }, [noteMap, playSound]);
 
-  //   const stopNote = (note: number) => {
-  //     console.log(`Stop note: ${note}`);
-  //   };
-
-  //   if ('requestMIDIAccess' in navigator) {
-  //     navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
-  //   } else {
-  //     console.warn('This browser does not support Web MIDI API.');
-  //     // 이 경우에도 나머지 애플리케이션 기능은 정상적으로 동작해야 합니다.
-  //   }
-  // }, []);
-
-  return (
-    <div
-      className={className}
-      onMouseDown={playSound} // 마우스 버튼을 누르면 오디오 재생
-    />
-  );
+  return <div className={className} onMouseDown={() => playSound(note)} />;
 };
 
 export default PianoKey;
