@@ -23,18 +23,22 @@ export function initSocketServer(httpServer: any) {
     // Set의 크기를 사용하여 접속자 수를 업데이트
     io.emit('userCount', connectedUsers.size);
 
-    io.emit('system', {
-      content: `${name} has join`,
-    });
+    if (name) {
+      io.emit('system', {
+        content: `${name} has join`,
+      });
+    }
 
     socket.on('disconnect', () => {
       connectedUsers.delete(token);
 
       io.emit('userCount', connectedUsers.size);
 
-      io.emit('system', {
-        content: `${name} has left`,
-      });
+      if (name) {
+        io.emit('system', {
+          content: `${name} has left`,
+        });
+      }
     });
 
     socket.on('playNote', (data) => {

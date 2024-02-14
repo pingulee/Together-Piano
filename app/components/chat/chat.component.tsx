@@ -24,7 +24,7 @@ interface MessageProps extends Sender, Content, Country, Type {}
 
 export default function Chat() {
   const { data: session } = useSession();
-  const name = session?.user?.name ?? 'Anonymous';
+  const name = session?.user?.name || 'Anonymous';
   const token = useToken();
   const userCountry = useUserCountry();
   const [messages, setMessages] = useState<MessageProps[]>([]);
@@ -58,7 +58,7 @@ export default function Chat() {
     return () => {
       socketRef.current?.disconnect();
     };
-  }, []);
+  }, [name, token]);
 
   const handleSendMessage = () => {
     if (currentMessage.trim()) {
