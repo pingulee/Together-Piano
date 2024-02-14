@@ -5,7 +5,10 @@ interface OctaveProps {
   pitch: number;
 }
 
-export default function PianoOctave({ pitch }: OctaveProps) {
+export default function PianoOctave({
+  pitch,
+  playNote,
+}: OctaveProps & { playNote: (note: string) => void }) {
   const notes = [
     'c',
     'cs',
@@ -28,6 +31,7 @@ export default function PianoOctave({ pitch }: OctaveProps) {
       className={`active:bg-highlight hover:bg-subHighlight piano ${
         n.length === 1 ? 'white-key' : 'black-key'
       }`}
+      playNote={playNote} // playNote 함수를 PianoKey에 전달
     />
   );
 

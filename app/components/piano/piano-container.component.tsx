@@ -96,13 +96,48 @@ export default function PianoContainer() {
     [108, 'C8'],
   ]);
 
+  const playSound = (noteName: string) => {
+    const audio = new Audio(`/sounds/${noteName}.mp3`);
+    audio.play();
+  };
+
+  useEffect(() => {
+    const onMIDISuccess = (midiAccess: WebMidi.MIDIAccess) => {
+      for (const input of midiAccess.inputs.values()) {
+        input.onmidimessage = getMIDIMessage;
+      }
+    };
+
+    const getMIDIMessage = (midiMessage: WebMidi.MIDIMessageEvent) => {
+      const command = midiMessage.data[0];
+      const midiNote = midiMessage.data[1];
+      const velocity = midiMessage.data.length > 2 ? midiMessage.data[2] : 0;
+
+      if (command === 144 && velocity > 0) {
+        // MIDI 노트 번호를 실제 음표 이름으로 변환 (노트 맵 필요)
+        const noteName = noteMap.get(midiNote);
+        if (noteName) {
+          playSound(noteName);
+        }
+      }
+    };
+
+    if ('requestMIDIAccess' in navigator) {
+      navigator.requestMIDIAccess().then(onMIDISuccess);
+    }
+
+    return () => {
+      // MIDI 입력 처리 중단
+    };
+  }, []);
+
   return (
     <>
-      <div className='flex w-full h-1/5 piano-cursor'>
-        {pitchNum.map((n) => (
-          <PianoOctave key={n} pitch={n} />
-        ))}
-      </div>
+    <div className='flex w-full h-1/5 piano-cursor'>
+      {pitchNum.map((n) => (
+        <PianoOctave key={n} pitch={n} playNote={playSound} />
+      ))}
+    </div>
     </>
   );
 }
