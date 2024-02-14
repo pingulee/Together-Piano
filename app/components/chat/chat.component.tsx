@@ -18,14 +18,11 @@ import { Type } from '@/app/interfaces/message/type.interface';
 
 import io, { Socket } from 'socket.io-client';
 
-import { useToken } from '@/app/contexts/token.context';
-
 interface MessageProps extends Sender, Content, Country, Type {}
 
 export default function Chat() {
   const { data: session } = useSession();
   const name = session?.user?.name || 'Anonymous';
-  const token = useToken();
   const userCountry = useUserCountry();
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [currentMessage, setCurrentMessage] = useState('');
@@ -34,7 +31,7 @@ export default function Chat() {
 
   useEffect(() => {
     socketRef.current = io('192.168.100.83:3000', {
-      query: { token, name },
+      query: { name },
     });
 
     socketRef.current.on('message', (data: MessageProps) => {
@@ -42,10 +39,6 @@ export default function Chat() {
         ...prevMessages,
         { ...data, type: 'user' },
       ]);
-    });
-
-    socketRef.current.on('userCount', (count: number) => {
-      setUserCount(count);
     });
 
     socketRef.current.on('system', (data: MessageProps) => {
@@ -58,7 +51,7 @@ export default function Chat() {
     return () => {
       socketRef.current?.disconnect();
     };
-  }, [name, token]);
+  }, [name]);
 
   const handleSendMessage = () => {
     if (currentMessage.trim()) {
