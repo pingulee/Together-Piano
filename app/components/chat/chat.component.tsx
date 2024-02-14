@@ -26,8 +26,10 @@ export default function Chat() {
   const userCountry = useUserCountry();
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [currentMessage, setCurrentMessage] = useState('');
-  const [userCount, setUserCount] = useState(0);
   const socketRef = useRef<Socket | null>(null);
+  const [userCount, setUserCount] = useState(0);
+  const [userList, setUserList] = useState<string[]>([]);
+  const [showUserList, setShowUserList] = useState(false);
 
   useEffect(() => {
     socketRef.current = io('192.168.100.83:3000', {
@@ -48,10 +50,23 @@ export default function Chat() {
       ]);
     });
 
+    socketRef.current.on('userCount', (count: number) => {
+      setUserCount(count);
+    });
+
+    socketRef.current.on('userList', (users: string[]) => {
+      setUserList(users);
+    });
+
     return () => {
       socketRef.current?.disconnect();
     };
   }, [name]);
+
+  const handleUserIconClick = () => {
+    socketRef.current?.emit('requestUserList');
+    setShowUserList(!showUserList); // 명단 표시 상태를 토글
+  };
 
   const handleSendMessage = () => {
     if (currentMessage.trim()) {
@@ -92,9 +107,29 @@ export default function Chat() {
         onClick={() => setOpen(!open)}
       />
 
-      <div className='mb-4 flex bg-sub1 border-2 rounded border-sub1 justify-center items-center cursor-pointer hover:bg-white hover:text-black duration-300'>
-        <FaUser />
-        <span>{userCount}</span>
+      <div
+        className='mb-4 flex flex-col bg-sub1 rounded justify-center items-center cursor-pointer duration-300 mx-3 gap-1 select-none'
+        onClick={handleUserIconClick}
+      >
+        <div className='flex justify-center items-center gap-1 '>
+          <FaUser />
+          <div>{userCount}</div>
+        </div>
+        {showUserList && (
+          <ul
+            className='user-list-modal px-3 py-2 font-bold text-white rounded shadow max-h-48 overflow-y-auto w-full gap-5 text-center'
+            onClick={(event) => event.stopPropagation()} // 이벤트 버블링을 막습니다.
+          >
+            {userList.map((user, index) => (
+              <li
+                key={index}
+                className='hover:bg-white hover:text-black duration-300 '
+              >
+                {user}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {!open && (
@@ -121,7 +156,7 @@ export default function Chat() {
                   className={`bg-${
                     msg.type === 'system' ? 'white' : 'sub1'
                   } rounded w-full break-words p-1 ${
-                    msg.type === 'system' ? 'text-black' : ''
+                    msg.type === 'system' ? 'text-black select-none' : ''
                   }`}
                 >
                   {msg.content}
