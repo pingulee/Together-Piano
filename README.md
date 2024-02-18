@@ -1,36 +1,19 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 피아노 연주 웹 사이트
 
-## Getting Started
+이 프로젝트는 크게 Next.js 14, Socket.IO, MongoDB, Express, WebMIDI를 사용했습니다.
 
-First, run the development server:
+## 소개
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- 사용자들은 마우스 클릭 또는 WebMIDI를 통해 MIDI가 지원되는 디지털 피아노를 사용하여 피아노를 연주할 수 있습니다.
+- Socket.IO를 사용하여 다른 사용자와 실시간으로 연주를 공유하고, 함께 연주할 수 있으며 채팅으로 의견 공유도 가능합니다.
+- MongoDB를 사용하여 사용자들 기록을 저장하고, 나중에 조회할 수 있습니다.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 개선 할 점
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- 채팅 내역 저장 (채팅 내역을 전부 저장하려 했으나 비용이 발생되어 보류) 
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## 사용 방법
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. 피아노 웹 사이트에 접속합니다.
+2. 사이드바에서 피아노 페이지를 클릭하여 이동합니다.
+3. 피아노를 연주하고 실시간으로 여러 사람들과 소통하세요
