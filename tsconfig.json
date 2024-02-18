@@ -12,6 +12,8 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "noImplicitAny": true,
+    "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "preserve",
     "typeRoots": ["./types", "./node_modules/@types"],
