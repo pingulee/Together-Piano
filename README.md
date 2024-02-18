@@ -17,3 +17,14 @@
 1. 피아노 웹 사이트에 접속합니다.
 2. 사이드바에서 피아노 페이지를 클릭하여 이동합니다.
 3. 피아노를 연주하고 실시간으로 여러 사람들과 소통하세요
+
+## 여러 시도가 담긴 브랜치
+
+- socketmidi : 미디 입력 시 socket을 사용해 소리 공유
+- mongodb : 몽고db 활용 (로그인 데이터 저장) 차후 채팅 내역도 저장할 예정
+- socket : 채팅 내역 공유
+- WebAudioAPI : WebAudioAPI 사용
+- pianosound : 건반 클릭 시 소리나게
+- pianolayout : 피아노 레이아웃
+- amplify : aws amplify를 사용하려 했으나 서버리스라 드랍
+- next+express : next api 라우트를 사용하려 했으나 socket 통신에서 한계를 느껴 서버를 추가하고자함
