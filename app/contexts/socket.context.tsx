@@ -8,7 +8,7 @@ interface SocketProviderProps {
 }
 
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
-  const socket: Socket = io('192.168.100.83:3000');
+  const socket: Socket = io('43.202.65.170');
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
