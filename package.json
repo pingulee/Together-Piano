@@ -8,7 +8,7 @@
     "build:server": "tsc --project tsconfig.server.json",
     "build:next": "next build",
     "build": "npm run build:next && npm run build:server",
-    "start": "node dist/server/server.js -p $PORT",
+    "start": "pm2 start dist/server/server.js $PORT",
     "lint": "next lint"
   },
   "dependencies": {
