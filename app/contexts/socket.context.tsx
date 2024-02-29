@@ -6,9 +6,8 @@ export const SocketContext = createContext<Socket | null>(null);
 interface SocketProviderProps {
   children: ReactNode; // ReactNode 유형을 사용하여 모든 자식 요소를 허용합니다.
 }
-
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
-  const socket: Socket = io('43.202.65.170');
+  const socket: Socket = io('172.26.3.164');
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
