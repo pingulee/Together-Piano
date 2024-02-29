@@ -32,7 +32,7 @@ export default function Chat() {
   const [showUserList, setShowUserList] = useState(false);
 
   useEffect(() => {
-    socketRef.current = io('172.26.3.164', {
+    socketRef.current = io('15.165.141.119', {
       query: { name },
     });
 
