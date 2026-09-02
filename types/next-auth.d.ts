@@ -1,15 +1,10 @@
-import 'next-auth';
+import type { DefaultSession } from 'next-auth';
 
 declare module 'next-auth' {
-  /**
-   * NextAuth의 `session` 객체에 사용자 정의 속성을 추가하기 위해 `Session` 인터페이스를 확장합니다.
-   */
+  /** 어댑터가 발급한 사용자 ID 를 세션에 노출합니다. */
   interface Session {
     user: {
-      id?: string | null;
-      name?: string | null;
-      email?: string | null;
-      image?: string | null;
-    };
+      id: string;
+    } & DefaultSession['user'];
   }
 }

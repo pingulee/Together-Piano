@@ -1,62 +1,81 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-:root {
-  --main: #1a1919;
-  --sub1: #2a2828;
-  --sub2: #222020;
-  --highlight: #d74242;
-  --subHighlight: #ffa5a5;
+/*
+ * 디자인 토큰. Tailwind 4 는 여기 정의한 변수에서 유틸리티를 만들어 주므로
+ * `--color-sub1` 은 `bg-sub1` / `text-sub1` / `border-sub1` 로 바로 쓸 수 있고,
+ * 일반 CSS 에서는 `var(--color-sub1)` 로 같은 값을 참조합니다.
+ */
+@theme {
+  --color-main: #1a1919;
+  --color-sub1: #2a2828;
+  --color-sub2: #222020;
+  --color-highlight: #d74242;
+  --color-sub-highlight: #ffa5a5;
 }
 
-* {
-  list-style: none;
+@layer base {
+  body {
+    background-color: var(--color-main);
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  ul,
+  ol {
+    list-style: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-sub1);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-highlight);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-sub-highlight);
+  }
 }
 
-body {
-  background-color: var(--main);
-  color: white;
-  font-family: Arial, Helvetica, sans-serif;
-}
+/*
+ * 건반은 반드시 components 레이어에 둬야 합니다.
+ * 레이어 밖의 CSS 는 Tailwind 유틸리티보다 항상 우선하므로,
+ * 여기서 배경색을 지정하면 `hover:bg-sub-highlight` 같은 유틸리티가 먹지 않습니다.
+ */
+@layer components {
+  .piano {
+    border: 2px solid black;
+    /* 컨테이너의 .piano-cursor 를 건반에서도 유지합니다. */
+    cursor: inherit;
+  }
 
-.piano {
-  border: 2px solid black;
-}
+  .white-key {
+    /* 흰건반 52개가 가로를 균등 분할합니다. (100 / 52) */
+    width: 1.92308%;
+    height: 100%;
+    border-radius: 0 0 3px 3px;
+    background-color: white;
+  }
 
-.white-key {
-  background-color: white;
-  width: 1.92308%;
-  height: 100%;
-  border-radius: 0 0 3px 3px;
-}
+  .black-key {
+    /* 검은건반은 흰건반 절반 너비로, 좌우 흰건반 경계에 걸치도록 당겨 놓습니다. */
+    width: 0.96154%;
+    height: 60%;
+    margin: 0 -0.48077%;
+    z-index: 2;
+    border-radius: 0 0 3px 3px;
+    background-color: black;
+  }
 
-.black-key {
-  background-color: black;
-  width: 0.96154%;
-  height: 60%;
-  margin: 0 calc(-0.48077%);
-  z-index: 2;
-  border-radius: 0 0 3px 3px;
-}
-
-.piano-cursor {
-  cursor: url('/images/cursor/cursor.webp') 0 0, auto;
-}
-
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--sub1);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--highlight);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--subHighlight);
+  .piano-cursor {
+    cursor:
+      url('/images/cursor/cursor.webp') 0 0,
+      auto;
+  }
 }

@@ -1,9 +1,12 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "rootDir": ".",
     "outDir": "dist",
-    "noEmit": false
+    "noEmit": false,
+    "incremental": false
   },
   "include": ["server"]
 }

@@ -1,0 +1,7 @@
+.next
+dist
+node_modules
+package-lock.json
+public
+# drizzle-kit 이 생성하는 파일 (직접 수정하지 않음)
+drizzle

@@ -1,22 +1,20 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "ES2022",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
-    "baseUrl": ".",
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noImplicitAny": true,
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "preserve",
-    "typeRoots": ["./types", "./node_modules/@types"],
+    "jsx": "react-jsx",
     "incremental": true,
     "plugins": [
       {
@@ -28,12 +26,12 @@
     }
   },
   "include": [
-    "types/next-env.d.ts",
-    "types/next-auth.d.ts",
-    "types/global.d.ts",
+    "next-env.d.ts",
+    "types/**/*.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist"]
 }
