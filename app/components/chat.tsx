@@ -1,67 +1,61 @@
 'use client';
 
 import Image from 'next/image';
-import { useSession } from 'next-auth/react';
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
-import { BsArrowLeftShort } from 'react-icons/bs';
-import { FaUser } from 'react-icons/fa';
+import { BsChevronRight } from 'react-icons/bs';
 import { IoMdSend } from 'react-icons/io';
 
 import { useUserCountry } from '@/app/hooks/use-user-country';
 import { socket } from '@/app/lib/socket';
 import type { ChatMessage, SystemMessage } from '@/shared/socket-events';
 
-const ANONYMOUS_NAME = 'Anonymous';
-
 /** 장시간 접속해도 메모리가 계속 늘지 않도록 화면에 유지할 메시지 수를 제한합니다. */
 const MAX_ENTRIES = 200;
 
-/** 화면에 그리기 위해 서버 페이로드에 식별자와 종류를 덧붙인 형태 */
 type ChatEntry =
-  | ({ id: string; kind: 'user' } & ChatMessage)
-  | ({ id: string; kind: 'system' } & SystemMessage);
+  ({ kind: 'user' } & ChatMessage) | ({ kind: 'system' } & SystemMessage);
 
-const createId = () => crypto.randomUUID();
+const timeFormatter = new Intl.DateTimeFormat('ko-KR', {
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+});
 
-const appendEntry = (entries: ChatEntry[], entry: ChatEntry): ChatEntry[] =>
-  [...entries, entry].slice(-MAX_ENTRIES);
+/**
+ * 서버가 붙인 id 로 중복을 걸러냅니다.
+ *
+ * 이전 구현은 보낸 메시지를 클라이언트가 직접 목록에 넣고 서버 브로드캐스트도
+ * 받았기 때문에 경로가 둘로 갈려 같은 말이 두 번 찍혔습니다. 이제 서버가
+ * 유일한 출처이고, 재연결로 같은 메시지가 다시 와도 id 로 막힙니다.
+ */
+function appendEntry(entries: ChatEntry[], entry: ChatEntry): ChatEntry[] {
+  if (entries.some((existing) => existing.id === entry.id)) return entries;
+  return [...entries, entry].slice(-MAX_ENTRIES);
+}
 
 export default function Chat() {
-  const { data: session } = useSession();
   const country = useUserCountry();
 
   const [entries, setEntries] = useState<ChatEntry[]>([]);
   const [draft, setDraft] = useState('');
-  const [userCount, setUserCount] = useState(0);
-  const [userList, setUserList] = useState<string[]>([]);
-  const [isUserListOpen, setIsUserListOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
-  const name = session?.user?.name ?? ANONYMOUS_NAME;
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleMessage = (message: ChatMessage) =>
-      setEntries((prev) =>
-        appendEntry(prev, { ...message, id: createId(), kind: 'user' }),
-      );
+    const handleChat = (message: ChatMessage) =>
+      setEntries((prev) => appendEntry(prev, { ...message, kind: 'user' }));
 
     const handleSystem = (message: SystemMessage) =>
-      setEntries((prev) =>
-        appendEntry(prev, { ...message, id: createId(), kind: 'system' }),
-      );
+      setEntries((prev) => appendEntry(prev, { ...message, kind: 'system' }));
 
-    socket.on('message', handleMessage);
+    socket.on('chat', handleChat);
     socket.on('system', handleSystem);
-    socket.on('userCount', setUserCount);
-    socket.on('userList', setUserList);
 
     return () => {
-      socket.off('message', handleMessage);
+      socket.off('chat', handleChat);
       socket.off('system', handleSystem);
-      socket.off('userCount', setUserCount);
-      socket.off('userList', setUserList);
     };
   }, []);
 
@@ -75,18 +69,8 @@ export default function Chat() {
     const content = draft.trim();
     if (!content) return;
 
-    // 서버는 보낸 사람을 제외한 나머지에게만 브로드캐스트하므로
-    // 내 화면에는 직접 추가합니다.
-    const message: ChatMessage = {
-      sender: name,
-      content,
-      country: country ?? '',
-    };
-
-    socket.emit('message', message);
-    setEntries((prev) =>
-      appendEntry(prev, { ...message, id: createId(), kind: 'user' }),
-    );
+    // 화면에 직접 넣지 않습니다. 서버가 되돌려 주는 것만 그립니다.
+    socket.emit('chat', { content, country: country ?? '' });
     setDraft('');
   };
 
@@ -97,115 +81,118 @@ export default function Chat() {
     sendMessage();
   };
 
-  const toggleUserList = () => {
-    socket.emit('requestUserList');
-    setIsUserListOpen((prev) => !prev);
-  };
+  if (isCollapsed) {
+    return (
+      <button
+        type='button'
+        aria-label='채팅 열기'
+        aria-expanded={false}
+        onClick={() => setIsCollapsed(false)}
+        className='border-line bg-surface text-ink-muted hover:text-ink flex w-11 shrink-0 flex-col items-center gap-2 border-l py-4 transition-colors'
+      >
+        <BsChevronRight className='rotate-180 text-lg' />
+        <span
+          className='text-xs font-semibold tracking-widest'
+          style={{ writingMode: 'vertical-rl' }}
+        >
+          CHAT
+        </span>
+      </button>
+    );
+  }
 
   return (
     <aside
       aria-label='채팅'
-      className={`bg-sub2 relative z-50 flex h-screen max-h-screen shrink-0 flex-col justify-between p-2 duration-300 ${
-        isCollapsed ? 'w-20' : 'w-72'
-      }`}
+      className='border-line bg-surface flex w-72 shrink-0 flex-col border-l'
     >
-      <button
-        type='button'
-        aria-label={isCollapsed ? '채팅 열기' : '채팅 접기'}
-        aria-expanded={!isCollapsed}
-        className='border-sub1 hover:bg-highlight absolute top-9 -left-3 rounded-full border-2 bg-white text-black duration-300 hover:text-white'
-        onClick={() => setIsCollapsed((prev) => !prev)}
-      >
-        <BsArrowLeftShort
-          className={`text-3xl duration-300 ${isCollapsed ? 'rotate-180' : ''}`}
-        />
-      </button>
-
-      <div className='bg-sub1 mx-3 mb-4 flex flex-col items-center justify-center gap-1 rounded-sm select-none'>
+      <header className='border-line flex shrink-0 items-center justify-between border-b px-3 py-2.5'>
+        <h2 className='text-sm font-semibold'>채팅</h2>
         <button
           type='button'
-          aria-label='접속자 명단'
-          aria-expanded={isUserListOpen}
-          className='flex items-center justify-center gap-1'
-          onClick={toggleUserList}
+          aria-label='채팅 접기'
+          aria-expanded
+          onClick={() => setIsCollapsed(true)}
+          className='text-ink-faint hover:bg-raised hover:text-ink rounded-md p-1 transition-colors'
         >
-          <FaUser />
-          <span>{userCount}</span>
+          <BsChevronRight />
         </button>
+      </header>
 
-        {isUserListOpen && (
-          <ul className='max-h-48 w-full overflow-y-auto rounded-sm px-3 py-2 text-center font-bold text-white shadow-sm'>
-            {userList.map((user) => (
-              <li
-                key={user}
-                className='duration-300 hover:bg-white hover:text-black'
-              >
-                {user}
-              </li>
-            ))}
-          </ul>
+      <div className='flex-1 space-y-3 overflow-y-auto px-3 py-3'>
+        {entries.length === 0 && (
+          <p className='text-ink-faint pt-6 text-center text-xs'>
+            첫 메시지를 남겨 보세요
+          </p>
         )}
+
+        {entries.map((entry) =>
+          entry.kind === 'system' ? (
+            <p key={entry.id} className='text-ink-faint text-center text-xs'>
+              {entry.content}
+            </p>
+          ) : (
+            <div key={entry.id}>
+              <div className='mb-1 flex items-center gap-1.5'>
+                {entry.country && (
+                  <Image
+                    src={`/images/flags/${entry.country}.png`}
+                    alt={entry.country}
+                    width={18}
+                    height={12}
+                    className='shrink-0 rounded-xs'
+                  />
+                )}
+                <span
+                  className='truncate text-xs font-semibold'
+                  style={{ color: entry.color }}
+                >
+                  {entry.sender}
+                </span>
+                <time className='text-ink-faint ml-auto shrink-0 text-[10px]'>
+                  {timeFormatter.format(entry.sentAt)}
+                </time>
+              </div>
+              <p className='bg-raised text-ink-muted rounded-lg rounded-tl-sm px-2.5 py-1.5 text-sm wrap-break-word'>
+                {entry.content}
+              </p>
+            </div>
+          ),
+        )}
+        <div ref={bottomRef} />
       </div>
 
-      {!isCollapsed && (
-        <>
-          <div className='grow overflow-y-auto'>
-            {entries.map((entry) => (
-              <div key={entry.id} className='p-2'>
-                {entry.kind === 'user' && (
-                  <div className='mb-1 flex items-center gap-2 text-xs font-bold'>
-                    {entry.country && (
-                      <Image
-                        src={`/images/flags/${entry.country}.png`}
-                        alt={entry.country}
-                        width={30}
-                        height={20}
-                      />
-                    )}
-                    <span>{entry.sender}</span>
-                  </div>
-                )}
-                <div
-                  className={`w-full rounded-sm p-1 wrap-break-word ${
-                    entry.kind === 'system'
-                      ? 'bg-white text-black select-none'
-                      : 'bg-sub1'
-                  }`}
-                >
-                  {entry.content}
-                </div>
-              </div>
-            ))}
-            <div ref={bottomRef} />
-          </div>
-
-          <div
-            className={`bg-sub1 mt-4 flex rounded-sm border-2 ${
-              isFocused ? 'border-highlight' : 'border-sub1'
-            }`}
+      <div className='border-line shrink-0 border-t p-2.5'>
+        <div
+          className={`bg-raised flex items-end gap-1 rounded-lg border transition-colors ${
+            isFocused ? 'border-accent' : 'border-line'
+          }`}
+        >
+          <textarea
+            value={draft}
+            onChange={(event) => setDraft(event.target.value)}
+            onKeyDown={handleKeyDown}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            className='placeholder:text-ink-faint max-h-24 w-full resize-none bg-transparent px-2.5 py-2 text-sm outline-none'
+            placeholder='메시지 입력…'
+            aria-label='메시지 입력'
+            rows={2}
+          />
+          <button
+            type='button'
+            aria-label='메시지 전송'
+            onClick={sendMessage}
+            disabled={draft.trim().length === 0}
+            className='text-ink-muted hover:bg-overlay hover:text-accent-hot m-1 shrink-0 rounded-md p-1.5 transition-colors disabled:opacity-30'
           >
-            <textarea
-              value={draft}
-              onChange={(event) => setDraft(event.target.value)}
-              onKeyDown={handleKeyDown}
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
-              className='bg-sub1 w-full resize-none rounded-lg p-2 text-xl outline-none'
-              placeholder='Type message...'
-              aria-label='메시지 입력'
-              rows={2}
-            />
-            <button
-              type='button'
-              aria-label='메시지 전송'
-              onClick={sendMessage}
-              className='bg-sub1 hover:text-highlight ml-2 flex items-center justify-center rounded-sm p-2 font-bold duration-300'
-            >
-              <IoMdSend size={20} />
-            </button>
-          </div>
-        </>
-      )}
+            <IoMdSend size={18} />
+          </button>
+        </div>
+        <p className='text-ink-faint mt-1.5 px-1 text-[10px]'>
+          Enter 전송 · Shift+Enter 줄바꿈
+        </p>
+      </div>
     </aside>
   );
 }

@@ -1,18 +1,66 @@
-import type { NoteName } from '@/shared/socket-events';
+'use client';
+
+import { formatNoteLabel, type PianoKey as PianoKeyDef } from '@/app/lib/notes';
 
 interface PianoKeyProps {
-  note: NoteName;
-  isBlack: boolean;
-  onPlay: (note: NoteName) => void;
+  keyDef: PianoKeyDef;
+  geometry: { left: number; width: number };
+  /** 누른 사람의 색. 눌려 있지 않으면 null 입니다. */
+  activeColor: string | null;
+  /** 이 건반에 배정된 컴퓨터 키보드 글자 (없으면 표시하지 않습니다) */
+  shortcut: string | null;
+  showLabel: boolean;
+  isOctaveMarker: boolean;
 }
 
-export default function PianoKey({ note, isBlack, onPlay }: PianoKeyProps) {
+/**
+ * 건반 하나.
+ *
+ * 흰건반은 가로를 균등 분할하고, 검은건반은 그 경계 위에 절대 위치로 얹힙니다.
+ * 이전 구현은 검은건반도 같은 flex 흐름에 넣고 음수 마진으로 끌어당겼는데,
+ * 그러면 위치가 어긋나고 옥타브마다 오차가 누적됩니다.
+ */
+export default function PianoKey({
+  keyDef,
+  geometry,
+  activeColor,
+  shortcut,
+  showLabel,
+  isOctaveMarker,
+}: PianoKeyProps) {
+  const { note, isBlack } = keyDef;
+  const isActive = activeColor !== null;
+
   return (
     <button
       type='button'
-      aria-label={note}
-      className={`piano ${isBlack ? 'black-key' : 'white-key'} hover:bg-sub-highlight active:bg-highlight`}
-      onMouseDown={() => onPlay(note)}
-    />
+      // 포인터로 누르는 조작은 부모가 위임 처리하므로 탭 순서에서만 뺍니다.
+      tabIndex={-1}
+      aria-label={formatNoteLabel(note)}
+      aria-pressed={isActive}
+      data-note={note}
+      data-active={isActive}
+      className={`piano-key ${isBlack ? 'piano-key-black' : 'piano-key-white'}`}
+      style={{
+        left: `${geometry.left}%`,
+        width: `${geometry.width}%`,
+        ...(isActive ? { ['--key-color' as string]: activeColor } : {}),
+      }}
+    >
+      <span
+        className={`pointer-events-none absolute inset-x-0 bottom-1.5 flex flex-col items-center gap-0.5 text-[10px] leading-none font-semibold ${
+          isBlack ? 'text-white/45' : 'text-black/35'
+        }`}
+      >
+        {showLabel && shortcut && (
+          <span className='font-mono uppercase'>{shortcut}</span>
+        )}
+        {isOctaveMarker && (
+          <span className='text-[9px] font-bold tracking-tight text-black/45'>
+            {formatNoteLabel(note)}
+          </span>
+        )}
+      </span>
+    </button>
   );
 }
