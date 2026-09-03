@@ -1,5 +1,7 @@
 'use client';
 
+import { memo } from 'react';
+
 import { formatNoteLabel, type PianoKey as PianoKeyDef } from '@/app/lib/notes';
 
 interface PianoKeyProps {
@@ -19,8 +21,12 @@ interface PianoKeyProps {
  * 흰건반은 가로를 균등 분할하고, 검은건반은 그 경계 위에 절대 위치로 얹힙니다.
  * 이전 구현은 검은건반도 같은 flex 흐름에 넣고 음수 마진으로 끌어당겼는데,
  * 그러면 위치가 어긋나고 옥타브마다 오차가 누적됩니다.
+ *
+ * `memo` 로 감싼 이유: 음 하나를 누르면 부모가 새 색 목록을 받아 88개를 모두
+ * 다시 렌더합니다. 프로퍼티가 모두 원시값이거나 모듈 상수에서 온 고정 참조라
+ * 실제로 바뀐 건반만 갱신됩니다.
  */
-export default function PianoKey({
+function PianoKeyView({
   keyDef,
   geometry,
   activeColor,
@@ -64,3 +70,6 @@ export default function PianoKey({
     </button>
   );
 }
+
+const PianoKey = memo(PianoKeyView);
+export default PianoKey;

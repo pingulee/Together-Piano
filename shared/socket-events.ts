@@ -10,12 +10,45 @@
 /** 음원 파일명과 동일한 음 이름 (예: `c4`, `as3`) */
 export type NoteName = string;
 
-/** 접속자 한 명. `color` 는 서버가 배정하며 커서·명단·건반 강조에 같은 값을 씁니다. */
+/**
+ * 접속자 한 명.
+ *
+ * `name` 과 `color` 는 참가자가 직접 고르며 서버가 검증합니다. 색은 팔레트에
+ * 있는 값만 통과하므로 커서·건반의 인라인 스타일에 그대로 넣어도 안전합니다.
+ */
 export interface Participant {
   id: string;
   name: string;
   color: string;
+  /** 방장 여부. 강퇴·잠금 버튼 노출을 이 값으로 정합니다. */
+  isHost: boolean;
 }
+
+/** 지금 들어와 있는 방의 상태 */
+export interface RoomInfo {
+  id: string;
+  /** 방장 소켓 id. 방이 비는 순간에만 `null` 입니다. */
+  hostId: string | null;
+  /** 잠긴 방에는 새 참가자가 들어오지 못합니다. */
+  locked: boolean;
+}
+
+/** 로비 목록에 한 줄로 보여 줄 방 요약 */
+export interface RoomSummary {
+  id: string;
+  count: number;
+  hostName: string;
+  locked: boolean;
+}
+
+/** 참가자가 바꿀 수 있는 자기 정보 */
+export interface ProfileUpdate {
+  name: string;
+  color: string;
+}
+
+/** 입장이 거절된 이유 */
+export type JoinRejection = 'invalid-room' | 'locked' | 'full';
 
 /**
  * 채팅 메시지.
@@ -69,6 +102,10 @@ export interface ServerToClientEvents {
   /** 접속 직후 자기 자신의 정보. 커서 오버레이에서 자신을 걸러내는 데 씁니다. */
   welcome: (self: Participant) => void;
   participants: (participants: Participant[]) => void;
+  /** 방장·잠금 상태가 바뀔 때마다 방 전체에 다시 보냅니다. */
+  room: (info: RoomInfo) => void;
+  /** 로비에 접속한 클라이언트에게만 갑니다. */
+  rooms: (rooms: RoomSummary[]) => void;
 
   chat: (message: ChatMessage) => void;
   system: (message: SystemMessage) => void;
@@ -82,10 +119,24 @@ export interface ServerToClientEvents {
   cursorMove: (cursor: RemoteCursor) => void;
   /** 커서가 무대를 벗어났거나 참가자가 나갔습니다. */
   cursorLeave: (id: string) => void;
+
+  /** 입장 거절. 곧바로 연결이 끊기므로 클라이언트는 로비로 돌아갑니다. */
+  joinRejected: (reason: JoinRejection) => void;
+  /** 방장이 내보냈습니다. */
+  kicked: () => void;
 }
 
 export interface ClientToServerEvents {
   requestParticipants: () => void;
+  /** 로비 목록 갱신 요청 */
+  listRooms: () => void;
+  /** 닉네임·색 변경. 재접속 없이 방 전체에 반영됩니다. */
+  updateProfile: (profile: ProfileUpdate) => void;
+  /** 방장만 유효합니다. */
+  kick: (targetId: string) => void;
+  /** 방장만 유효합니다. */
+  setLocked: (locked: boolean) => void;
+
   chat: (draft: ChatDraft) => void;
   noteOn: (note: NoteName, velocity: number) => void;
   noteOff: (note: NoteName) => void;
@@ -97,4 +148,7 @@ export interface ClientToServerEvents {
 /** 접속 시 전달하는 핸드셰이크 정보 */
 export interface SocketHandshakeAuth {
   name: string;
+  color: string;
+  /** 빈 문자열이면 어느 방에도 들어가지 않고 로비 목록만 받습니다. */
+  room: string;
 }

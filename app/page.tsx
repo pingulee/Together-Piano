@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { BiSolidPiano } from 'react-icons/bi';
 import { BsCursorFill } from 'react-icons/bs';
+import { FaDoorOpen } from 'react-icons/fa6';
 import { MdKeyboardAlt, MdPiano } from 'react-icons/md';
 
 import KoreaClock from '@/app/components/korea-clock';
@@ -19,8 +20,13 @@ const FEATURES: Feature[] = [
     icon: <MdPiano />,
   },
   {
+    title: '방을 만들어 초대',
+    body: '이름을 적으면 그 자리에서 방이 열리고 만든 사람이 방장이 됩니다. 링크만 보내면 되고, 방장은 방을 잠그거나 내보낼 수 있습니다.',
+    icon: <FaDoorOpen />,
+  },
+  {
     title: '커서까지 공유',
-    body: '서로의 마우스 위치가 무대 위에 그대로 보입니다. 다음에 어디를 짚을지 눈으로 맞출 수 있습니다.',
+    body: '서로의 마우스 위치가 무대 위에 그대로 보입니다. 닉네임과 색은 로그인 없이도 직접 고를 수 있습니다.',
     icon: <BsCursorFill />,
   },
   {
@@ -66,12 +72,12 @@ export default function HomePage() {
               href='/login'
               className='border-line text-ink-muted hover:border-line-strong hover:text-ink inline-flex items-center rounded-lg border px-5 py-2.5 text-sm font-medium transition-colors'
             >
-              로그인해서 이름 표시하기
+              로그인 (선택)
             </Link>
           </div>
         </section>
 
-        <section className='grid gap-4 sm:grid-cols-3'>
+        <section className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
           {FEATURES.map((feature) => (
             <article
               key={feature.title}

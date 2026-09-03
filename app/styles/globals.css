@@ -220,26 +220,37 @@
   /* --- 연주 리본 ---------------------------------------------------------- */
 
   /*
-   * 누른 건반 위로 자라나는 띠. 누르고 있는 동안 높이는 JS 가 갱신하고,
-   * 뗀 뒤의 상승·소멸은 CSS 애니메이션에 맡깁니다. 그래야 매 프레임 React 를
-   * 다시 렌더하지 않아도 부드럽게 흐릅니다.
+   * 누른 건반 위로 자라나는 띠.
+   *
+   * 바깥(`.note-ribbon`)은 레인 전체 높이를 차지하고 뗀 뒤의 상승·소멸만
+   * 담당합니다. 안쪽(`.note-ribbon-fill`)이 `scaleY` 로 자라며, 이 값은 JS
+   * 프레임 루프가 씁니다. `height` 를 바꾸면 매 프레임 레이아웃이 다시
+   * 계산되지만 `scaleY` 는 합성 단계에서만 처리됩니다. transform 이 서로
+   * 덮어쓰지 않도록 두 노드로 나눴습니다.
    */
   .note-ribbon {
     position: absolute;
     bottom: 0;
+    height: 100%;
+  }
+
+  .note-ribbon-fill {
+    position: absolute;
+    inset: 0;
+    transform: scaleY(0);
+    transform-origin: bottom center;
     border-radius: 3px 3px 1px 1px;
     background: linear-gradient(
       180deg,
-      color-mix(in oklab, var(--ribbon-color) 55%, transparent) 0%,
+      color-mix(in oklab, var(--ribbon-color) 20%, transparent) 0%,
+      color-mix(in oklab, var(--ribbon-color) 70%, transparent) 45%,
       var(--ribbon-color) 100%
     );
-    box-shadow: 0 0 12px
-      color-mix(in oklab, var(--ribbon-color) 45%, transparent);
-    will-change: transform, opacity;
+    will-change: transform;
   }
 
   .note-ribbon[data-released='true'] {
-    animation: ribbon-drift 900ms var(--ease-out-quart) forwards;
+    animation: ribbon-drift 1100ms var(--ease-out-quart) forwards;
   }
 
   @keyframes ribbon-drift {
@@ -248,7 +259,7 @@
       opacity: 0.95;
     }
     to {
-      transform: translateY(-120px);
+      transform: translateY(-45%);
       opacity: 0;
     }
   }
@@ -257,14 +268,25 @@
 
   .remote-cursor {
     position: absolute;
+    top: 0;
+    left: 0;
     pointer-events: none;
     display: flex;
     align-items: flex-start;
-    /* 30Hz 로 들어오는 좌표를 짧은 전환으로 이어 부드럽게 보이게 합니다. */
+    opacity: 0;
+    /*
+     * 30Hz 로 들어오는 좌표를 짧은 전환으로 이어 부드럽게 보이게 합니다.
+     * `left`/`top` 대신 transform 을 쓰므로 이동에 레이아웃이 걸리지 않습니다.
+     */
     transition:
-      left 70ms linear,
-      top 70ms linear;
-    will-change: left, top;
+      transform 90ms linear,
+      opacity 140ms linear;
+    will-change: transform;
+  }
+
+  /* 첫 좌표를 적용한 뒤에 나타납니다. 원점에서 날아오는 것처럼 보이지 않게 합니다. */
+  .remote-cursor[data-ready='true'] {
+    opacity: 1;
   }
 }
 
@@ -274,7 +296,7 @@
   }
 
   .remote-cursor {
-    transition: none;
+    transition: opacity 140ms linear;
   }
 
   .piano-key {

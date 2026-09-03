@@ -1,6 +1,12 @@
 'use client';
 
-import { useEffect, useState, type RefObject } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type RefObject,
+} from 'react';
 
 import { socket } from '@/app/lib/socket';
 import type { CursorPosition, RemoteCursor } from '@/shared/socket-events';
@@ -12,8 +18,17 @@ const SEND_INTERVAL_MS = 33;
 const STALE_AFTER_MS = 10_000;
 const SWEEP_INTERVAL_MS = 2000;
 
-interface TrackedCursor extends CursorPosition {
-  updatedAt: number;
+export interface SharedCursorState {
+  /** 그려야 할 커서의 소유자 id. 커서가 생기거나 사라질 때만 바뀝니다. */
+  ids: string[];
+  /**
+   * id -> 최신 정규화 좌표.
+   *
+   * 좌표 자체는 React 상태가 아닙니다. 초당 30번 들어오는 값을 상태로 두면
+   * 참가자 수만큼 배가되어 무대 전체(건반 88개·리본)가 계속 리렌더됩니다.
+   * 렌더 대상은 `ids` 로만 정하고, 위치는 프레임 루프가 DOM 에 직접 씁니다.
+   */
+  positions: RefObject<Map<string, CursorPosition>>;
 }
 
 /**
@@ -23,47 +38,63 @@ interface TrackedCursor extends CursorPosition {
  * 보내면 창 크기가 다른 사람에게 엉뚱한 곳을 가리키게 됩니다.
  *
  * @param stageRef 좌표의 기준이 되는 요소
- * @returns 참가자 id -> 정규화 좌표
  */
 export function useSharedCursors(
   stageRef: RefObject<HTMLElement | null>,
-): Map<string, CursorPosition> {
-  const [cursors, setCursors] = useState<Map<string, TrackedCursor>>(
-    () => new Map(),
-  );
+): SharedCursorState {
+  const [ids, setIds] = useState<string[]>([]);
+  const positions = useRef(new Map<string, CursorPosition>());
+  const seenAt = useRef(new Map<string, number>());
+
+  const forget = useCallback((id: string) => {
+    if (!positions.current.has(id)) return;
+    positions.current.delete(id);
+    seenAt.current.delete(id);
+    setIds((prev) => prev.filter((entry) => entry !== id));
+  }, []);
 
   // 내 좌표 전송
   useEffect(() => {
     const stage = stageRef.current;
     if (!stage) return;
 
-    let pending: CursorPosition | null = null;
+    /** 마지막 포인터 위치(화면 좌표). 정규화는 전송 시점에 한 번만 합니다. */
+    let pendingX = 0;
+    let pendingY = 0;
+    let hasPending = false;
     let lastSentAt = 0;
     let frame = 0;
 
     const handleMove = (event: PointerEvent) => {
-      const bounds = stage.getBoundingClientRect();
-      if (bounds.width === 0 || bounds.height === 0) return;
-
-      pending = {
-        x: (event.clientX - bounds.left) / bounds.width,
-        y: (event.clientY - bounds.top) / bounds.height,
-      };
+      pendingX = event.clientX;
+      pendingY = event.clientY;
+      hasPending = true;
     };
 
     const handleLeave = () => {
-      pending = null;
+      hasPending = false;
       socket.emit('cursorLeave');
     };
 
-    // 포인터 이벤트마다 보내면 초당 수백 건이 되므로 프레임 루프에서 솎아냅니다.
+    /**
+     * 포인터 이벤트마다 보내면 초당 수백 건이 되므로 프레임 루프에서 솎아냅니다.
+     *
+     * `getBoundingClientRect` 도 여기서만 부릅니다. 이동 핸들러에서 부르면
+     * 마우스를 움직이는 동안 초당 수백 번 레이아웃을 강제로 계산하게 됩니다.
+     */
     const pump = (now: number) => {
       frame = requestAnimationFrame(pump);
-      if (!pending || now - lastSentAt < SEND_INTERVAL_MS) return;
+      if (!hasPending || now - lastSentAt < SEND_INTERVAL_MS) return;
+
+      const bounds = stage.getBoundingClientRect();
+      if (bounds.width === 0 || bounds.height === 0) return;
 
       lastSentAt = now;
-      socket.emit('cursorMove', pending);
-      pending = null;
+      hasPending = false;
+      socket.emit('cursorMove', {
+        x: (pendingX - bounds.left) / bounds.width,
+        y: (pendingY - bounds.top) / bounds.height,
+      });
     };
 
     stage.addEventListener('pointermove', handleMove);
@@ -81,49 +112,34 @@ export function useSharedCursors(
   // 다른 사람 좌표 수신
   useEffect(() => {
     const handleMove = ({ id, x, y }: RemoteCursor) => {
-      setCursors((prev) => {
-        const next = new Map(prev);
-        next.set(id, { x, y, updatedAt: Date.now() });
-        return next;
-      });
-    };
+      const isNew = !positions.current.has(id);
+      positions.current.set(id, { x, y });
+      seenAt.current.set(id, Date.now());
 
-    const handleLeave = (id: string) => {
-      setCursors((prev) => {
-        if (!prev.has(id)) return prev;
-        const next = new Map(prev);
-        next.delete(id);
-        return next;
-      });
+      // 노드를 새로 붙여야 할 때만 리렌더합니다.
+      if (isNew) setIds((prev) => [...prev, id]);
     };
 
     socket.on('cursorMove', handleMove);
-    socket.on('cursorLeave', handleLeave);
+    socket.on('cursorLeave', forget);
 
     return () => {
       socket.off('cursorMove', handleMove);
-      socket.off('cursorLeave', handleLeave);
+      socket.off('cursorLeave', forget);
     };
-  }, []);
+  }, [forget]);
 
   // 갱신이 끊긴 커서 정리
   useEffect(() => {
     const sweep = setInterval(() => {
-      setCursors((prev) => {
-        const cutoff = Date.now() - STALE_AFTER_MS;
-        const stale = [...prev].filter(
-          ([, cursor]) => cursor.updatedAt < cutoff,
-        );
-        if (stale.length === 0) return prev;
-
-        const next = new Map(prev);
-        for (const [id] of stale) next.delete(id);
-        return next;
-      });
+      const cutoff = Date.now() - STALE_AFTER_MS;
+      for (const [id, at] of seenAt.current) {
+        if (at < cutoff) forget(id);
+      }
     }, SWEEP_INTERVAL_MS);
 
     return () => clearInterval(sweep);
-  }, []);
+  }, [forget]);
 
-  return cursors;
+  return { ids, positions };
 }

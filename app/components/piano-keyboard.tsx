@@ -96,6 +96,23 @@ export default function PianoKeyboard({
     const deck = deckRef.current;
     if (!deck) return;
 
+    /**
+     * 드래그 중 히트 테스트는 프레임당 한 번만 합니다.
+     *
+     * `elementFromPoint` 는 최신 레이아웃을 요구하므로 부를 때마다 레이아웃이
+     * 강제로 계산됩니다. 고주기 마우스는 초당 수백 개의 pointermove 를 쏘아
+     * 이동마다 부르면 그만큼 레이아웃이 반복됩니다.
+     */
+    let queuedX = 0;
+    let queuedY = 0;
+    let frame = 0;
+
+    const resolveQueued = () => {
+      frame = 0;
+      if (pointerNote.current === null) return;
+      movePointerTo(noteAtPoint(queuedX, queuedY));
+    };
+
     const handleDown = (event: PointerEvent) => {
       // 주 버튼만 받습니다. 오른쪽 클릭으로 소리가 나면 곤란합니다.
       if (event.button !== 0) return;
@@ -106,7 +123,9 @@ export default function PianoKeyboard({
     // 누른 채로 옮기면 이어서 연주됩니다. (글리산도)
     const handleMove = (event: PointerEvent) => {
       if (pointerNote.current === null) return;
-      movePointerTo(noteAtPoint(event.clientX, event.clientY));
+      queuedX = event.clientX;
+      queuedY = event.clientY;
+      if (frame === 0) frame = requestAnimationFrame(resolveQueued);
     };
 
     const handleUp = () => movePointerTo(null);
@@ -122,6 +141,7 @@ export default function PianoKeyboard({
       window.removeEventListener('pointermove', handleMove);
       window.removeEventListener('pointerup', handleUp);
       window.removeEventListener('pointercancel', handleUp);
+      if (frame !== 0) cancelAnimationFrame(frame);
       movePointerTo(null);
     };
   }, [movePointerTo, noteAtPoint]);
