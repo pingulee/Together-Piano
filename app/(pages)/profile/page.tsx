@@ -1,97 +1,103 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
+
+import IdentityPanel from '@/app/components/identity-panel';
+import { Button, ButtonLink } from '@/app/components/ui/button';
+import { Panel, SectionHeading } from '@/app/components/ui/panel';
 
 const FALLBACK_IMAGE = '/images/logo.webp';
 
 export default function ProfilePage() {
   const { data: session, status } = useSession();
 
-  if (status === 'loading') {
-    return (
-      <div className='stage-light flex flex-1 items-center justify-center'>
-        <div className='bg-surface h-40 w-full max-w-sm animate-pulse rounded-xl' />
-      </div>
-    );
-  }
+  return (
+    <div className='stage-light flex-1 overflow-y-auto'>
+      <div className='mx-auto flex w-full max-w-sm flex-col gap-6 px-6 py-12'>
+        {/*
+          연주실 표시 이름은 로그인과 무관하므로 계정 상태와 별개로 항상 보입니다.
+          예전에는 로그인하지 않으면 이 페이지에 로그인 안내만 떠서, 닉네임을
+          바꿀 수 있다는 사실이 어디에도 보이지 않았습니다.
+        */}
+        <Panel padding='lg' className='flex flex-col gap-4'>
+          <SectionHeading
+            title='연주실 프로필'
+            description='로그인 여부와 무관하게 이 브라우저에 저장됩니다.'
+            level='h2'
+          />
+          <IdentityPanel />
+        </Panel>
 
-  if (!session) {
-    return (
-      <div className='stage-light flex flex-1 items-center justify-center px-6'>
-        <div className='w-full max-w-sm text-center'>
-          <h1 className='text-2xl font-bold tracking-tight'>
-            로그인이 필요합니다
-          </h1>
-          <p className='text-ink-muted mt-2 text-sm'>
-            로그인하면 연주실에 내 이름으로 표시됩니다.
-          </p>
-          <Link
-            href='/login'
-            className='bg-accent hover:bg-accent-hot mt-6 inline-flex h-11 items-center rounded-lg px-6 text-sm font-semibold text-white transition-colors'
-          >
-            로그인
-          </Link>
-        </div>
-      </div>
-    );
-  }
+        <Panel padding='lg' className='flex flex-col gap-4'>
+          <SectionHeading title='계정' level='h2' />
 
-  const { name, email, image } = session.user;
+          {status === 'loading' && (
+            <div className='bg-raised h-14 animate-pulse rounded-md' />
+          )}
+
+          {status !== 'loading' && !session && (
+            <>
+              <p className='text-ink-faint text-xs'>
+                로그인하면 계정 이름이 닉네임 기본값으로 채워집니다.
+              </p>
+              <ButtonLink href='/login' variant='primary' size='sm' block>
+                로그인
+              </ButtonLink>
+            </>
+          )}
+
+          {session && <AccountDetails session={session} />}
+        </Panel>
+
+        <ButtonLink href='/piano' variant='secondary' block>
+          연주실로
+        </ButtonLink>
+      </div>
+    </div>
+  );
+}
+
+type Session = NonNullable<ReturnType<typeof useSession>['data']>;
+
+function AccountDetails({ session }: { session: Session }) {
+  const { name, email, image, id } = session.user;
 
   return (
-    <div className='stage-light flex flex-1 items-center justify-center px-6 py-12'>
-      <div className='w-full max-w-sm'>
-        <div className='flex items-center gap-4'>
-          <Image
-            src={image ?? FALLBACK_IMAGE}
-            alt=''
-            width={64}
-            height={64}
-            className='border-line size-16 shrink-0 rounded-full border object-cover'
-          />
-          <div className='min-w-0'>
-            <h1 className='truncate text-xl font-bold tracking-tight'>
-              {name ?? '이름 없음'}
-            </h1>
-            {email && (
-              <p className='text-ink-faint truncate text-sm'>{email}</p>
-            )}
-          </div>
-        </div>
-
-        <dl className='divide-line border-line bg-surface/70 mt-8 divide-y overflow-hidden rounded-xl border text-sm'>
-          <div className='flex items-center justify-between px-4 py-3'>
-            <dt className='text-ink-faint'>연주실 표시 이름</dt>
-            <dd className='font-medium'>{name ?? 'Anonymous'}</dd>
-          </div>
-          <div className='flex items-center justify-between px-4 py-3'>
-            <dt className='text-ink-faint'>계정 ID</dt>
-            <dd className='text-ink-muted font-mono text-xs'>
-              {session.user.id}
-            </dd>
-          </div>
-        </dl>
-
-        <div className='mt-6 flex items-center gap-3'>
-          <Link
-            href='/piano'
-            className='bg-accent hover:bg-accent-hot inline-flex h-11 flex-1 items-center justify-center rounded-lg text-sm font-semibold text-white transition-colors'
-          >
-            연주실로
-          </Link>
-          <button
-            type='button'
-            onClick={() => signOut({ callbackUrl: '/' })}
-            className='border-line text-ink-muted hover:border-line-strong hover:text-ink inline-flex h-11 items-center gap-2 rounded-lg border px-4 text-sm font-medium transition-colors'
-          >
-            <RiLogoutBoxRLine />
-            로그아웃
-          </button>
+    <div className='flex flex-col gap-4'>
+      <div className='flex items-center gap-3'>
+        <Image
+          src={image ?? FALLBACK_IMAGE}
+          alt=''
+          width={44}
+          height={44}
+          className='border-line size-11 shrink-0 rounded-full border object-cover'
+        />
+        <div className='min-w-0'>
+          <p className='truncate text-sm font-semibold'>
+            {name ?? '이름 없음'}
+          </p>
+          {email && <p className='text-ink-faint truncate text-xs'>{email}</p>}
         </div>
       </div>
+
+      <dl className='divide-line border-line divide-y overflow-hidden rounded-md border text-xs'>
+        <div className='flex items-center justify-between gap-3 px-3 py-2'>
+          <dt className='text-ink-faint'>계정 ID</dt>
+          <dd className='text-ink-muted truncate font-mono'>{id}</dd>
+        </div>
+      </dl>
+
+      <Button
+        variant='ghost'
+        size='sm'
+        onClick={() => signOut({ callbackUrl: '/' })}
+        className='self-start'
+      >
+        <RiLogoutBoxRLine />
+        로그아웃
+      </Button>
     </div>
   );
 }

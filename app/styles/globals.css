@@ -7,35 +7,55 @@
  * `bg-surface` / `text-surface` / `border-surface` 로 바로 쓸 수 있고, 일반 CSS 에서는
  * `var(--color-surface)` 로 같은 값을 참조합니다.
  *
- * 색은 역할로 이름을 붙입니다. `sub1`, `sub2` 처럼 순번으로 두면 어디에 쓰는
- * 색인지 알 수 없어 화면마다 제멋대로 섞이게 됩니다.
+ * 두 가지 원칙을 지킵니다.
+ *
+ * 1. 색은 역할로 이름을 붙입니다. `sub1`, `sub2` 처럼 순번으로 두면 어디에 쓰는
+ *    색인지 알 수 없어 화면마다 제멋대로 섞입니다.
+ * 2. 채도는 참가자 구분에만 씁니다. UI 자체는 무채색이고, 주 동작 버튼도 흰
+ *    바탕입니다. 브랜드 색을 따로 두면 참가자 12색 중 하나와 반드시 겹쳐,
+ *    "누른 사람 색"이라는 의미가 흐려집니다. 화면에서 색이 보이면 곧 사람입니다.
  */
 @theme {
-  /* 배경 계층: 뒤에서 앞으로 */
-  --color-canvas: #0b0b0e;
-  --color-surface: #14141a;
-  --color-raised: #1c1c24;
-  --color-overlay: #24242e;
+  /*
+   * 배경 계층: 뒤에서 앞으로.
+   * 완전한 중성 회색보다 살짝 따뜻하게 두면 화면이 차갑게 죽지 않습니다.
+   */
+  --color-canvas: #0a0a0b;
+  --color-surface: #121213;
+  --color-raised: #1a1a1c;
+  --color-overlay: #232325;
 
   /* 경계선 */
-  --color-line: #26262f;
-  --color-line-strong: #363642;
+  --color-line: #26262a;
+  --color-line-strong: #37373d;
 
   /* 텍스트 */
-  --color-ink: #f4f4f7;
-  --color-ink-muted: #9c9caa;
-  --color-ink-faint: #63636f;
+  --color-ink: #f7f7f8;
+  --color-ink-muted: #a1a1a8;
+  --color-ink-faint: #6b6b73;
 
-  /* 브랜드 강조 */
-  --color-accent: #e2504e;
-  --color-accent-hot: #f26b69;
-  --color-accent-dim: #7e2b2a;
+  /*
+   * 주 동작. 어두운 화면에서 가장 강한 대비는 흰 바탕입니다.
+   * 위에 얹는 글자는 반드시 `--color-accent-ink` 를 씁니다.
+   */
+  --color-accent: #f7f7f8;
+  --color-accent-hover: #ffffff;
+  --color-accent-ink: #0a0a0b;
+
+  /* 파괴적 동작에만 쓰는 색 */
+  --color-danger: #f2555a;
+  --color-danger-dim: #3d1f21;
+
+  /* 상태 */
+  --color-live: #3ddc97;
 
   /* 건반 */
   --color-key-light: #fbfaf7;
-  --color-key-light-edge: #d9d6ce;
-  --color-key-dark: #1a1a20;
-  --color-key-dark-edge: #08080b;
+  --color-key-light-edge: #cfccc4;
+  --color-key-dark: #17171a;
+  --color-key-dark-edge: #08080a;
+  /* 건반 뒤판의 펠트 띠 */
+  --color-felt: #7d2b3a;
 
   /* 타이포: 설치된 시스템 서체를 우선 사용해 외부 요청 없이 또렷하게 나옵니다. */
   --font-sans:
@@ -44,6 +64,45 @@
   --font-mono:
     ui-monospace, 'SF Mono', 'JetBrains Mono', 'Cascadia Mono', Menlo, Consolas,
     monospace;
+
+  /*
+   * 타입 스케일.
+   *
+   * `text-[10px]` 처럼 임의값을 흩어 놓으면 화면마다 크기가 조금씩 달라져
+   * 정돈되어 보이지 않습니다. 여기 있는 단계만 씁니다.
+   */
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1rem;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.125rem;
+  --text-sm: 0.8125rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 0.9375rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg: 1.0625rem;
+  --text-lg--line-height: 1.625rem;
+  --text-xl: 1.375rem;
+  --text-xl--line-height: 1.875rem;
+  --text-2xl: 1.75rem;
+  --text-2xl--line-height: 2.125rem;
+  --text-3xl: 2.25rem;
+  --text-3xl--line-height: 2.5rem;
+  --text-4xl: 3rem;
+  --text-4xl--line-height: 3.125rem;
+  --text-5xl: 3.75rem;
+  --text-5xl--line-height: 3.875rem;
+
+  /* 반경 스케일 */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  /* 그림자. 어두운 배경에서는 위쪽 하이라이트가 있어야 면이 떠 보입니다. */
+  --shadow-raised:
+    inset 0 1px 0 rgb(255 255 255 / 0.04), 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-pop:
+    inset 0 1px 0 rgb(255 255 255 / 0.06), 0 12px 32px -8px rgb(0 0 0 / 0.7);
 
   /* 모션 */
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
@@ -69,14 +128,20 @@
     list-style: none;
   }
 
-  /* 포커스 링을 브랜드 색으로 통일합니다. 키보드 사용자에게는 반드시 보여야 합니다. */
+  /* 제목은 자간을 조금 좁혀야 큰 글씨에서 헐거워 보이지 않습니다. */
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.02em;
+  }
+
   :focus-visible {
-    outline: 2px solid var(--color-accent-hot);
+    outline: 2px solid var(--color-ink);
     outline-offset: 2px;
   }
 
   ::selection {
-    background: var(--color-accent-dim);
+    background: var(--color-line-strong);
     color: var(--color-ink);
   }
 
@@ -111,17 +176,24 @@
 @layer components {
   /* --- 무대 --------------------------------------------------------------- */
 
-  /*
-   * 위에서 아래로 은근한 스포트라이트를 넣어 건반이 무대에 놓인 것처럼 보이게 합니다.
-   */
+  /* 위에서 아래로 은근한 스포트라이트를 넣어 건반이 무대에 놓인 것처럼 보이게 합니다. */
   .stage-light {
     background:
       radial-gradient(
-        120% 80% at 50% -10%,
-        color-mix(in oklab, var(--color-accent) 12%, transparent) 0%,
+        120% 70% at 50% -10%,
+        rgb(255 255 255 / 0.045) 0%,
         transparent 60%
       ),
       linear-gradient(180deg, var(--color-surface) 0%, var(--color-canvas) 100%);
+  }
+
+  /* 넓은 면에 아주 옅은 격자를 깔아 빈 배경이 밋밋하지 않게 합니다. */
+  .grid-veil {
+    background-image:
+      linear-gradient(rgb(255 255 255 / 0.022) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(255 255 255 / 0.022) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(80% 60% at 50% 0%, #000 0%, transparent 75%);
   }
 
   /* --- 건반 --------------------------------------------------------------- */
@@ -130,10 +202,11 @@
     /* 건반 뒤판. 위쪽에 펠트 띠를 두어 실제 악기의 단면을 흉내냅니다. */
     background: linear-gradient(
       180deg,
-      var(--color-accent-dim) 0px,
-      var(--color-accent-dim) 5px,
-      #101015 5px,
-      #16161c 100%
+      color-mix(in oklab, var(--color-felt) 75%, black) 0px,
+      var(--color-felt) 2px,
+      color-mix(in oklab, var(--color-felt) 70%, black) 5px,
+      #0e0e10 5px,
+      #17171a 100%
     );
   }
 
@@ -156,15 +229,16 @@
     height: 100%;
     background: linear-gradient(
       180deg,
-      var(--color-key-light) 0%,
-      var(--color-key-light) 82%,
+      #ffffff 0%,
+      var(--color-key-light) 70%,
       var(--color-key-light-edge) 100%
     );
-    border-radius: 0 0 5px 5px;
+    border-radius: 0 0 6px 6px;
     box-shadow:
-      inset -1px 0 0 rgb(0 0 0 / 0.16),
-      inset 1px 0 0 rgb(255 255 255 / 0.7),
-      0 3px 5px rgb(0 0 0 / 0.45);
+      inset -1px 0 0 rgb(0 0 0 / 0.18),
+      inset 1px 0 0 rgb(255 255 255 / 0.75),
+      inset 0 -6px 8px -6px rgb(0 0 0 / 0.35),
+      0 4px 6px rgb(0 0 0 / 0.5);
   }
 
   .piano-key-black {
@@ -173,14 +247,15 @@
     z-index: 2;
     background: linear-gradient(
       180deg,
-      #3a3a45 0%,
-      var(--color-key-dark) 38%,
+      #46464f 0%,
+      var(--color-key-dark) 34%,
       var(--color-key-dark-edge) 100%
     );
     border-radius: 0 0 4px 4px;
     box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.22),
-      0 4px 6px rgb(0 0 0 / 0.6);
+      inset 0 1px 0 rgb(255 255 255 / 0.26),
+      inset -1px 0 0 rgb(255 255 255 / 0.06),
+      0 5px 7px rgb(0 0 0 / 0.65);
   }
 
   /*
@@ -195,7 +270,7 @@
   .piano-key-white[data-active='true'] {
     background: linear-gradient(
       180deg,
-      color-mix(in oklab, var(--key-color) 34%, var(--color-key-light)) 0%,
+      color-mix(in oklab, var(--key-color) 30%, #ffffff) 0%,
       color-mix(in oklab, var(--key-color) 62%, var(--color-key-light)) 100%
     );
   }
@@ -203,12 +278,12 @@
   .piano-key-black[data-active='true'] {
     background: linear-gradient(
       180deg,
-      color-mix(in oklab, var(--key-color) 55%, #2a2a33) 0%,
-      color-mix(in oklab, var(--key-color) 80%, #14141a) 100%
+      color-mix(in oklab, var(--key-color) 52%, #2c2c34) 0%,
+      color-mix(in oklab, var(--key-color) 82%, #14141a) 100%
     );
     box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.3),
-      0 0 10px color-mix(in oklab, var(--key-color) 60%, transparent);
+      inset 0 1px 0 rgb(255 255 255 / 0.32),
+      0 0 12px color-mix(in oklab, var(--key-color) 60%, transparent);
   }
 
   .piano-cursor {
@@ -232,18 +307,19 @@
     position: absolute;
     bottom: 0;
     height: 100%;
+    padding: 0 1px;
   }
 
   .note-ribbon-fill {
     position: absolute;
-    inset: 0;
+    inset: 0 1px;
     transform: scaleY(0);
     transform-origin: bottom center;
-    border-radius: 3px 3px 1px 1px;
+    border-radius: 4px 4px 1px 1px;
     background: linear-gradient(
       180deg,
-      color-mix(in oklab, var(--ribbon-color) 20%, transparent) 0%,
-      color-mix(in oklab, var(--ribbon-color) 70%, transparent) 45%,
+      color-mix(in oklab, var(--ribbon-color) 12%, transparent) 0%,
+      color-mix(in oklab, var(--ribbon-color) 65%, transparent) 40%,
       var(--ribbon-color) 100%
     );
     will-change: transform;
@@ -288,6 +364,43 @@
   .remote-cursor[data-ready='true'] {
     opacity: 1;
   }
+
+  /* --- 아이콘 레일 툴팁 ---------------------------------------------------- */
+
+  /*
+   * 아이콘만 있는 내비게이션에는 이름을 보여 줄 방법이 필요합니다.
+   * 예전에는 레일 전체를 hover 로 펼쳤는데, 그러면 본문이 밀려 레이아웃이
+   * 흔들리고 키보드 사용자는 펼칠 수 없었습니다. 툴팁은 흐름 밖에 떠 있어
+   * 폭이 변하지 않고, `:focus-visible` 에도 함께 걸어 키보드에서도 보입니다.
+   */
+  .rail-tip {
+    position: absolute;
+    left: calc(100% + 0.625rem);
+    top: 50%;
+    translate: -0.25rem -50%;
+    z-index: 50;
+    white-space: nowrap;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-line);
+    background: var(--color-overlay);
+    padding: 0.25rem 0.5rem;
+    font-size: var(--text-xs);
+    line-height: var(--text-xs--line-height);
+    font-weight: 500;
+    color: var(--color-ink);
+    box-shadow: var(--shadow-pop);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 120ms var(--ease-out-quart),
+      translate 120ms var(--ease-out-quart);
+  }
+
+  .rail-link:hover .rail-tip,
+  .rail-link:focus-visible .rail-tip {
+    opacity: 1;
+    translate: 0 -50%;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -299,7 +412,8 @@
     transition: opacity 140ms linear;
   }
 
-  .piano-key {
+  .piano-key,
+  .rail-tip {
     transition: none;
   }
 }

@@ -1,106 +1,116 @@
-import Link from 'next/link';
-import type { ReactNode } from 'react';
 import { BiSolidPiano } from 'react-icons/bi';
-import { BsCursorFill } from 'react-icons/bs';
-import { FaDoorOpen } from 'react-icons/fa6';
-import { MdKeyboardAlt, MdPiano } from 'react-icons/md';
 
 import KoreaClock from '@/app/components/korea-clock';
+import { ButtonLink } from '@/app/components/ui/button';
+import { LiveDot } from '@/app/components/ui/badge';
+import { PARTICIPANT_COLORS } from '@/shared/participant-colors';
+import { WHITE_KEYS } from '@/app/lib/notes';
 
-interface Feature {
-  title: string;
-  body: string;
-  icon: ReactNode;
+/**
+ * 한 줄로 읽히는 특징.
+ *
+ * 카드 그리드로 늘어놓지 않습니다. 아이콘 붙인 카드 네 장은 어느 서비스에나
+ * 있는 배치라 이 사이트가 무엇인지 말해 주지 않고, 정작 주인공인 건반을
+ * 화면 밖으로 밀어냅니다.
+ */
+const FACTS = [
+  ['88건반', '실제 피아노와 같은 A0-C8'],
+  ['연주자별 색', '누른 음이 그 사람 색 띠로 올라갑니다'],
+  ['커서 공유', '서로 어디를 짚을지 눈으로 맞춥니다'],
+  ['키보드 · MIDI', '자판으로 바로, 건반을 꽂으면 세기까지'],
+] as const;
+
+/** 히어로 아래에 놓는 장식용 건반. 실제 흰건반 수만큼 그려 비율을 맞춥니다. */
+function KeyboardSilhouette() {
+  return (
+    <div
+      aria-hidden='true'
+      className='pointer-events-none absolute inset-x-0 bottom-0 h-40 overflow-hidden'
+    >
+      {/* 위쪽으로 서서히 사라지게 해 본문과 겹치는 경계를 없앱니다. */}
+      <div className='absolute inset-x-0 bottom-0 h-full mask-[linear-gradient(to_top,#000_10%,transparent_85%)]'>
+        <div className='piano-deck absolute inset-x-0 bottom-0 h-32 pt-1.5'>
+          <div className='relative flex h-full w-full'>
+            {WHITE_KEYS.map((key, index) => {
+              // 몇 개만 연주자 색으로 켜 둬 무엇을 하는 곳인지 보이게 합니다.
+              const isLit = index % 17 === 4;
+
+              return (
+                <div
+                  key={key.note}
+                  className='piano-key-white relative flex-1'
+                  data-active={isLit}
+                  style={
+                    isLit
+                      ? {
+                          ['--key-color' as string]:
+                            PARTICIPANT_COLORS[
+                              index % PARTICIPANT_COLORS.length
+                            ],
+                        }
+                      : undefined
+                  }
+                />
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
-
-const FEATURES: Feature[] = [
-  {
-    title: '같이 치면 같이 들립니다',
-    body: '누른 음이 곧바로 다른 사람에게 전달됩니다. 건반 위에 연주자 색 띠가 올라가 누가 어디를 눌렀는지 한눈에 보입니다.',
-    icon: <MdPiano />,
-  },
-  {
-    title: '방을 만들어 초대',
-    body: '이름을 적으면 그 자리에서 방이 열리고 만든 사람이 방장이 됩니다. 링크만 보내면 되고, 방장은 방을 잠그거나 내보낼 수 있습니다.',
-    icon: <FaDoorOpen />,
-  },
-  {
-    title: '커서까지 공유',
-    body: '서로의 마우스 위치가 무대 위에 그대로 보입니다. 닉네임과 색은 로그인 없이도 직접 고를 수 있습니다.',
-    icon: <BsCursorFill />,
-  },
-  {
-    title: '키보드와 MIDI 둘 다',
-    body: '컴퓨터 자판으로 바로 연주하고, MIDI 건반을 꽂으면 세기와 서스테인 페달까지 그대로 전달됩니다.',
-    icon: <MdKeyboardAlt />,
-  },
-];
 
 export default function HomePage() {
   return (
-    <div className='stage-light flex-1 overflow-y-auto'>
-      <div className='mx-auto flex min-h-full max-w-4xl flex-col justify-center gap-14 px-6 py-16'>
-        <section className='flex flex-col gap-6'>
-          <span className='border-line bg-surface/60 text-ink-muted inline-flex w-fit items-center gap-2 rounded-full border px-3 py-1 text-xs'>
-            <span
-              className='bg-accent size-1.5 rounded-full'
-              aria-hidden='true'
-            />
-            실시간 합주 · 88건반
+    <div className='stage-light relative flex-1 overflow-hidden'>
+      <div className='grid-veil absolute inset-0' aria-hidden='true' />
+      <KeyboardSilhouette />
+
+      <div className='relative flex h-full flex-col justify-center px-8 pb-40 sm:px-14'>
+        <div className='flex max-w-2xl flex-col items-start gap-7'>
+          <span className='border-line bg-surface/70 text-ink-muted text-2xs inline-flex items-center gap-2 rounded-full border px-2.5 py-1 backdrop-blur'>
+            <LiveDot />
+            실시간 합주
           </span>
 
-          <h1 className='text-5xl leading-[1.1] font-bold tracking-tight sm:text-6xl'>
+          <h1 className='text-4xl font-bold text-balance sm:text-5xl'>
             떨어져 있어도
             <br />
-            <span className='text-accent'>같은 피아노</span>를 칩니다
+            같은 피아노를 칩니다
           </h1>
 
-          <p className='text-ink-muted max-w-xl text-base leading-relaxed'>
-            브라우저만 있으면 됩니다. 설치할 것도, 준비할 것도 없습니다.
-            연주실에 들어가 아무 건반이나 눌러 보세요.
+          <p className='text-ink-muted max-w-md text-base'>
+            브라우저만 있으면 됩니다. 방 이름을 적어 들어가고, 링크를 보내면
+            그대로 합주가 됩니다.
           </p>
 
-          <div className='flex flex-wrap items-center gap-3'>
-            <Link
-              href='/piano'
-              className='bg-accent hover:bg-accent-hot inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition-colors'
-            >
+          <div className='flex flex-wrap items-center gap-2'>
+            <ButtonLink href='/piano' variant='primary' size='lg'>
               <BiSolidPiano className='text-lg' />
               연주실 입장
-            </Link>
-            <Link
-              href='/login'
-              className='border-line text-ink-muted hover:border-line-strong hover:text-ink inline-flex items-center rounded-lg border px-5 py-2.5 text-sm font-medium transition-colors'
-            >
+            </ButtonLink>
+            <ButtonLink href='/login' variant='ghost' size='lg'>
               로그인 (선택)
-            </Link>
+            </ButtonLink>
           </div>
-        </section>
 
-        <section className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
-          {FEATURES.map((feature) => (
-            <article
-              key={feature.title}
-              className='border-line bg-surface/70 hover:border-line-strong flex flex-col gap-3 rounded-xl border p-5 transition-colors'
-            >
-              <span className='bg-accent/12 text-accent-hot grid size-9 place-items-center rounded-lg text-lg'>
-                {feature.icon}
-              </span>
-              <h2 className='text-sm font-semibold'>{feature.title}</h2>
-              <p className='text-ink-faint text-xs leading-relaxed'>
-                {feature.body}
-              </p>
-            </article>
-          ))}
-        </section>
-
-        <footer className='border-line flex flex-wrap items-center justify-between gap-4 border-t pt-6'>
-          <KoreaClock />
-          <p className='text-ink-faint text-xs'>
-            같은 지역에서는 왕복 10~30ms 로 합이 맞습니다
-          </p>
-        </footer>
+          <dl className='border-line mt-2 grid gap-x-10 gap-y-4 border-t pt-6 sm:grid-cols-2'>
+            {FACTS.map(([term, detail]) => (
+              <div key={term} className='flex flex-col gap-0.5'>
+                <dt className='text-sm font-semibold'>{term}</dt>
+                <dd className='text-ink-faint text-xs'>{detail}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </div>
+
+      <footer className='border-line bg-canvas/60 absolute inset-x-0 bottom-0 z-10 flex flex-wrap items-center justify-between gap-4 border-t px-8 py-3 backdrop-blur sm:px-14'>
+        <KoreaClock />
+        <p className='text-ink-faint text-2xs'>
+          같은 지역에서는 왕복 10-30ms 로 합이 맞습니다
+        </p>
+      </footer>
     </div>
   );
 }

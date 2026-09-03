@@ -5,7 +5,9 @@ import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { BsChevronRight } from 'react-icons/bs';
 import { IoMdSend } from 'react-icons/io';
 
+import { IconButton } from '@/app/components/ui/button';
 import { useUserCountry } from '@/app/hooks/use-user-country';
+import { cn } from '@/app/lib/cn';
 import { socket } from '@/app/lib/socket';
 import type { ChatMessage, SystemMessage } from '@/shared/socket-events';
 
@@ -39,7 +41,6 @@ export default function Chat() {
   const [entries, setEntries] = useState<ChatEntry[]>([]);
   const [draft, setDraft] = useState('');
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
 
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -88,11 +89,11 @@ export default function Chat() {
         aria-label='채팅 열기'
         aria-expanded={false}
         onClick={() => setIsCollapsed(false)}
-        className='border-line bg-surface text-ink-muted hover:text-ink flex w-11 shrink-0 flex-col items-center gap-2 border-l py-4 transition-colors'
+        className='border-line bg-surface text-ink-faint hover:text-ink flex w-10 shrink-0 flex-col items-center gap-2 border-l py-3 transition-colors'
       >
-        <BsChevronRight className='rotate-180 text-lg' />
+        <BsChevronRight className='rotate-180' />
         <span
-          className='text-xs font-semibold tracking-widest'
+          className='text-2xs font-semibold tracking-widest'
           style={{ writingMode: 'vertical-rl' }}
         >
           CHAT
@@ -106,17 +107,15 @@ export default function Chat() {
       aria-label='채팅'
       className='border-line bg-surface flex w-72 shrink-0 flex-col border-l'
     >
-      <header className='border-line flex shrink-0 items-center justify-between border-b px-3 py-2.5'>
-        <h2 className='text-sm font-semibold'>채팅</h2>
-        <button
-          type='button'
-          aria-label='채팅 접기'
+      <header className='border-line flex shrink-0 items-center justify-between border-b px-2 py-2'>
+        <h2 className='pl-1.5 text-xs font-semibold'>채팅</h2>
+        <IconButton
+          label='채팅 접기'
+          icon={<BsChevronRight />}
+          size='sm'
           aria-expanded
           onClick={() => setIsCollapsed(true)}
-          className='text-ink-faint hover:bg-raised hover:text-ink rounded-md p-1 transition-colors'
-        >
-          <BsChevronRight />
-        </button>
+        />
       </header>
 
       <div className='flex-1 space-y-3 overflow-y-auto px-3 py-3'>
@@ -128,7 +127,7 @@ export default function Chat() {
 
         {entries.map((entry) =>
           entry.kind === 'system' ? (
-            <p key={entry.id} className='text-ink-faint text-center text-xs'>
+            <p key={entry.id} className='text-ink-faint text-2xs text-center'>
               {entry.content}
             </p>
           ) : (
@@ -149,11 +148,11 @@ export default function Chat() {
                 >
                   {entry.sender}
                 </span>
-                <time className='text-ink-faint ml-auto shrink-0 text-[10px]'>
+                <time className='text-ink-faint text-2xs ml-auto shrink-0 tabular-nums'>
                   {timeFormatter.format(entry.sentAt)}
                 </time>
               </div>
-              <p className='bg-raised text-ink-muted rounded-lg rounded-tl-sm px-2.5 py-1.5 text-sm wrap-break-word'>
+              <p className='bg-raised text-ink-muted rounded-md rounded-tl-xs px-2.5 py-1.5 text-sm wrap-break-word'>
                 {entry.content}
               </p>
             </div>
@@ -162,34 +161,34 @@ export default function Chat() {
         <div ref={bottomRef} />
       </div>
 
-      <div className='border-line shrink-0 border-t p-2.5'>
+      <div className='border-line shrink-0 border-t p-2'>
         <div
-          className={`bg-raised flex items-end gap-1 rounded-lg border transition-colors ${
-            isFocused ? 'border-accent' : 'border-line'
-          }`}
+          className={cn(
+            'bg-raised border-line rounded-md border',
+            // 입력창이 포커스되면 테두리를 밝힙니다. 상태를 따로 들지 않고
+            // `focus-within` 으로 처리해 리렌더가 생기지 않습니다.
+            'focus-within:border-ink-faint flex items-end gap-1 transition-colors',
+          )}
         >
           <textarea
             value={draft}
             onChange={(event) => setDraft(event.target.value)}
             onKeyDown={handleKeyDown}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
             className='placeholder:text-ink-faint max-h-24 w-full resize-none bg-transparent px-2.5 py-2 text-sm outline-none'
             placeholder='메시지 입력…'
             aria-label='메시지 입력'
             rows={2}
           />
-          <button
-            type='button'
-            aria-label='메시지 전송'
+          <IconButton
+            label='메시지 전송'
+            icon={<IoMdSend />}
+            size='sm'
             onClick={sendMessage}
             disabled={draft.trim().length === 0}
-            className='text-ink-muted hover:bg-overlay hover:text-accent-hot m-1 shrink-0 rounded-md p-1.5 transition-colors disabled:opacity-30'
-          >
-            <IoMdSend size={18} />
-          </button>
+            className='m-1'
+          />
         </div>
-        <p className='text-ink-faint mt-1.5 px-1 text-[10px]'>
+        <p className='text-ink-faint text-2xs mt-1.5 px-1'>
           Enter 전송 · Shift+Enter 줄바꿈
         </p>
       </div>

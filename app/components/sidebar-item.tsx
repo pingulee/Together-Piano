@@ -11,40 +11,38 @@ export interface NavItem {
 }
 
 /**
- * 사이드바가 접혀 있을 때는 아이콘만 보이므로 이름은 항상 `aria-label` 로 제공하고,
- * 마우스에는 툴팁으로 보여 줍니다.
+ * 레일 항목 하나.
  *
+ * 아이콘만 보이므로 이름은 `aria-label` 과 툴팁으로 함께 제공합니다.
  * 현재 위치는 `aria-current="page"` 로 알리고 강조 스타일도 그 속성에 걸어,
- * 화면과 스크린리더가 같은 정보를 쓰게 합니다. 펼침 여부는 부모의 `group`
- * 상태에 따라 CSS 로만 결정되므로 JS 상태가 필요하지 않습니다.
+ * 화면과 스크린리더가 같은 정보를 쓰게 합니다.
  */
 export default function SidebarItem({ title, href, icon }: NavItem) {
   const pathname = usePathname();
-  const isCurrent = pathname === href;
+
+  // 연주실은 `/piano/방이름` 으로도 들어가므로 하위 경로까지 현재로 봅니다.
+  const isCurrent =
+    pathname === href || (href !== '/' && pathname.startsWith(`${href}/`));
 
   return (
-    <li>
+    <li className='relative'>
       <Link
         href={href}
         aria-label={title}
         aria-current={isCurrent ? 'page' : undefined}
-        title={title}
-        className='group/item text-ink-muted hover:bg-raised hover:text-ink aria-[current=page]:bg-raised aria-[current=page]:text-ink relative flex h-11 items-center gap-3 rounded-lg px-3 transition-colors'
+        className='rail-link text-ink-faint hover:bg-raised hover:text-ink aria-[current=page]:text-ink relative grid size-10 place-items-center rounded-md text-lg transition-colors'
       >
-        {/* 현재 페이지 표시선 */}
+        {icon}
+        <span className='rail-tip'>{title}</span>
+      </Link>
+
+      {/* 현재 페이지 표시선. 링크 밖에 둬 hover 배경에 가려지지 않게 합니다. */}
+      {isCurrent && (
         <span
           aria-hidden='true'
-          className={`bg-accent absolute left-0 h-5 w-0.5 rounded-r-full transition-opacity ${
-            isCurrent ? 'opacity-100' : 'opacity-0'
-          }`}
+          className='bg-accent absolute top-1/2 -left-3 h-5 w-0.5 -translate-y-1/2 rounded-r-full'
         />
-        <span className='grid size-5 shrink-0 place-items-center text-lg'>
-          {icon}
-        </span>
-        <span className='hidden text-sm font-medium whitespace-nowrap group-focus-within:inline group-hover:inline'>
-          {title}
-        </span>
-      </Link>
+      )}
     </li>
   );
 }

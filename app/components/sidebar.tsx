@@ -1,56 +1,58 @@
 import Link from 'next/link';
 import { BiSolidPiano } from 'react-icons/bi';
 import { FaHouse } from 'react-icons/fa6';
-import { GiGrandPiano } from 'react-icons/gi';
-import { MdContactEmergency } from 'react-icons/md';
-import { RiAccountBoxFill } from 'react-icons/ri';
+import { HiOutlineMail } from 'react-icons/hi';
+import { RiAccountCircleLine } from 'react-icons/ri';
 
 import SidebarItem, { type NavItem } from '@/app/components/sidebar-item';
 
 const PRIMARY_ITEMS: NavItem[] = [
   { title: '홈', href: '/', icon: <FaHouse /> },
   { title: '연주실', href: '/piano', icon: <BiSolidPiano /> },
-  { title: '만든 사람', href: '/contact', icon: <MdContactEmergency /> },
+  { title: '만든 사람', href: '/contact', icon: <HiOutlineMail /> },
 ];
 
 const ACCOUNT_ITEM: NavItem = {
   title: '내 계정',
   href: '/profile',
-  icon: <RiAccountBoxFill />,
+  icon: <RiAccountCircleLine />,
 };
 
 /**
- * 펼침/접힘을 CSS 만으로 처리하는 서버 컴포넌트입니다.
+ * 아이콘 레일.
  *
- * 이전에는 `onMouseEnter`/`onMouseLeave` + `useState` 로 폭을 바꿨는데, 그러면
- * 키보드 사용자는 펼칠 수 없고 컴포넌트 전체가 클라이언트 번들에 들어갑니다.
- * `group-hover` 와 `group-focus-within` 을 쓰면 마우스와 키보드 모두 동작하고
- * 상태도 필요하지 않습니다.
+ * 폭이 고정입니다. 예전에는 hover 로 펼쳐 이름을 보여 줬는데 그때마다 본문이
+ * 밀려 연주 중에 건반 위치가 흔들렸고, 키보드로는 펼칠 수 없어 이름을 볼 방법이
+ * 없었습니다. 이름은 흐름 밖에 뜨는 툴팁(`.rail-tip`)이 맡고, hover 와
+ * `:focus-visible` 양쪽에 걸려 있습니다. 상태가 없으므로 서버 컴포넌트입니다.
  */
 export default function Sidebar() {
   return (
     <nav
       aria-label='주 메뉴'
-      className='group border-line bg-surface z-40 flex h-screen w-16 shrink-0 flex-col gap-6 border-r p-3 transition-[width] duration-300 ease-out focus-within:w-56 hover:w-56'
+      className='border-line bg-surface z-40 flex h-screen w-14 shrink-0 flex-col items-center gap-4 border-r py-3'
     >
       <Link
         href='/'
         aria-label='Together Piano 홈'
-        className='hover:bg-raised flex h-10 items-center gap-3 rounded-lg px-1.5 transition-colors'
+        className='rail-link relative grid size-10 shrink-0 place-items-center'
       >
-        <GiGrandPiano className='text-accent shrink-0 text-2xl' />
-        <span className='hidden text-base font-bold tracking-tight whitespace-nowrap group-focus-within:inline group-hover:inline'>
-          Together
+        <span
+          aria-hidden='true'
+          className='border-line-strong bg-raised text-ink grid size-8 place-items-center rounded-md border text-sm font-bold'
+        >
+          T
         </span>
+        <span className='rail-tip'>Together Piano</span>
       </Link>
 
-      <ul className='flex flex-1 flex-col gap-1'>
+      <ul className='flex flex-1 flex-col items-center gap-1'>
         {PRIMARY_ITEMS.map((item) => (
           <SidebarItem key={item.href} {...item} />
         ))}
       </ul>
 
-      <ul>
+      <ul className='flex flex-col items-center'>
         <SidebarItem {...ACCOUNT_ITEM} />
       </ul>
     </nav>

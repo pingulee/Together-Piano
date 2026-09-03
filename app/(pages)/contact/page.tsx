@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaGithub } from 'react-icons/fa';
+import { HiArrowUpRight } from 'react-icons/hi2';
 import { SiGmail } from 'react-icons/si';
 
 export const metadata: Metadata = {
@@ -30,43 +31,44 @@ const LINKS = [
 export default function ContactPage() {
   return (
     <div className='stage-light flex flex-1 items-center justify-center px-6 py-12'>
-      <div className='w-full max-w-sm'>
-        <div className='flex items-center gap-4'>
+      <div className='flex w-full max-w-xs flex-col gap-7'>
+        <header className='flex items-center gap-3'>
           <Image
             src='/images/profile/pingulee.png'
             alt=''
-            width={64}
-            height={64}
-            className='border-line size-16 shrink-0 rounded-full border object-cover'
+            width={44}
+            height={44}
+            className='border-line size-11 shrink-0 rounded-full border object-cover'
           />
           <div>
-            <h1 className='text-xl font-bold tracking-tight'>Pingu Lee</h1>
-            <p className='text-ink-faint text-sm'>
+            <h1 className='text-base font-semibold'>Pingu Lee</h1>
+            <p className='text-ink-faint text-xs'>
               Together Piano 를 만들었습니다
             </p>
           </div>
-        </div>
+        </header>
 
-        <ul className='mt-8 flex flex-col gap-2'>
+        <ul className='flex flex-col gap-1.5'>
           {LINKS.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
                 target='_blank'
                 rel='noopener noreferrer'
-                className='border-line bg-surface/70 hover:border-line-strong flex items-center gap-3 rounded-xl border px-4 py-3 transition-colors'
+                className='border-line bg-surface hover:border-line-strong hover:bg-raised group flex items-center gap-3 rounded-lg border px-3 py-2.5 transition-colors'
               >
-                <span className='bg-raised text-ink-muted grid size-9 shrink-0 place-items-center rounded-lg text-base'>
+                <span className='bg-raised text-ink-muted grid size-8 shrink-0 place-items-center rounded-md text-sm'>
                   {link.icon}
                 </span>
-                <span className='min-w-0'>
-                  <span className='text-ink-faint block text-xs'>
+                <span className='min-w-0 flex-1'>
+                  <span className='text-ink-faint text-2xs block'>
                     {link.caption}
                   </span>
                   <span className='block truncate text-sm font-medium'>
                     {link.label}
                   </span>
                 </span>
+                <HiArrowUpRight className='text-ink-faint group-hover:text-ink shrink-0 text-xs transition-colors' />
               </Link>
             </li>
           ))}

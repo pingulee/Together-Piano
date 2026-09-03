@@ -1,23 +1,32 @@
 'use client';
 
-import { useEffect, useState, type ReactNode } from 'react';
-import { getProviders, signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { getProviders, signIn, useSession } from 'next-auth/react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { FaDiscord } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 
+import { Button, ButtonLink } from '@/app/components/ui/button';
+import { Panel } from '@/app/components/ui/panel';
+
 const CALLBACK_URL = '/piano';
 
-/** 제공자별 표시. 등록되지 않은 제공자는 아예 그리지 않습니다. */
+/**
+ * 제공자별 표시.
+ *
+ * 제공자 색은 그들의 브랜드이므로 여기서만 예외적으로 채도를 씁니다.
+ * (구글·디스코드 버튼을 무채색으로 그리면 무엇인지 알아보기 어렵습니다)
+ */
 const PROVIDER_STYLES: Record<string, { icon: ReactNode; className: string }> =
   {
     google: {
       icon: <FcGoogle className='text-lg' />,
-      className: 'bg-white text-black hover:bg-white/85',
+      className: 'bg-white text-black hover:bg-white/85 border-transparent',
     },
     discord: {
       icon: <FaDiscord className='text-lg' />,
-      className: 'bg-[#5865f2] text-white hover:bg-[#5865f2]/85',
+      className:
+        'bg-[#5865f2] text-white hover:bg-[#5865f2]/85 border-transparent',
     },
   };
 
@@ -55,61 +64,54 @@ export default function LoginPage() {
 
   return (
     <div className='stage-light flex flex-1 items-center justify-center px-6 py-12'>
-      <div className='w-full max-w-sm'>
-        <h1 className='text-2xl font-bold tracking-tight'>로그인</h1>
-        <p className='text-ink-muted mt-2 text-sm leading-relaxed'>
-          로그인하면 연주실과 채팅에 내 이름으로 표시됩니다. 로그인하지 않아도
-          연주는 할 수 있습니다.
-        </p>
+      <div className='flex w-full max-w-xs flex-col gap-7'>
+        <header className='flex flex-col gap-2'>
+          <h1 className='text-xl font-bold'>로그인</h1>
+          <p className='text-ink-muted text-sm'>
+            로그인은 선택입니다. 닉네임과 색은 로그인 없이도 정할 수 있고,
+            로그인하면 계정 이름이 기본값으로 채워집니다.
+          </p>
+        </header>
 
-        <div className='mt-8 flex flex-col gap-2.5'>
+        <div className='flex flex-col gap-2'>
           {providers === null && (
-            <div className='bg-raised h-11 animate-pulse rounded-lg' />
+            <div className='bg-raised h-10 animate-pulse rounded-md' />
           )}
 
-          {providers?.map((provider) => {
-            const style = PROVIDER_STYLES[provider.id];
-            return (
-              <button
-                key={provider.id}
-                type='button'
-                onClick={() =>
-                  signIn(provider.id, { callbackUrl: CALLBACK_URL })
-                }
-                className={`flex h-11 items-center justify-center gap-2.5 rounded-lg text-sm font-semibold transition-colors ${
-                  style?.className ??
-                  'border-line text-ink hover:bg-raised border'
-                }`}
-              >
-                {style?.icon}
-                {provider.name}(으)로 계속하기
-              </button>
-            );
-          })}
+          {providers?.map((provider) => (
+            <Button
+              key={provider.id}
+              block
+              onClick={() => signIn(provider.id, { callbackUrl: CALLBACK_URL })}
+              className={PROVIDER_STYLES[provider.id]?.className}
+            >
+              {PROVIDER_STYLES[provider.id]?.icon}
+              {provider.name}(으)로 계속하기
+            </Button>
+          ))}
 
           {providers?.length === 0 && (
-            <p className='border-line bg-surface/70 text-ink-faint rounded-lg border p-4 text-xs leading-relaxed'>
-              아직 로그인 제공자가 설정되지 않았습니다. 서버 환경변수에 OAuth
-              자격 증명을 넣으면 이 자리에 버튼이 나타납니다.
-            </p>
+            <Panel padding='md'>
+              <p className='text-ink-faint text-xs'>
+                아직 로그인 제공자가 설정되지 않았습니다. 서버 환경변수에 OAuth
+                자격 증명을 넣으면 이 자리에 버튼이 나타납니다.
+              </p>
+            </Panel>
           )}
         </div>
 
         {status === 'authenticated' && (
-          <p className='text-ink-faint mt-6 text-xs'>
+          <p className='text-ink-faint text-xs'>
             이미 로그인되어 있습니다.{' '}
-            <Link href='/profile' className='text-accent-hot hover:underline'>
+            <Link href='/profile' className='text-ink hover:underline'>
               내 계정 보기
             </Link>
           </p>
         )}
 
-        <Link
-          href='/piano'
-          className='text-ink-faint hover:text-ink-muted mt-8 inline-block text-xs transition-colors'
-        >
+        <ButtonLink href='/piano' variant='ghost' size='sm' className='-ml-3'>
           로그인 없이 연주실로 →
-        </Link>
+        </ButtonLink>
       </div>
     </div>
   );

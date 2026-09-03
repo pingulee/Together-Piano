@@ -112,7 +112,7 @@ export default function SharedCursors({
 
             {participant && (
               <span
-                className='text-canvas -mt-1 ml-3 inline-block max-w-32 truncate rounded-full px-2 py-0.5 text-[11px] leading-tight font-semibold'
+                className='text-canvas text-2xs -mt-1 ml-3 inline-block max-w-32 truncate rounded-full px-2 py-0.5 leading-tight font-semibold'
                 style={{ backgroundColor: color }}
               >
                 {participant.name}

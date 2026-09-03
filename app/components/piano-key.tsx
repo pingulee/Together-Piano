@@ -54,7 +54,7 @@ function PianoKeyView({
       }}
     >
       <span
-        className={`pointer-events-none absolute inset-x-0 bottom-1.5 flex flex-col items-center gap-0.5 text-[10px] leading-none font-semibold ${
+        className={`text-2xs pointer-events-none absolute inset-x-0 bottom-1.5 flex flex-col items-center gap-0.5 leading-none font-semibold ${
           isBlack ? 'text-white/45' : 'text-black/35'
         }`}
       >
@@ -62,7 +62,7 @@ function PianoKeyView({
           <span className='font-mono uppercase'>{shortcut}</span>
         )}
         {isOctaveMarker && (
-          <span className='text-[9px] font-bold tracking-tight text-black/45'>
+          <span className='text-2xs font-bold text-black/45'>
             {formatNoteLabel(note)}
           </span>
         )}
